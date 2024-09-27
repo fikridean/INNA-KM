@@ -1,8 +1,9 @@
 from fastapi import HTTPException
+from config import OPERATIONS_FOLDERS
 from models.portal_model import PortalRetrieveDataModel
 from models.raw_model import RawBaseModel, RawDeleteModel, RawGetModel, RawStoreModel
 from utils.decorator.app_log_decorator import log_function
-from utils.helper.func_helper import run_function_from_module
+from utils.helper.func_helper import get_portals_webs, run_function_from_module
 from database.mongo import client, raw_collection
 from .portal_service import get_portals, retrieve_data
 
@@ -59,54 +60,80 @@ async def store_raw_to_db(params: RawBaseModel) -> str:
 @log_function("Store raw from portals")
 async def store_raw_from_portals(params: RawStoreModel) -> str:
     try:
+        web_for_query = params.web
+
+        # If no web is provided, get a default list of web sources
+        if web_for_query:
+            webs = web_for_query
+        else:
+            webs = get_portals_webs(OPERATIONS_FOLDERS)  # Fetch available web sources
+
         portals = await get_portals(params)
 
-        if not portals:
-            raise HTTPException(status_code=404, detail="Portal not found. Please re-check the taxon_id and web.")
-        
         data_to_store = []
-        data_exist = []
-        data_not_exist = []
+        found_taxon_web = {}
 
+        # Loop through each portal to process and retrieve data
         for portal in portals:
-            print(portal)
+            species_name = portal['species']
+            taxon_id = portal['taxon_id']
+            web_source = portal['web']
+            
             paramsObj = {
-                "taxon_id": portal['taxon_id'],
-                "web": portal['web']
+                "taxon_id": taxon_id,
+                "web": web_source
             }
 
             params = PortalRetrieveDataModel(**paramsObj)
 
             retrieved_data = await retrieve_data(params)
 
-            if not retrieved_data:
-                data_not_exist.append(f"{portal['species']} ({portal['taxon_id']}) - {portal['web']}")
+            # Initialize tracking for taxon_id if not already set
+            if taxon_id not in found_taxon_web:
+                found_taxon_web[taxon_id] = {
+                    'species': species_name,  # Add species field
+                    'found_webs': {
+                        'exist': [],
+                        'not_exist': []
+                    },
+                    'missing_webs': list(webs) 
+                }
+
+            # Check if retrieved data is found
+            if retrieved_data:
+                # Add the web source to the 'exist' list
+                found_taxon_web[taxon_id]['found_webs']['exist'].append(web_source)
+
+                # If data was found, remove the web from the missing list
+                if web_source in found_taxon_web[taxon_id]['missing_webs']:
+                    found_taxon_web[taxon_id]['missing_webs'].remove(web_source)
+
+                # Prepare data to store
+                data_to_store.append({
+                    'web': portal['web'],
+                    'species': portal['species'],
+                    'taxon_id': portal['taxon_id'],
+                    'data': await run_function_from_module(portal['web'], "data_processing", retrieved_data)
+                })
             else:
-                data_exist.append(f"{portal['species']} ({portal['taxon_id']}) - {portal['web']}")
+                found_taxon_web[taxon_id]['found_webs']['not_exist'].append(web_source)
 
-            data = {
-                'web': portal['web'],
-                'species': portal['species'],
-                'taxon_id': portal['taxon_id'],
-                'data': await run_function_from_module(portal['web'], "data_processing", retrieved_data)
-            }
-
-            data_to_store.append(data)
-
+        # Store found data in the database
         await store_raw_to_db(data_to_store)
 
-        return {
-            "total_portal_found": len(portals),
-            "data_stored": {
-                "total_data": len(data_exist),
-                "data": data_exist
-            },
-            "data_not_stored": {
-                "total_data": len(data_not_exist),
-                "data": data_not_exist,
-                "note": "Data not exist means the data cannot be retrieved from the portal and the species term data (data without the retrieved data from website) is still stored in the raw collection."
-            }
-        }
+        # Create the result structure
+        result = []
+
+        for taxon_id, web_info in found_taxon_web.items():
+            result.append({
+                'taxon_id': taxon_id,
+                'species': web_info['species'],
+                'found_webs': web_info['found_webs'],
+                'missing_webs': [web for web in web_info['missing_webs'] if web not in web_info['found_webs']['exist'] and web not in web_info['found_webs']['not_exist']]  # Filter missing_webs
+            })
+
+        return result
+
 
     except Exception as e:
         raise Exception(f"An error occurred while storing data from all portals: {str(e)}")
