@@ -9,12 +9,72 @@ This project is designed to facilitate the management of information across diff
 
 # Tutorial
 
-- `python3 -m venv venv` - Create a **virtual environment**.
-- `source venv/bin/activate` for Linux/macOS and `venv\Scripts\activate` for Windows - Activate the **virtual environment**.
-- `pip install -r requirements.txt` - Install the required **dependencies**
-- `fastapi dev app/main.py` - **Run FastAPI**.
-- `mkdocs serve`: This project use **MkDocs** to build and view the documentation. Run this command to preview it locally.
-- Setting up **Search** feature (Code for Creating the Search Index) please visit <a href='/E/#setting-up-the-search-index'>Search Index Section</a>.
+Follow these steps to set up the project:
+
+1. **Initialize a Git repository**:
+    ```sh
+    git init
+    ```
+
+2. **Add the remote repository**:
+    ```sh
+    git remote add origin https://github.com/fikridean/INNA-KM.git
+    ```
+
+3. **Fetch the latest changes from the remote repository**:
+    ```sh
+    git fetch
+    ```
+
+4. **Checkout the `dev` branch**:
+    ```sh
+    git checkout dev
+    ```
+
+5. **Navigate to the backend directory**:
+    ```sh
+    cd backend
+    ```
+
+6. **Copy the example environment file to create your own `.env` file**:
+    ```sh
+    cp app/.env.example app/.env
+    ```
+
+Make sure to fill in the necessary environment variables in the `.env` file before running the application.
+
+- **Create a virtual environment**:
+    ```sh
+    python3 -m venv venv
+    ```
+
+- **Activate the virtual environment**:
+    - For Linux/macOS:
+        ```sh
+        source venv/bin/activate
+        ```
+    - For Windows:
+        ```sh
+        venv\Scripts\activate
+        ```
+
+- **Install the required dependencies**:
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+- **Run FastAPI**:
+    ```sh
+    fastapi dev app/main.py
+    ```
+
+- **Preview the documentation locally using MkDocs**:
+    ```sh
+    mkdocs serve
+    ```
+
+- **Setting up the Search feature**:
+    For code to create the search index, please visit the [Search Index Section](/E/#setting-up-the-search-index).
 
 For more information, please visit <a target=_blank href='https://github.com/fikridean/INNAKM'>INNAKM Github Repository</a>.
 
@@ -27,48 +87,55 @@ For more information, please visit <a target=_blank href='https://github.com/fik
 - <a href="https://www.gbif.org/" target="_blank">GBIF</a>
 
 ## Species
-- Achromobacter mucicolens
-- Aeromonas hydrophila
-- Chelatococcus thermostellatus
-- Cobetia marina
-- Dactylosporangium aurantiacum
-- Empedobacter tilapiae
-- Escherichia fergusonii
-- Klebsiella aerogenes
-- Klebsiella pasteurii
-- Klebsiella pneumoniae
-- Lactiplantibacillus plantarum
-- Luteibacter jiangsuensis
-- Myxococcus stipitatus
-- Ochrobactrum quorumnocens
-- Pantoea agglomerans
-- Pantoea dispersa
-- Pseudomonas ceruminis
-- Pseudomonas palmensis
-- Pseudomonas qingdaonensis
-- Raoultella ornithinolytica
-- Rhodopseudomonas palustris
-- Stenotrophomonas maltophilia
-- Streptomyces fagopyri
-- Streptomyces lutosisoli
-- Streptomyces mirabilis
-- Stutzerimonas stutzeri
-- Xanthomonas campestris
-- Rhizobium leguminosarum
-- Streptomyces kunmingensis
-- Streptomyces rochei
-- Streptomyces griseorubens
-- Streptomyces sp.
-- Streptomyces sampsonii
-- Micromonospora chalcea
-- Klebsiella quasuvaricola
-- Escherichia coli
-- Gulosibacter sp.
-- Pseudomonas hibiscicola
-- Providencia rettgeri
-- Burkholderia sp.
-- Klebsiella oxytoca
-- Brevibacterium ammoniilyticum
+1. Achromobacter mucicolens
+2. Aeromonas hydrophila
+3. Chelatococcus thermostellatus
+4. Cobetia marina
+5. Dactylosporangium aurantiacum
+6. Empedobacter tilapiae
+7. Escherichia fergusonii
+8. Klebsiella aerogenes
+9. Klebsiella pasteurii
+10. Klebsiella pneumoniae
+11. Lactiplantibacillus plantarum
+12. Luteibacter jiangsuensis
+13. Myxococcus stipitatus
+14. Ochrobactrum quorumnocens
+15. Pantoea agglomerans
+16. Pantoea dispersa
+17. Pseudomonas ceruminis
+18. Pseudomonas palmensis
+19. Pseudomonas qingdaonensis
+20. Raoultella ornithinolytica
+21. Rhodopseudomonas palustris
+22. Stenotrophomonas maltophilia
+23. Streptomyces fagopyri
+24. Streptomyces lutosisoli
+25. Streptomyces mirabilis
+26. Stutzerimonas stutzeri
+27. Xanthomonas campestris
+28. Rhizobium leguminosarum
+29. Streptomyces kunmingensis
+30. Streptomyces rochei
+31. Streptomyces griseorubens
+32. Streptomyces sp.
+33. Streptomyces sampsonii
+34. Micromonospora chalcea
+35. Klebsiella quasuvaricola
+36. Escherichia coli
+37. Gulosibacter sp.
+38. Pseudomonas hibiscicola
+39. Providencia rettgeri
+40. Burkholderia sp.
+41. Klebsiella oxytoca
+42. Brevibacterium ammoniilyticum
+43. Escherichia sp.
+44. Klebsiella quasipneumoniae
+45. Klebsiella sp.
+46. Pantoea
+47. Pseudomonas sp.
+48. Stenotrophomonas sp.
+49. Xanthomonas sp.
 
 # Data Parsing
 ## Why is data parsing needed before adding data to the database?

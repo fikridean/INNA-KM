@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Query, status
-from models.portal_model import PortalBaseModel, PortalCreateResponseModel, PortalDeleteModel, PortalDeleteResponseModel, PortalDetailModel, PortalDetailResponseModel, PortalGetModel, PortalGetResponseModel, PortalRetrieveDataModel, PortalRetrieveDataResponseModel
-from services.portal_service import get_portals, get_portal_detail, retrieve_data, create_portal, delete_portal
+from models.portal_model import PortalBaseModel, PortalCreateResponseModel, PortalDeleteModel, PortalDeleteResponseModel, PortalDetailModel, PortalDetailResponseModel, PortalGetDetailWebResponseModel, PortalGetModel, PortalGetResponseModel, PortalRetrieveDataModel, PortalRetrieveDataResponseModel
+from services.portal_service import get_portals, get_portal_detail, get_portals_with_detail, retrieve_data, create_portal, delete_portal
 from utils.helper.response_helper import success_response, error_response
 from utils.message.message_enum import ResponseMessage
 
@@ -31,6 +31,15 @@ async def delete_portal_route_func(params: PortalDeleteModel):
     try:
         data = await delete_portal(params)
         return success_response(data, message=ResponseMessage.OK_DELETE.value, status_code=200)
+    except Exception as e:
+        return error_response(message=str(e), status_code=400)
+
+# Get portals with detail
+@router.post("/get/web-detail", response_model=PortalGetDetailWebResponseModel, status_code=status.HTTP_200_OK)
+async def get_portals_route_func(params: PortalGetModel):
+    try:
+        data = await get_portals_with_detail(params)
+        return success_response(data, message=ResponseMessage.OK_LIST.value, status_code=200)
     except Exception as e:
         return error_response(message=str(e), status_code=400)
 

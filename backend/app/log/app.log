@@ -276,3 +276,35 @@ Error in Store raw from portals: An error occurred while storing data from all p
 
 Error in Store raw from portals: An error occurred while storing data from all portals: string indices must be integers
 
+Error in Delete portal: An error occurred while deleting portal: 404: Portals not found.
+
+Error in Delete portal: An error occurred while deleting portal: 404: Portals not found.
+
+Error in Delete portal: An error occurred while deleting portal: BSON field 'collation._id' is an unknown field., full error: {'index': 0, 'code': 40415, 'errmsg': "BSON field 'collation._id' is an unknown field."}
+
+Error in Delete portal: An error occurred while deleting portal: BSON field 'collation._id' is an unknown field., full error: {'index': 0, 'code': 40415, 'errmsg': "BSON field 'collation._id' is an unknown field."}
+
+Error in Delete portal: An error occurred while deleting portal: 404: Portals not found.
+
+Error in Delete portal: An error occurred while deleting portal: 404: Portals not found.
+
+Error in Delete portal: An error occurred while deleting portal: 404: Portals not found.
+
+Error in Delete portal: An error occurred while deleting portal: 404: Portals not found.
+
+Error in Get portals: An error occurred while retrieving portals: operation cancelled
+
+Error in Retrieve data: 404: Portal not found.
+
+Error in Store raw from portals: An error occurred while storing data from all portals: 404: Portal not found. Please re-check the taxon_id and web.
+
+Error in Store raw from portals: An error occurred while storing data from all portals: 404: Portal not found. Please re-check the taxon_id and web.
+
+Error in Store raw from portals: An error occurred while storing data from all portals: 404: Portal not found. Please re-check the taxon_id and web.
+
+Error in Store raw from portals: An error occurred while storing data from all portals: 404: Portal not found. Please re-check the taxon_id and web.
+
+Error in Retrieve data: 404: Portal not found.
+
+Error in Store raw from portals: An error occurred while storing data from all portals: 404: Portal not found. Please re-check the taxon_id and web.
+

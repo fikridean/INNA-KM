@@ -45,17 +45,38 @@ class PortalRetrieveDataResponseModel(ResponseBaseModel):
     status_code: int = 200
     data: dict = {}
 
+class PortalCreateResponseObjectModel(BaseModel):
+    species: str
+    taxon_id: str
+    webs: List[str]
+
 class PortalCreateResponseModel(ResponseBaseModel):
     status_code: int = 201
-    data: List[str]
+    data: List[PortalCreateResponseObjectModel]
+
+class PortalDeleteResponseObjectModel(BaseModel):
+    taxon_id: str
+    found_webs: List[str]
+    missing_webs: List[str]
 
 class PortalDeleteResponseModel(ResponseBaseModel):
     status_code: int = 200
-    data: List[str]
+    total_data: int
+    data: List[PortalDeleteResponseObjectModel]
 
 class PortalGetResponseModel(ResponseBaseModel):
     status_code: int = 200
     data: List[PortalBaseModel]
+
+class PortalGetDetailWebObjectModel(BaseModel):
+    taxon_id: str
+    found_webs: List[str]
+    missing_webs: List[str]
+
+class PortalGetDetailWebResponseModel(ResponseBaseModel):
+    status_code: int = 200
+    total_data: int
+    data: List[PortalGetDetailWebObjectModel]
 
 class PortalDetailResponseModel(ResponseBaseModel):
     status_code: int = 200
