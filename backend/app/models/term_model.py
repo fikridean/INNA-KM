@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field
-from typing import Optional
 
 class termBaseModel(BaseModel):
     species: str = Field(..., min_length=1, max_length=100)
@@ -16,7 +15,6 @@ class TermGetModel(BaseModel):
         extra = "forbid"  # Forbid extra fields
 
 class TermStoreModel(BaseModel):
-    species: str = Field(..., min_length=1, max_length=100)
     taxon_id: str = Field(..., min_length=1, max_length=100)
 
     class Config:

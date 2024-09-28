@@ -4794,3 +4794,855 @@ System Memory usage after request: 41.3%
 Activity: POST http://127.0.0.1:8000/raws/store
 Total Requests: 1, Total Errors: 0
 
+Request: GET http://127.0.0.1:8000/portals/retrieve-data?taxon_id=1389922&web=wikidata
+Headers: Headers({'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '2a966bae-594d-47db-a7cf-a525af603546', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive'})
+System CPU usage before request: 2.3%
+System Memory usage before request: 26.9%
+Response status: 200
+Time taken: 2.65 seconds
+Response size: 14224 bytes
+System CPU usage after request: 2.5%
+System Memory usage after request: 26.7%
+Activity: GET http://127.0.0.1:8000/portals/retrieve-data?taxon_id=1389922&web=wikidata
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '08e344cb-e23a-4b5d-a657-eb58d676d705', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '144'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 26.7%
+Response status: 200
+Time taken: 7.80 seconds
+Response size: 252 bytes
+System CPU usage after request: 1.0%
+System Memory usage after request: 26.8%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 2, Total Errors: 0
+
+Request: GET http://127.0.0.1:8000/docs
+Headers: Headers({'host': '127.0.0.1:8000', 'connection': 'keep-alive', 'sec-ch-ua': '"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"', 'sec-ch-ua-mobile': '?0', 'sec-ch-ua-platform': '"Windows"', 'upgrade-insecure-requests': '1', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36', 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7', 'sec-fetch-site': 'none', 'sec-fetch-mode': 'navigate', 'sec-fetch-user': '?1', 'sec-fetch-dest': 'document', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9,id;q=0.8', 'cookie': '_xsrf=2|1be3bdbe|ee3b86bb74da0636f4105a4270a9b10f|1723387546'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 28.1%
+Response status: 200
+Time taken: 0.00 seconds
+Response size: 931 bytes
+System CPU usage after request: 0.0%
+System Memory usage after request: 28.1%
+Activity: GET http://127.0.0.1:8000/docs
+Total Requests: 1, Total Errors: 0
+
+Request: GET http://127.0.0.1:8000/openapi.json
+Headers: Headers({'host': '127.0.0.1:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36', 'accept': 'application/json,*/*', 'sec-ch-ua': '"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"', 'sec-ch-ua-mobile': '?0', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://127.0.0.1:8000/docs', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9,id;q=0.8', 'cookie': '_xsrf=2|1be3bdbe|ee3b86bb74da0636f4105a4270a9b10f|1723387546'})
+System CPU usage before request: 2.6%
+System Memory usage before request: 28.1%
+Response status: 200
+Time taken: 0.03 seconds
+Response size: 16090 bytes
+System CPU usage after request: 5.0%
+System Memory usage after request: 28.1%
+Activity: GET http://127.0.0.1:8000/openapi.json
+Total Requests: 2, Total Errors: 0
+
+Request: GET http://127.0.0.1:8000/portals/retrieve-data?taxon_id=1389922&web=wikidata
+Headers: Headers({'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '8346d413-c423-4046-a455-c8dda7a73f88', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 28.1%
+Response status: 200
+Time taken: 3.05 seconds
+Response size: 14224 bytes
+System CPU usage after request: 0.9%
+System Memory usage after request: 28.2%
+Activity: GET http://127.0.0.1:8000/portals/retrieve-data?taxon_id=1389922&web=wikidata
+Total Requests: 3, Total Errors: 0
+
+Request: GET http://127.0.0.1:8000/raws/get
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '243f99d1-ef3d-43ea-885d-3a526c3e7fc6', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '972'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 28.2%
+Response status: 200
+Time taken: 3.25 seconds
+Response size: 2501380 bytes
+System CPU usage after request: 1.0%
+System Memory usage after request: 28.3%
+Activity: GET http://127.0.0.1:8000/raws/get
+Total Requests: 4, Total Errors: 0
+
+Request: GET http://127.0.0.1:8000/raws/get
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '0f4e2a5d-24e6-428e-8dc1-d70b6cd2dbb9', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '1006'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 28.4%
+Response status: 200
+Time taken: 1.30 seconds
+Response size: 2748433 bytes
+System CPU usage after request: 1.3%
+System Memory usage after request: 28.6%
+Activity: GET http://127.0.0.1:8000/raws/get
+Total Requests: 5, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '604503d7-da90-49da-93a2-37f3bddae8a9', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '144'})
+System CPU usage before request: 2.2%
+System Memory usage before request: 34.2%
+Response status: 200
+Time taken: 0.64 seconds
+Response size: 101 bytes
+System CPU usage after request: 1.9%
+System Memory usage after request: 34.3%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '6fce7b39-b9b8-4a82-9d95-29c7357e567d', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '144'})
+System CPU usage before request: 1.2%
+System Memory usage before request: 31.8%
+Response status: 200
+Time taken: 6.13 seconds
+Response size: 252 bytes
+System CPU usage after request: 1.6%
+System Memory usage after request: 31.5%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 2, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '6d202013-5979-4c84-918f-210308702501', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 1.1%
+System Memory usage before request: 31.5%
+Response status: 200
+Time taken: 5.74 seconds
+Response size: 252 bytes
+System CPU usage after request: 1.1%
+System Memory usage after request: 31.7%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '5d9b7269-f06a-445e-aab3-36a67442a191', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 1.0%
+System Memory usage before request: 32.7%
+Response status: 200
+Time taken: 5.48 seconds
+Response size: 151 bytes
+System CPU usage after request: 1.3%
+System Memory usage after request: 33.0%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '4d896467-83ad-461d-ba55-320dad90cf5f', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 33.1%
+Response status: 200
+Time taken: 6.20 seconds
+Response size: 151 bytes
+System CPU usage after request: 1.0%
+System Memory usage after request: 33.1%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 2, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '113b55c7-ff00-4c32-bf4a-963fc002a5c5', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 1.5%
+System Memory usage before request: 32.8%
+Response status: 200
+Time taken: 4.84 seconds
+Response size: 151 bytes
+System CPU usage after request: 1.3%
+System Memory usage after request: 33.0%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'd4720e6f-6e62-4a56-a0ed-77dc4ae9fa70', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 31.9%
+Response status: 200
+Time taken: 7.66 seconds
+Response size: 151 bytes
+System CPU usage after request: 1.0%
+System Memory usage after request: 31.8%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 2, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '9818e65a-506f-424b-8b55-aa55f5627fd8', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 1.1%
+System Memory usage before request: 32.4%
+Response status: 200
+Time taken: 5.10 seconds
+Response size: 151 bytes
+System CPU usage after request: 1.2%
+System Memory usage after request: 32.6%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '54a83b1c-27bb-49df-b186-13ff40fe1a62', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 0.9%
+System Memory usage before request: 32.2%
+Response status: 200
+Time taken: 5.55 seconds
+Response size: 151 bytes
+System CPU usage after request: 1.5%
+System Memory usage after request: 32.3%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 2, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '73bd0152-2437-4fcc-9341-30931743d368', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 7.7%
+System Memory usage before request: 32.0%
+Response status: 200
+Time taken: 7.55 seconds
+Response size: 151 bytes
+System CPU usage after request: 1.2%
+System Memory usage after request: 32.2%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'a0e7a9a0-c2c9-4adb-b7ed-9a1680f9e1be', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 1.3%
+System Memory usage before request: 32.8%
+Response status: 200
+Time taken: 4.85 seconds
+Response size: 252 bytes
+System CPU usage after request: 1.6%
+System Memory usage after request: 33.0%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '571644cd-313d-4726-ba70-b42896e03798', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 1.1%
+System Memory usage before request: 32.5%
+Response status: 200
+Time taken: 5.87 seconds
+Response size: 151 bytes
+System CPU usage after request: 1.3%
+System Memory usage after request: 32.7%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'd6663f0a-97af-4ae5-98d9-d94713f12223', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 1.8%
+System Memory usage before request: 32.3%
+Response status: 200
+Time taken: 5.68 seconds
+Response size: 151 bytes
+System CPU usage after request: 1.3%
+System Memory usage after request: 32.5%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '1c1c3825-6925-439f-a7e1-67b4ad3ef3f9', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 1.3%
+System Memory usage before request: 32.3%
+Response status: 200
+Time taken: 7.25 seconds
+Response size: 151 bytes
+System CPU usage after request: 1.2%
+System Memory usage after request: 32.6%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'b8421434-72bc-463d-840c-b079735f8b1d', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 1.5%
+System Memory usage before request: 32.4%
+Response status: 200
+Time taken: 4.89 seconds
+Response size: 151 bytes
+System CPU usage after request: 1.3%
+System Memory usage after request: 32.6%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '970ce785-a8ad-4892-b97b-c50d73189962', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 1.3%
+System Memory usage before request: 32.5%
+Response status: 200
+Time taken: 4.82 seconds
+Response size: 252 bytes
+System CPU usage after request: 1.9%
+System Memory usage after request: 32.7%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '8b52883b-ab10-4ca6-9350-68af656f5122', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 1.3%
+System Memory usage before request: 33.1%
+Response status: 200
+Time taken: 5.75 seconds
+Response size: 396 bytes
+System CPU usage after request: 1.4%
+System Memory usage after request: 33.3%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: GET http://127.0.0.1:8000/raws/get
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '6207585a-32dc-4a83-9d2b-01bc83f77691', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '1006'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 31.3%
+Response status: 200
+Time taken: 1.42 seconds
+Response size: 2748433 bytes
+System CPU usage after request: 1.2%
+System Memory usage after request: 31.6%
+Activity: GET http://127.0.0.1:8000/raws/get
+Total Requests: 1, Total Errors: 0
+
+Request: GET http://127.0.0.1:8000/raws/get
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'c898b238-9d83-4ef7-838b-b042d34cee05', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '1006'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 31.5%
+Response status: 200
+Time taken: 1.00 seconds
+Response size: 2748433 bytes
+System CPU usage after request: 2.4%
+System Memory usage after request: 31.6%
+Activity: GET http://127.0.0.1:8000/raws/get
+Total Requests: 2, Total Errors: 0
+
+Request: GET http://127.0.0.1:8000/raws/get
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '1505526b-8c23-481c-b8a4-c6bad84ef8c7', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '161'})
+System CPU usage before request: 0.9%
+System Memory usage before request: 31.6%
+Response status: 200
+Time taken: 0.26 seconds
+Response size: 135893 bytes
+System CPU usage after request: 0.7%
+System Memory usage after request: 31.6%
+Activity: GET http://127.0.0.1:8000/raws/get
+Total Requests: 3, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '0ad084a4-833b-40e0-8aec-f29e030bdec5', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '87'})
+System CPU usage before request: 0.9%
+System Memory usage before request: 31.6%
+Response status: 200
+Time taken: 0.23 seconds
+Response size: 148 bytes
+System CPU usage after request: 0.3%
+System Memory usage after request: 31.6%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 4, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'ca78fba6-6681-4290-822b-71d08ac9640d', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '87'})
+System CPU usage before request: 1.1%
+System Memory usage before request: 31.6%
+Response status: 200
+Time taken: 0.08 seconds
+Response size: 168 bytes
+System CPU usage after request: 0.8%
+System Memory usage after request: 31.6%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 5, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '05ddbe47-a3b2-4932-ab74-3821f481bc48', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '87'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 33.6%
+Response status: 200
+Time taken: 0.41 seconds
+Response size: 181 bytes
+System CPU usage after request: 1.5%
+System Memory usage after request: 33.6%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 1, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'c90d4044-6aee-4479-bf81-7899d62f5162', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '90'})
+System CPU usage before request: 0.9%
+System Memory usage before request: 31.7%
+Response status: 200
+Time taken: 0.11 seconds
+Response size: 198 bytes
+System CPU usage after request: 0.6%
+System Memory usage after request: 31.7%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 2, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '51266e85-913f-4588-a9ce-f4c88c830689', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '87'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 31.7%
+Response status: 200
+Time taken: 0.06 seconds
+Response size: 181 bytes
+System CPU usage after request: 3.1%
+System Memory usage after request: 31.7%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 3, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'cc345578-a443-45c1-b930-067e47bdd15c', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '107'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 31.7%
+Response status: 200
+Time taken: 0.06 seconds
+Response size: 191 bytes
+System CPU usage after request: 1.0%
+System Memory usage after request: 31.7%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 4, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '2aa5655d-d7f3-4bee-af48-8826e71d0aad', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '128'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 31.7%
+Response status: 200
+Time taken: 0.07 seconds
+Response size: 202 bytes
+System CPU usage after request: 0.0%
+System Memory usage after request: 31.7%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 5, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '29abf160-1680-4608-b25c-3e2372be1aaf', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '87'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 31.7%
+Response status: 200
+Time taken: 0.09 seconds
+Response size: 190 bytes
+System CPU usage after request: 0.7%
+System Memory usage after request: 31.7%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 6, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '4158a05a-619f-444c-9fc6-11a9a27a7b19', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '107'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 31.8%
+Response status: 200
+Time taken: 0.10 seconds
+Response size: 193 bytes
+System CPU usage after request: 2.5%
+System Memory usage after request: 31.8%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 7, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'd4257689-02e5-408b-ba62-27f722af8a17', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '107'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 31.8%
+Response status: 200
+Time taken: 0.06 seconds
+Response size: 191 bytes
+System CPU usage after request: 0.0%
+System Memory usage after request: 31.8%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 8, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '6253aba9-4278-4f08-bc6a-bdbd0d8a8f42', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '107'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 31.7%
+Response status: 200
+Time taken: 0.06 seconds
+Response size: 191 bytes
+System CPU usage after request: 2.1%
+System Memory usage after request: 31.7%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 9, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '0f3058ee-3f05-4226-b0c0-211e63823f01', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '128'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 31.7%
+Response status: 200
+Time taken: 0.12 seconds
+Response size: 194 bytes
+System CPU usage after request: 0.5%
+System Memory usage after request: 31.7%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 10, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '24a6ec2b-ac79-4128-a6bc-749dae6cd2ea', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '128'})
+System CPU usage before request: 1.3%
+System Memory usage before request: 32.5%
+Response status: 200
+Time taken: 2.33 seconds
+Response size: 196 bytes
+System CPU usage after request: 0.8%
+System Memory usage after request: 32.6%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 1, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'c9deefc3-c966-4dba-bf26-239c19ae3356', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '145'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 32.6%
+Response status: 200
+Time taken: 0.11 seconds
+Response size: 211 bytes
+System CPU usage after request: 0.0%
+System Memory usage after request: 32.6%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 2, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'b43d62ac-ff2e-4e5d-9625-aea94a489162', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '161'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 32.5%
+Response status: 200
+Time taken: 0.19 seconds
+Response size: 459 bytes
+System CPU usage after request: 0.0%
+System Memory usage after request: 32.5%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 3, Total Errors: 0
+
+Request: GET http://127.0.0.1:8000/raws/get
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '9dfee900-6d16-41f6-a77b-1ecc8a72172a', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '1006'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 32.5%
+Response status: 200
+Time taken: 0.73 seconds
+Response size: 2606242 bytes
+System CPU usage after request: 1.4%
+System Memory usage after request: 32.7%
+Activity: GET http://127.0.0.1:8000/raws/get
+Total Requests: 4, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'ee915e93-400a-4768-9c54-6e80f4a87336', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '164'})
+System CPU usage before request: 1.0%
+System Memory usage before request: 32.6%
+Response status: 200
+Time taken: 6.44 seconds
+Response size: 396 bytes
+System CPU usage after request: 1.1%
+System Memory usage after request: 32.7%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 5, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '0e847d27-6b81-43b1-9e4d-89b790bd90c6', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '161'})
+System CPU usage before request: 1.0%
+System Memory usage before request: 35.6%
+Response status: 200
+Time taken: 0.51 seconds
+Response size: 388 bytes
+System CPU usage after request: 1.7%
+System Memory usage after request: 35.7%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '94e4bb8f-986b-4b54-8556-0f9561da84c5', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '161'})
+System CPU usage before request: 1.3%
+System Memory usage before request: 31.7%
+Response status: 200
+Time taken: 48.16 seconds
+Response size: 398 bytes
+System CPU usage after request: 0.9%
+System Memory usage after request: 31.9%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 2, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '7d4cf1b9-e092-469a-af67-bd456dfe3cde', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 0.9%
+System Memory usage before request: 33.4%
+Response status: 200
+Time taken: 0.42 seconds
+Response size: 159 bytes
+System CPU usage after request: 1.5%
+System Memory usage after request: 33.5%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 1, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '91cd05b4-658f-455e-948f-d870cf9b6ab8', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 1.1%
+System Memory usage before request: 33.6%
+Response status: 200
+Time taken: 0.62 seconds
+Response size: 332 bytes
+System CPU usage after request: 0.9%
+System Memory usage after request: 33.8%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'a26d0f86-da9f-43cc-9ca3-7bff3e94da23', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 33.8%
+Response status: 200
+Time taken: 4.46 seconds
+Response size: 342 bytes
+System CPU usage after request: 1.0%
+System Memory usage after request: 33.9%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 2, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'b3d7a00d-6326-41ff-a47a-1e55608d4677', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 2.1%
+System Memory usage before request: 33.1%
+Response status: 200
+Time taken: 0.07 seconds
+Response size: 332 bytes
+System CPU usage after request: 0.9%
+System Memory usage after request: 33.1%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 3, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'c7def067-ab49-46c7-a047-58dbb4b572b5', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 33.1%
+Response status: 200
+Time taken: 0.07 seconds
+Response size: 332 bytes
+System CPU usage after request: 1.7%
+System Memory usage after request: 33.1%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 4, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'b8cfbcd1-b39a-4bef-872c-4581319d3098', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 33.1%
+Response status: 200
+Time taken: 0.06 seconds
+Response size: 332 bytes
+System CPU usage after request: 1.0%
+System Memory usage after request: 33.1%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 5, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '970376d6-e1c9-4854-8186-684c1ae228a5', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 33.1%
+Response status: 200
+Time taken: 0.06 seconds
+Response size: 332 bytes
+System CPU usage after request: 0.0%
+System Memory usage after request: 33.1%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 6, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '83823b1b-88ff-40ec-9af8-0b00aee36731', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 1.2%
+System Memory usage before request: 33.1%
+Response status: 200
+Time taken: 0.07 seconds
+Response size: 332 bytes
+System CPU usage after request: 2.7%
+System Memory usage after request: 33.1%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 7, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'ff54a961-e3fc-4049-bb04-fd7b9b79bd0e', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 1.0%
+System Memory usage before request: 33.1%
+Response status: 200
+Time taken: 0.41 seconds
+Response size: 282 bytes
+System CPU usage after request: 1.8%
+System Memory usage after request: 33.2%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 1, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '0d744799-31e1-4b3d-9026-a95f223c9f2f', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 1.3%
+System Memory usage before request: 32.8%
+Response status: 200
+Time taken: 0.42 seconds
+Response size: 282 bytes
+System CPU usage after request: 1.8%
+System Memory usage after request: 32.9%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 1, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '88be2512-f394-46b1-a8b9-3b7dcc072979', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 1.6%
+System Memory usage before request: 33.7%
+Response status: 200
+Time taken: 0.55 seconds
+Response size: 282 bytes
+System CPU usage after request: 1.7%
+System Memory usage after request: 33.8%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 1, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '5097cfad-41ed-4df4-a173-b3c0d3e171f7', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 33.8%
+Response status: 200
+Time taken: 0.08 seconds
+Response size: 282 bytes
+System CPU usage after request: 1.7%
+System Memory usage after request: 33.8%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 2, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '90f8092f-3eab-42a3-afc4-22cf853e6399', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 1.0%
+System Memory usage before request: 33.4%
+Response status: 200
+Time taken: 5.54 seconds
+Response size: 342 bytes
+System CPU usage after request: 0.9%
+System Memory usage after request: 33.5%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '89d81321-b87d-4ded-9429-23054e31d3d4', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '123'})
+System CPU usage before request: 0.9%
+System Memory usage before request: 33.3%
+Response status: 200
+Time taken: 4.42 seconds
+Response size: 458 bytes
+System CPU usage after request: 1.1%
+System Memory usage after request: 33.3%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 2, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'e899c47e-8a2d-4a8c-82c2-5d00c93ebae7', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '143'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 32.4%
+Response status: 200
+Time taken: 6.76 seconds
+Response size: 588 bytes
+System CPU usage after request: 1.0%
+System Memory usage after request: 32.4%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 3, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '7b7dff4e-8f9c-44d4-a987-c3bf0cbacc74', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '147'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 32.4%
+Response status: 200
+Time taken: 4.79 seconds
+Response size: 614 bytes
+System CPU usage after request: 0.9%
+System Memory usage after request: 32.4%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 4, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/raws/store
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '43871c29-be72-4daf-b106-3c6050b697eb', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '147'})
+System CPU usage before request: 1.7%
+System Memory usage before request: 33.2%
+Response status: 200
+Time taken: 2.77 seconds
+Response size: 604 bytes
+System CPU usage after request: 2.1%
+System Memory usage after request: 33.4%
+Activity: POST http://127.0.0.1:8000/raws/store
+Total Requests: 1, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '4ad13240-216c-4734-b99c-8a40c7cc8bf2', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '103'})
+System CPU usage before request: 1.0%
+System Memory usage before request: 32.4%
+Response status: 200
+Time taken: 0.66 seconds
+Response size: 282 bytes
+System CPU usage after request: 1.9%
+System Memory usage after request: 32.5%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 1, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '4edb2814-ce1e-4e48-b16a-a4f1a121ee34', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '123'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 32.5%
+Response status: 200
+Time taken: 0.06 seconds
+Response size: 398 bytes
+System CPU usage after request: 2.1%
+System Memory usage after request: 32.5%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 2, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '6d5117aa-c97a-43b0-a44c-8cdf2458fb7c', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '123'})
+System CPU usage before request: 1.0%
+System Memory usage before request: 33.2%
+Response status: 200
+Time taken: 0.40 seconds
+Response size: 398 bytes
+System CPU usage after request: 3.4%
+System Memory usage after request: 33.2%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 1, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '4012f648-0e32-4d9a-be73-7a2788070abc', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '123'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 33.3%
+Response status: 200
+Time taken: 0.06 seconds
+Response size: 398 bytes
+System CPU usage after request: 1.0%
+System Memory usage after request: 33.3%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 2, Total Errors: 0
+
+Request: DELETE http://127.0.0.1:8000/raws/delete
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'cf227554-828b-4f0c-a594-e82bb012c228', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '123'})
+System CPU usage before request: 7.9%
+System Memory usage before request: 33.7%
+Response status: 200
+Time taken: 0.62 seconds
+Response size: 373 bytes
+System CPU usage after request: 1.4%
+System Memory usage after request: 33.8%
+Activity: DELETE http://127.0.0.1:8000/raws/delete
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/terms/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'b06a91ec-a005-4217-bbf7-b31c19a4bd14', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '592'})
+System CPU usage before request: 0.6%
+System Memory usage before request: 32.8%
+Response status: 422
+Time taken: 0.00 seconds
+Response size: 7010 bytes
+System CPU usage after request: 0.0%
+System Memory usage after request: 32.8%
+Activity: POST http://127.0.0.1:8000/terms/create
+Total Requests: 2, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/terms/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'd0a480bb-dbd7-43a3-9a11-a74f6fdca5c1', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '614'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 32.9%
+Response status: 422
+Time taken: 0.00 seconds
+Response size: 501 bytes
+System CPU usage after request: 0.0%
+System Memory usage after request: 32.9%
+Activity: POST http://127.0.0.1:8000/terms/create
+Total Requests: 3, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/terms/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'ad55f4a7-8537-4656-af46-066fc7f770dc', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '592'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 32.9%
+Response status: 422
+Time taken: 0.00 seconds
+Response size: 7010 bytes
+System CPU usage after request: 0.0%
+System Memory usage after request: 32.9%
+Activity: POST http://127.0.0.1:8000/terms/create
+Total Requests: 4, Total Errors: 0
+

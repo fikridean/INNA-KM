@@ -3,7 +3,7 @@ from fastapi import HTTPException
 import httpx
 
 from config import OPERATIONS_FOLDERS
-from models.portal_model import PortalBaseModel, PortalDeleteModel, PortalDetailModel, PortalGetModel, PortalRetrieveDataModel
+from models.portal_model import PortalBaseModel, PortalCreateResponseModel, PortalDeleteModel, PortalDeleteResponseModel, PortalDetailModel, PortalDetailResponseModel, PortalGetDetailWebResponseModel, PortalGetModel, PortalGetResponseModel, PortalRetrieveDataModel
 from utils.decorator.app_log_decorator import log_function
 from utils.helper.func_helper import get_portals_webs, run_function_from_module
 
@@ -11,7 +11,7 @@ from database.mongo import client, portal_collection
 
 # Create portal in database
 @log_function("Create portal")
-async def create_portal(params: List[PortalBaseModel]) -> str:
+async def create_portal(params: List[PortalBaseModel]) -> PortalCreateResponseModel:
     async with await client.start_session() as session:
         async with session.start_transaction():
             try:
@@ -66,7 +66,7 @@ async def create_portal(params: List[PortalBaseModel]) -> str:
             
 # Get Portal with detail
 @log_function("Get portal with detail")
-async def get_portals_with_detail(params: PortalGetModel) -> list:
+async def get_portals_with_detail(params: PortalGetModel) -> PortalGetDetailWebResponseModel:
     async with await client.start_session() as session:
         async with session.start_transaction():
             try:
@@ -153,7 +153,7 @@ async def get_portals_with_detail(params: PortalGetModel) -> list:
             
 # Get portals from database
 @log_function("Get portals")
-async def get_portals(params: PortalGetModel) -> list:
+async def get_portals(params: PortalGetModel) -> PortalGetResponseModel:
     async with await client.start_session() as session:
         async with session.start_transaction():
             try:
@@ -190,7 +190,7 @@ async def get_portals(params: PortalGetModel) -> list:
 
 # Get detail portal from database
 @log_function("Get portal detail")
-async def get_portal_detail(params: PortalDetailModel) -> dict:
+async def get_portal_detail(params: PortalDetailModel) -> PortalDetailResponseModel:
     async with await client.start_session() as session:
         async with session.start_transaction():
             try:
@@ -208,7 +208,7 @@ async def get_portal_detail(params: PortalDetailModel) -> dict:
 
 # Delete portal from database
 @log_function("Delete portal")
-async def delete_portal(params: PortalDeleteModel) -> str:
+async def delete_portal(params: PortalDeleteModel) -> PortalDeleteResponseModel:
     async with await client.start_session() as session:
         async with session.start_transaction():
             try:
