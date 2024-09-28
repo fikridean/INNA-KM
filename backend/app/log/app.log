@@ -308,3 +308,29 @@ Error in Retrieve data: 404: Portal not found.
 
 Error in Store raw from portals: An error occurred while storing data from all portals: 404: Portal not found. Please re-check the taxon_id and web.
 
+Error in Store raw from portals: An error occurred while storing data from all portals: unhashable type: 'list'
+
+Error in Store raw from portals: An error occurred while storing data from all portals: unhashable type: 'list'
+
+Error in Store raw from portals: An error occurred while storing data from all portals: unhashable type: 'list'
+
+Error in Store raw from portals: An error occurred while storing data from all portals: unhashable type: 'list'
+
+Error in Store raw from portals: An error occurred while storing data from all portals: unhashable type: 'list'
+
+Error in Store raw from portals: An error occurred while storing data from all portals: unhashable type: 'list'
+
+Error in Store raw from portals: An error occurred while storing data from all portals: unhashable type: 'list'
+
+Error in Store raw from portals: An error occurred while storing data from all portals: unhashable type: 'list'
+
+Error in Store raw from portals: An error occurred while storing data from all portals: unhashable type: 'list'
+
+Error in Store raw from portals: An error occurred while storing data from all portals: unhashable type: 'list'
+
+Error in Store raw from portals: An error occurred while storing data from all portals: unhashable type: 'list'
+
+Error in Delete raw from raw collection: An error occurred while deleting raw: 404: Raw not found. Please re-check the taxon_id and web.
+
+Error in Delete raw from raw collection: An error occurred while deleting raw: list indices must be integers or slices, not str
+

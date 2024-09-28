@@ -6,8 +6,8 @@ from utils.message.message_enum import ResponseMessage
 from models.term_model import TermDeleteModel, TermGetModel, searchParams, TermStoreModel, TermStoreFromRawModel, termBaseModel
 router = APIRouter()
 
-# Create term
-@router.post('/create', response_model=termBaseModel, status_code=status.HTTP_201_CREATED)
+# Create or update term
+@router.post('/create', status_code=status.HTTP_201_CREATED)
 async def create_term_route_func(params: List[TermStoreModel]):
     try:
         data = await store_raw_to_terms(params)
@@ -16,7 +16,7 @@ async def create_term_route_func(params: List[TermStoreModel]):
         return error_response(message=str(e), status_code=400)
 
 # Get all terms
-@router.get('/', response_model=termBaseModel, status_code=status.HTTP_200_OK)
+@router.get('/', status_code=status.HTTP_200_OK)
 async def get_term_route_func(params: TermGetModel):
     try:
         data = await get_terms(params)
