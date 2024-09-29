@@ -54,7 +54,9 @@ async def create_portal(params: List[PortalBaseModel]) -> PortalCreateResponseMo
                     {
                         'species': species,
                         'taxon_id': details['taxon_id'],
-                        'webs': details['webs']
+                        'webs': details['webs'],
+                        "status": "found",
+                        "info": "Data stored successfully."
                     }
                     for species, details in portals_by_species.items()
                 ]
@@ -64,9 +66,9 @@ async def create_portal(params: List[PortalBaseModel]) -> PortalCreateResponseMo
             except Exception as e:
                 raise Exception(f"An error occurred while creating portal: {str(e)}")
             
-# Get Portal with detail
-@log_function("Get portal with detail")
-async def get_portals_with_detail(params: PortalGetModel) -> PortalGetDetailWebResponseModel:
+# Get Portal with web detail
+@log_function("Get portal with web detail")
+async def get_portals_with_web_detail(params: PortalGetModel) -> PortalGetDetailWebResponseModel:
     async with await client.start_session() as session:
         async with session.start_transaction():
             try:
@@ -74,21 +76,17 @@ async def get_portals_with_detail(params: PortalGetModel) -> PortalGetDetailWebR
                 web_for_query = params.web
 
                 # If no web is provided, get a default list of web sources
-                if web_for_query:
-                    webs = web_for_query
-                else:
-                    webs = get_portals_webs(OPERATIONS_FOLDERS)  # Fetch available web sources
+                if not web_for_query:
+                    web_for_query = [web.split(".")[0] for web in get_portals_webs(OPERATIONS_FOLDERS)]
 
                 # Handle different cases of input
                 if not taxon_id_for_query and not web_for_query:
                     # If both taxon_id and web are missing, return all portals
                     portals = await portal_collection.find({}, {'_id': 0}, session=session).to_list(length=None)
-                    return portals
 
                 elif not taxon_id_for_query and web_for_query:
                     # If taxon_id is missing but web is provided, return portals with matching web
                     portals = await portal_collection.find({'web': {'$in': web_for_query}}, {'_id': 0}, session=session).to_list(length=None)
-                    return portals
 
                 elif taxon_id_for_query and not web_for_query:
                     # If web is missing but taxon_id is provided, return portals with matching taxon_id
@@ -114,7 +112,9 @@ async def get_portals_with_detail(params: PortalGetModel) -> PortalGetDetailWebR
                         found_taxon_web[taxon_id] = {
                             'species': species_name,  # Add species field
                             'found_webs': [],
-                            'missing_webs': list(webs)  # Initially, assume all webs are missing
+                            'missing_webs': list(web_for_query),  # Initially, assume all webs are missing
+                            'status': 'not_found',
+                            'info': 'No data found for any provided web sources.',
                         }
 
                     # Add the web source to the found list
@@ -124,27 +124,43 @@ async def get_portals_with_detail(params: PortalGetModel) -> PortalGetDetailWebR
                     if web_source in found_taxon_web[taxon_id]['missing_webs']:
                         found_taxon_web[taxon_id]['missing_webs'].remove(web_source)
 
-                # Handle cases where taxon_id was provided but no portals were found
+                    # Update status and info
+                    found_taxon_web[taxon_id]['status'] = 'partially_found'
+                    found_taxon_web[taxon_id]['info'] = 'Data retrieved for some webs.'
+                    
+                # Prepare the final result structure
+                result = []
+
+                # Loop through the found_taxon_web to build the result
+                for taxon_id, details in found_taxon_web.items():
+                    if not details['found_webs']:
+                        details['status'] = 'not_found'
+                        details['info'] = 'No data found for any provided web sources.'
+                    elif len(details['found_webs']) == len(web_for_query):
+                        details['status'] = 'found'
+                        details['info'] = 'Data retrieved for all provided web sources.'
+
+                    result.append({
+                        'taxon_id': taxon_id,
+                        'species': details['species'],
+                        'found_webs': details['found_webs'],
+                        'missing_webs': details['missing_webs'],
+                        'status': details['status'],
+                        'info': details['info']
+                    })
+
+                # handle taxon IDs not found in the portals
                 for taxon_id in taxon_id_for_query:
                     if taxon_id not in found_taxon_web:
-                        # This taxon_id was not found in the portals, so mark all webs as missing
-                        found_taxon_web[taxon_id] = {
+                        result.append({
+                            'taxon_id': taxon_id,
                             'species': 'Unknown species',  # In case the species isn't found
                             'found_webs': [],
-                            'missing_webs': list(webs)  # All webs are missing since no portals found
-                        }
+                            'missing_webs': list(web_for_query),  # All webs are missing
+                            'status': 'not_found',
+                            'info': 'No data found for any provided web sources.',
+                        })
 
-                # Create the result structure
-                result = [
-                    {
-                        'taxon_id': taxon_id,
-                        'species': found_taxon_web[taxon_id]['species'],  # Include the species name
-                        'found_webs': found_taxon_web[taxon_id]['found_webs'],
-                        'missing_webs': found_taxon_web[taxon_id]['missing_webs']
-                    }
-                    for taxon_id in found_taxon_web
-                ]
-              
                 return result
 
             except Exception as e:
@@ -164,12 +180,10 @@ async def get_portals(params: PortalGetModel) -> PortalGetResponseModel:
                 if not taxon_id_for_query and not web_for_query:
                     # If both taxon_id and web are missing, return all portals
                     portals = await portal_collection.find({}, {'_id': 0}, session=session).to_list(length=None)
-                    return portals
 
                 elif not taxon_id_for_query and web_for_query:
                     # If taxon_id is missing but web is provided, return portals with matching web
                     portals = await portal_collection.find({'web': {'$in': web_for_query}}, {'_id': 0}, session=session).to_list(length=None)
-                    return portals
 
                 elif taxon_id_for_query and not web_for_query:
                     # If web is missing but taxon_id is provided, return portals with matching taxon_id
@@ -183,7 +197,6 @@ async def get_portals(params: PortalGetModel) -> PortalGetResponseModel:
                     }, {'_id': 0}, session=session).to_list(length=None)
 
                 return portals
-
 
             except Exception as e:
                 raise Exception(f"An error occurred while retrieving portals: {str(e)}")
@@ -200,7 +213,7 @@ async def get_portal_detail(params: PortalDetailModel) -> PortalDetailResponseMo
                 }, {'_id': 0}, session=session)
 
                 if not portal:
-                    raise HTTPException(status_code=404, detail="Portal not found.")
+                    return None
         
                 return portal
             except Exception as e:
@@ -215,16 +228,13 @@ async def delete_portal(params: PortalDeleteModel) -> PortalDeleteResponseModel:
                 # Ensure both taxon_id and web are provided
                 if not params.taxon_id or not params.web:
                     raise HTTPException(status_code=400, detail="For security reasons, you must provide both taxon_id and web.")
-                
+
                 taxon_id_for_query = params.taxon_id
                 web_for_query = params.web
-                
+
                 # Find portals that match the query before deletion
-                portals = await portal_collection.find({
-                    "taxon_id": {"$in": taxon_id_for_query},
-                    "web": {"$in": web_for_query}
-                }, {'_id': 0}, session=session).to_list(length=None)
-                
+                portals = await get_portals(params)
+
                 # Delete portals that match the query
                 await portal_collection.delete_many(
                     {
@@ -241,37 +251,65 @@ async def delete_portal(params: PortalDeleteModel) -> PortalDeleteResponseModel:
                     web_source = portal['web']
 
                     if taxon_id not in found_taxon_web:
-                        found_taxon_web[taxon_id] = {'found_webs': [], 'missing_webs': list(web_for_query), 'portal': portal}
+                        found_taxon_web[taxon_id] = {
+                            'species': portal.get('species', 'Unknown species'),  # Add species field
+                            'found_webs': [],
+                            'missing_webs': list(web_for_query),  # Initialize with all provided web sources
+                            'status': 'not_found',
+                            'info': 'No data found for any provided web sources.',
+                        }
 
-                    found_taxon_web[taxon_id]['found_webs'].append(web_source)
+                    # Avoid redundancy in 'exist' list
+                    if web_source not in [entry['web'] for entry in found_taxon_web[taxon_id]['found_webs']]:
+                        # Add web source to found webs
+                        found_taxon_web[taxon_id]['found_webs'].append({
+                            "web": web_source,
+                            "status": "deleted",
+                            "info": "Data deleted successfully."
+                        })
 
                     # Remove found webs from missing_webs
                     if web_source in found_taxon_web[taxon_id]['missing_webs']:
                         found_taxon_web[taxon_id]['missing_webs'].remove(web_source)
 
+                    # Update status and info
+                    found_taxon_web[taxon_id]['status'] = 'partially_found'
+                    found_taxon_web[taxon_id]['info'] = 'Data deleted for some webs'
+
                 # Handle taxon IDs not found in the portals
                 for taxon_id in taxon_id_for_query:
                     if taxon_id not in found_taxon_web:
                         found_taxon_web[taxon_id] = {
+                            'species': 'Unknown species',  # In case the species isn't found
                             'found_webs': [],
                             'missing_webs': list(web_for_query),  # All webs are missing
-                            'portal': None  # No portal found for this taxon_id
+                            'status': 'not_found',
+                            'info': 'No data found for any provided web sources.',
                         }
 
+                # Update status to 'found' for taxon_ids where all webs are found
+                for taxon_id, details in found_taxon_web.items():
+                    if not details['found_webs']:
+                        details['status'] = 'not_found'
+                        details['info'] = 'No data found for any provided web sources.'
+                    elif len(details['found_webs']) == len(web_for_query):
+                        details['status'] = 'found'
+                        details['info'] = 'Data deleted for all provided web sources.'
+
                 # Structure the result
-                result = {
-                    'total_data': len(found_taxon_web),
-                    'data': [
-                        {
+                result = [{
                             'taxon_id': taxon_id,
+                            'species': found_taxon_web[taxon_id].get('species', 'Unknown species'),
                             'found_webs': found_taxon_web[taxon_id]['found_webs'],
                             'missing_webs': found_taxon_web[taxon_id]['missing_webs'],
+                            'status': found_taxon_web[taxon_id]['status'],
+                            'info': found_taxon_web[taxon_id]['info']
                         }
                         for taxon_id in found_taxon_web
                     ]
-                }
 
                 return result
+
             
             except Exception as e:
                 raise Exception(f"An error occurred while deleting portal: {str(e)}")
@@ -287,7 +325,7 @@ async def retrieve_data(params: PortalRetrieveDataModel) -> dict:
         }, {'_id': 0})
 
         if not portal:
-            raise HTTPException(status_code=404, detail="Portal not found.")
+            return None
         
         result = await run_function_from_module(portal['web'], "retrieve", portal)
         return result

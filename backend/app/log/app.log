@@ -334,3 +334,125 @@ Error in Delete raw from raw collection: An error occurred while deleting raw: 4
 
 Error in Delete raw from raw collection: An error occurred while deleting raw: list indices must be integers or slices, not str
 
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: too many values to unpack (expected 2)
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Store raw to terms documents: An error occurred while storing raw to terms documents: An error occurred while mapping terms: list index out of range
+
+Error in Delete portal: An error occurred while deleting portal: 'NoneType' object has no attribute 'get'
+
+Error in Delete portal: An error occurred while deleting portal: 'NoneType' object has no attribute 'get'
+
+Error in Store raw from portals: An error occurred while storing data from all portals: 'status'
+
+Error in Store raw from portals: An error occurred while storing data from all portals: 'status'
+
+Error in Get terms data: An error occurred while retrieving terms data: 'TermGetModel' object has no attribute 'species'
+
+Error in Get portal with detail: An error occurred while retrieving portals: string indices must be integers
+
+Error in Get portal with detail: An error occurred while retrieving portals: string indices must be integers
+
+Error in Get portal with detail: An error occurred while retrieving portals: string indices must be integers
+
+Error in Get portal with detail: An error occurred while retrieving portals: string indices must be integers
+
+Error in Get portal with detail: An error occurred while retrieving portals: string indices must be integers
+
+Error in Get portal with detail: An error occurred while retrieving portals: string indices must be integers
+
+Error in Get portal with detail: An error occurred while retrieving portals: string indices must be integers
+
+Error in Get portal with detail: An error occurred while retrieving portals: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: string indices must be integers
+
+Error in Get raw with web detail: An error occurred while retrieving raw with web detail: 'web'
+
+Error in Delete term document: An error occurred while deleting terms documents: 'TermDeleteModel' object has no attribute 'species'
+
+Error in Delete term document: An error occurred while deleting terms documents: 404: Terms not found.
+
+Error in Get portal with web detail: An error occurred while retrieving portals: 'list' object has no attribute 'split'
+
+Error in Get portal with web detail: An error occurred while retrieving portals: 'list' object has no attribute 'split'
+
+Error in Get portal with web detail: An error occurred while retrieving portals: 'list' object has no attribute 'keys'
+
+Error in Get portal with web detail: An error occurred while retrieving portals: 'list' object has no attribute 'split'
+
+Error in Get portal with web detail: An error occurred while retrieving portals: 'list' object has no attribute 'split'
+
+Error in Get portal with web detail: An error occurred while retrieving portals: 'function' object is not iterable
+
+Error in Get portal with web detail: An error occurred while retrieving portals: 'function' object is not iterable
+
+Error in Retrieve data: 404: Portal not found.
+
+Error in Get portal detail: An error occurred while retrieving portal detail: 404: Portal not found.
+
+Error in Retrieve data: 404: Portal not found.
+

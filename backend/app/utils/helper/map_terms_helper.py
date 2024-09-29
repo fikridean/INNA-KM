@@ -1,7 +1,7 @@
 async def mapping(params: list) -> dict:
     try:
         combined_data = {}
-
+        
         for item in params:
             match item['web']:
                 case 'ncbi':
@@ -40,8 +40,8 @@ async def mapping(params: list) -> dict:
                     pass
 
         data = {
+            "taxon_id": params[0]['taxon_id'],
             "species": params[0]['species'],
-            "web": params[0]['web'],
             "data": combined_data
         }
 
