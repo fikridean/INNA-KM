@@ -25,13 +25,13 @@ def success_response(data: Any, message: str = "Operation successful", status_co
         content=content
     )
 
-def error_response(message: str = "An error occurred", status_code: int = 400) -> JSONResponse:
+def error_response(data: Any = None, message: str = "An error occurred", status_code: int = 400) -> JSONResponse:
     return JSONResponse(
         content={
             "status": status_code,
             "success": False,
             "message": message,
             "total_data": None,
-            "data": None
+            "data": data
         }
     )

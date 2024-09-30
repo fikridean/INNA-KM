@@ -67,8 +67,12 @@ def find_matching_parts(data_array, term):
             return matched_items if matched_items else None
 
         for data in data_array:
-            # Always include 'web' and 'species' if they exist
-            result = {'web': data.get('web'), 'species': data.get('species')}
+            # Always include 'taxon_id' and 'species' if they exist
+            result = {
+                'taxon_id': data.get('taxon_id'),
+                'species': data.get('species')
+            }
+
             matched_data = search_dict(data)
             if matched_data:
                 result.update(matched_data)

@@ -34,12 +34,24 @@ class RawDeleteModel(BaseModel):
 
 # Response models
 class RawGetResponseModel(BaseModel):
-    status_code: int = 200
     data: list[RawBaseModel]
 
+class RawGetWithWebDetailResponseModel(BaseModel):
+    taxon_id: str
+    species: str
+    found_webs: dict
+    missing_webs: List[str]
+    status: str
+    info: str
+
+class InFoundWebsObjectModel(BaseModel):
+    web: str
+    status: str
+    info: str
+
 class FoundWebsObjectModel(BaseModel):
-    exist: List[str]
-    not_exist: List[str]
+    exist: List[InFoundWebsObjectModel]
+    not_exist: List[InFoundWebsObjectModel]
 
 class RawStoreObjectModel(BaseModel):
     taxon_id: str
@@ -48,12 +60,15 @@ class RawStoreObjectModel(BaseModel):
     missing_webs: List[str]
 
 class RawStoreResponseModel(BaseModel):
-    status_code: int = 200
     data: List[RawStoreObjectModel]
 
-class RawDeleteResponseModel(BaseModel):
-    status_code: int = 200
+class RawDeleteResponseObjectModel(BaseModel):
     taxon_id: str
     species: str
     found_webs: List[str]
     missing_webs: List[str]
+    status: str
+    info: str
+
+class RawDeleteResponseModel(BaseModel):
+    data: List[RawDeleteResponseObjectModel]

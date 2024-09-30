@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from models.term_model import TermDeleteModel, TermGetModel, TermStoreModel
+from models.term_model import TermDeleteModel, TermDeleteResponseModel, TermGetModel, TermGetResponseModel, TermStoreModel, TermStoreResponseModel, searchModel, searchResponseModel
 from utils.helper.map_terms_helper import mapping
 from utils.decorator.app_log_decorator import log_function
 from database.mongo import client, terms_collection, raw_collection, portal_collection
@@ -48,7 +48,7 @@ async def store_raw_to_terms_with_transaction(params: list) -> list:
 
 # Store raw to terms documents
 @log_function("Store raw to terms documents")
-async def store_raw_to_terms(params: TermStoreModel) -> list:
+async def store_raw_to_terms(params: TermStoreModel) -> TermStoreResponseModel:
     try:
         taxon_id_for_query = params.taxon_id
 
@@ -88,7 +88,7 @@ async def store_raw_to_terms(params: TermStoreModel) -> list:
 
 # Get terms data from database
 @log_function("Get terms data")
-async def get_terms(params: TermGetModel) -> list:
+async def get_terms(params: TermGetModel) -> TermGetResponseModel:
     async with await client.start_session() as session:
         async with session.start_transaction():
             try:    
@@ -96,12 +96,12 @@ async def get_terms(params: TermGetModel) -> list:
 
                 if ((taxon_id_for_query == None or taxon_id_for_query == [])):
                     terms = await raw_collection.find({}, {'_id': 0}, session=session).to_list(length=None)
-                    return terms
 
                 terms = await terms_collection.find({
                     'taxon_id': {'$in': taxon_id_for_query},
                 }, {'_id': 0}, session=session ).to_list(length=1000)
 
+            
                 taxon_with_no_data = [taxon_id for taxon_id in taxon_id_for_query if taxon_id not in [data['taxon_id'] for data in terms]]
 
                 result = []
@@ -129,7 +129,7 @@ async def get_terms(params: TermGetModel) -> list:
             
 # Delete terms document
 @log_function("Delete term document")
-async def delete_term(params: TermDeleteModel) -> str:
+async def delete_term(params: TermDeleteModel) -> TermDeleteResponseModel:
     async with await client.start_session() as session:
         async with session.start_transaction():
             try:
@@ -173,34 +173,53 @@ async def delete_term(params: TermDeleteModel) -> str:
 
 # Search terms data from database
 @log_function("Search terms data")
-async def search_terms(params: list) -> list:
+async def search_terms(params: searchModel) -> searchResponseModel:
     try:
-        # indexes = await raw_collection.index_information()
-        # print(indexes)
-
-        # await raw_collection.create_index(
-        #     { "$**": "text" },
-        #     name='search_index',
-        #     weights={
-        #         "web": 10,
-        #         "species": 10,
-        #         "slug": 8,
-        #         "data": 7
-        #     },
-        #     language_override='none',
-        #     default_language='en',
-        # )
+        search_query = params.search
 
         projection = {
             '_id': 0,
         }
 
-        result = await raw_collection.find(
-            { '$text': { '$search': params.search }},
+        result = await terms_collection.find(
+            { '$text': { '$search': search_query }},
             projection,
         ).to_list(1000)
 
-        return find_matching_parts(result, params.search)
+        return find_matching_parts(result, search_query)
         
     except Exception as e:
         raise Exception(f"An error occurred while retrieving terms data: {str(e)}")
+    
+# Create indexes
+@log_function("Create indexes")
+async def create_indexes() -> str:
+    try:
+        indexes = await terms_collection.index_information()
+
+        await terms_collection.create_index(
+            { "$**": "text" },
+            name='search_index',
+            weights={
+                "taxon_id": 10,
+                "species": 8,
+                "data": 6
+            },
+            language_override='none',
+            default_language='en',
+        )
+
+        await terms_collection.create_index(
+            "taxon_id",
+            name='taxon_id_index',
+            unique=True,
+        )
+
+        await terms_collection.create_index(
+            "species",
+            name='species_index',
+        )
+
+        return "Indexes created successfully."
+    except Exception as e:
+        raise Exception(f"An error occurred while creating indexes: {str(e)}")
