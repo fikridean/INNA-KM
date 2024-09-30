@@ -456,3 +456,33 @@ Error in Get portal detail: An error occurred while retrieving portal detail: 40
 
 Error in Retrieve data: 404: Portal not found.
 
+Error in Search terms data: An error occurred while retrieving terms data: An equivalent index already exists with the same name but different options. Requested index: { v: 2, key: { _fts: "text", _ftsx: 1 }, name: "search_index", weights: { $**: 1, data: 7, slug: 8, species: 10 }, language_override: "none", default_language: "en", textIndexVersion: 3 }, existing index: { v: 2, key: { _fts: "text", _ftsx: 1 }, name: "search_index", weights: { $**: 1, data: 7, slug: 8, species: 10, web: 10 }, language_override: "none", default_language: "en", textIndexVersion: 3 }, full error: {'ok': 0.0, 'errmsg': 'An equivalent index already exists with the same name but different options. Requested index: { v: 2, key: { _fts: "text", _ftsx: 1 }, name: "search_index", weights: { $**: 1, data: 7, slug: 8, species: 10 }, language_override: "none", default_language: "en", textIndexVersion: 3 }, existing index: { v: 2, key: { _fts: "text", _ftsx: 1 }, name: "search_index", weights: { $**: 1, data: 7, slug: 8, species: 10, web: 10 }, language_override: "none", default_language: "en", textIndexVersion: 3 }', 'code': 85, 'codeName': 'IndexOptionsConflict', '$clusterTime': {'clusterTime': Timestamp(1727682873, 14), 'signature': {'hash': b'\xd5\xed\xabf\x848}\xe0\xb1\xa7%\xccsn\x17J\xf4\x06b\xfc', 'keyId': 7377473029510529037}}, 'operationTime': Timestamp(1727682873, 14)}
+
+Error in Get terms data: An error occurred while retrieving terms data: free variable 'terms' referenced before assignment in enclosing scope
+
+Error in Get terms data: An error occurred while retrieving terms data: free variable 'terms' referenced before assignment in enclosing scope
+
+Error in Get terms data: An error occurred while retrieving terms data: free variable 'terms' referenced before assignment in enclosing scope
+
+Error in Get terms data: An error occurred while retrieving terms data: free variable 'terms' referenced before assignment in enclosing scope
+
+Error in Get terms data: An error occurred while retrieving terms data: free variable 'terms' referenced before assignment in enclosing scope
+
+Error in Get terms data: An error occurred while retrieving terms data: '_asyncio.Future' object has no attribute 'explain'
+
+Error in Get terms data: An error occurred while retrieving terms data: '_asyncio.Future' object has no attribute 'explain'
+
+Error in Get terms data: An error occurred while retrieving terms data: '_asyncio.Future' object has no attribute 'explain'
+
+Error in Get terms data: An error occurred while retrieving terms data: The explain option is not supported. Use Database.command instead.
+
+Error in Get terms data: An error occurred while retrieving terms data: The explain option is not supported. Use Database.command instead.
+
+Error in Get terms data: An error occurred while retrieving terms data: The explain option is not supported. Use Database.command instead.
+
+Error in Get terms data: An error occurred while retrieving terms data: The explain option is not supported. Use Database.command instead.
+
+Error in Get terms data: An error occurred while retrieving terms data: MotorCollection object is not callable. If you meant to call the 'terms.command' method on a MotorCollection object it is failing because no such method exists.
+
+Error in Get terms data: An error occurred while retrieving terms data: '_asyncio.Future' object has no attribute 'explain'
+

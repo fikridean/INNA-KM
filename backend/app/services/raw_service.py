@@ -115,8 +115,6 @@ async def get_raw_with_web_detail(params: RawGetModel) -> RawGetResponseModel:
                 'info': 'No data found for any provided web sources.'
             })
 
-        print(result)
-
         return result
 
     except Exception as e:

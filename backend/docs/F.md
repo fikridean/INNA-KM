@@ -1,5 +1,9 @@
 # Project Structure
 
+## Backend Project Structure
+
+**Backend Folder**
+
 - **`__pycache__`**: Contains compiled Python files to speed up execution.
 
 - **`app`**: Main application directory, including:

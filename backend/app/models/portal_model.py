@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 from pydantic import BaseModel, Field
 
 from models.base_model import ResponseBaseModel
@@ -42,42 +42,42 @@ class PortalDetailModel(BaseModel):
 
 # Response models
 class PortalRetrieveDataResponseModel(ResponseBaseModel):
-    status_code: int = 200
     data: dict = {}
 
 class PortalCreateResponseObjectModel(BaseModel):
     species: str
     taxon_id: str
     webs: List[str]
+    status: str
+    info: str
 
 class PortalCreateResponseModel(ResponseBaseModel):
-    status_code: int = 201
     data: List[PortalCreateResponseObjectModel]
 
 class PortalDeleteResponseObjectModel(BaseModel):
     taxon_id: str
+    species: str
     found_webs: List[str]
     missing_webs: List[str]
+    status: str
+    info: str
 
 class PortalDeleteResponseModel(ResponseBaseModel):
-    status_code: int = 200
-    total_data: int
     data: List[PortalDeleteResponseObjectModel]
 
 class PortalGetResponseModel(ResponseBaseModel):
-    status_code: int = 200
     data: List[PortalBaseModel]
 
-class PortalGetDetailWebObjectModel(BaseModel):
+class PortalGetWithDetailWebObjectModel(BaseModel):
     taxon_id: str
+    species: str
     found_webs: List[str]
     missing_webs: List[str]
+    status: str
+    info: str
 
-class PortalGetDetailWebResponseModel(ResponseBaseModel):
-    status_code: int = 200
-    total_data: int
-    data: List[PortalGetDetailWebObjectModel]
+class PortalGetWithDetailWebResponseModel(ResponseBaseModel):
+    data: List[PortalGetWithDetailWebObjectModel]
 
 class PortalDetailResponseModel(ResponseBaseModel):
-    status_code: int = 200
     data: PortalBaseModel

@@ -3,7 +3,7 @@ from fastapi import HTTPException
 import httpx
 
 from config import OPERATIONS_FOLDERS
-from models.portal_model import PortalBaseModel, PortalCreateResponseModel, PortalDeleteModel, PortalDeleteResponseModel, PortalDetailModel, PortalDetailResponseModel, PortalGetDetailWebResponseModel, PortalGetModel, PortalGetResponseModel, PortalRetrieveDataModel
+from models.portal_model import PortalBaseModel, PortalCreateResponseModel, PortalDeleteModel, PortalDeleteResponseModel, PortalDetailModel, PortalDetailResponseModel, PortalGetModel, PortalGetResponseModel, PortalGetWithDetailWebResponseModel, PortalRetrieveDataModel, PortalRetrieveDataResponseModel
 from utils.decorator.app_log_decorator import log_function
 from utils.helper.func_helper import get_portals_webs, run_function_from_module
 
@@ -68,7 +68,7 @@ async def create_portal(params: List[PortalBaseModel]) -> PortalCreateResponseMo
             
 # Get Portal with web detail
 @log_function("Get portal with web detail")
-async def get_portals_with_web_detail(params: PortalGetModel) -> PortalGetDetailWebResponseModel:
+async def get_portals_with_web_detail(params: PortalGetModel) -> PortalGetWithDetailWebResponseModel:
     async with await client.start_session() as session:
         async with session.start_transaction():
             try:
@@ -317,7 +317,7 @@ async def delete_portal(params: PortalDeleteModel) -> PortalDeleteResponseModel:
 
 # Retrieve data from portal
 @log_function("Retrieve data")
-async def retrieve_data(params: PortalRetrieveDataModel) -> dict:
+async def retrieve_data(params: PortalRetrieveDataModel) -> PortalRetrieveDataResponseModel:
     try:
         portal = await portal_collection.find_one({
             "taxon_id": params.taxon_id,
