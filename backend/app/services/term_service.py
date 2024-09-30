@@ -95,12 +95,12 @@ async def get_terms(params: TermGetModel) -> TermGetResponseModel:
                 taxon_id_for_query = params.taxon_id
 
                 if ((taxon_id_for_query == None or taxon_id_for_query == [])):
-                    terms = await raw_collection.find({}, {'_id': 0}, session=session).to_list(length=None)
+                    terms = await terms_collection.find({}, {'_id': 0}, session=session).to_list(length=None)
 
-                terms = await terms_collection.find({
-                    'taxon_id': {'$in': taxon_id_for_query},
-                }, {'_id': 0}, session=session ).to_list(length=1000)
-
+                else:
+                    terms = await terms_collection.find({
+                        'taxon_id': {'$in': taxon_id_for_query},
+                    }, {'_id': 0}, session=session ).to_list(length=1000)
             
                 taxon_with_no_data = [taxon_id for taxon_id in taxon_id_for_query if taxon_id not in [data['taxon_id'] for data in terms]]
 
