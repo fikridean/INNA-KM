@@ -19,16 +19,17 @@ async def get_raw(params: RawGetModel) -> RawGetResponseModel:
                 if ((taxon_id_for_query == None or taxon_id_for_query == []) and (web_for_query == None or web_for_query == [])):
                     raw = await raw_collection.find({}, {'_id': 0}, session=session).to_list(length=None)
                 
-                if ((taxon_id_for_query == None or taxon_id_for_query == []) and (web_for_query != None)):
+                elif ((taxon_id_for_query == None or taxon_id_for_query == []) and (web_for_query != None)):
                     raw = await raw_collection.find({'web': {'$in': web_for_query}}, {'_id': 0}, session=session).to_list(length=None)
                 
-                if ((taxon_id_for_query != None) and (web_for_query == None or web_for_query == [])):
+                elif ((taxon_id_for_query != None) and (web_for_query == None or web_for_query == [])):
                     raw = await raw_collection.find({'taxon_id': {'$in': taxon_id_for_query}}, {'_id': 0}, session=session).to_list(length=None)
 
-                raw = await raw_collection.find({
-                    'taxon_id': {'$in': taxon_id_for_query},
-                    'web': {'$in': web_for_query}
-                }, {'_id': 0}, session=session).to_list(length=None)
+                else:
+                    raw = await raw_collection.find({
+                        'taxon_id': {'$in': taxon_id_for_query},
+                        'web': {'$in': web_for_query}
+                    }, {'_id': 0}, session=session).to_list(length=None)
 
                 return raw
 
@@ -219,6 +220,10 @@ async def store_raw_from_portals(params: RawStoreModel) -> RawStoreResponseModel
                         'status': 'not_found',
                         'info': 'No data retrieved from source and no data stored.',
                     })
+
+                # If data was not found, remove the web from the missing list
+                if web_source in found_taxon_web[taxon_id]['missing_webs']:
+                    found_taxon_web[taxon_id]['missing_webs'].remove(web_source)
 
         # Store the processed data in the database
         await store_raw_to_db(data_to_store)
