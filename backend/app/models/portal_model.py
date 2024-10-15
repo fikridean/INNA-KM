@@ -1,7 +1,8 @@
 from typing import Annotated, List, Optional
 from pydantic import BaseModel, Field
 
-from models.base_model import ResponseBaseModel
+from models.base_custom_model import ResponseBaseModel
+
 
 # Request models
 class PortalBaseModel(BaseModel):
@@ -12,6 +13,7 @@ class PortalBaseModel(BaseModel):
     class Config:
         extra = "forbid"  # Forbid extra fields
 
+
 class PortalCreateModel(BaseModel):
     portal_id: int = Field(..., gt=0)
     taxon_id: int = Field(..., gt=0)
@@ -20,11 +22,13 @@ class PortalCreateModel(BaseModel):
     class Config:
         extra = "forbid"  # Forbid extra fields
 
+
 class PortalGetModel(BaseModel):
     portal_id: List[Annotated[int, Field(strict=True, gt=0)]]
 
     class Config:
         extra = "forbid"  # Forbid extra fields
+
 
 class PortalDetailModel(BaseModel):
     portal_id: int = Field(..., gt=0)
@@ -32,11 +36,13 @@ class PortalDetailModel(BaseModel):
     class Config:
         extra = "forbid"  # Forbid extra fields
 
+
 class PortalDeleteModel(BaseModel):
     portal_id: List[Annotated[int, Field(strict=True, gt=0)]]
 
     class Config:
         extra = "forbid"  # Forbid extra fields
+
 
 class PortalRetrieveDataModel(BaseModel):
     ncbi_taxon_id: str = Field(..., min_length=1, max_length=100)
@@ -44,6 +50,7 @@ class PortalRetrieveDataModel(BaseModel):
 
     class Config:
         extra = "forbid"  # Forbid extra fields
+
 
 # Response models
 class PortalCreateResponseModelObject(BaseModel):
@@ -53,8 +60,10 @@ class PortalCreateResponseModelObject(BaseModel):
     status: Optional[str] = None
     info: Optional[str] = None
 
+
 class PortalCreateResponseModel(ResponseBaseModel):
     data: List[PortalCreateResponseModelObject]
+
 
 class PortalGetResponseModelObject(BaseModel):
     portal_id: Optional[int] = None
@@ -63,8 +72,10 @@ class PortalGetResponseModelObject(BaseModel):
     status: Optional[str] = None
     info: Optional[str] = None
 
+
 class PortalGetResponseModel(ResponseBaseModel):
     data: List[PortalGetResponseModelObject]
+
 
 class PortalDetailResponseModelObject(BaseModel):
     portal_id: Optional[int] = None
@@ -73,8 +84,10 @@ class PortalDetailResponseModelObject(BaseModel):
     status: Optional[str] = None
     info: Optional[str] = None
 
+
 class PortalDetailResponseModel(ResponseBaseModel):
     data: PortalDetailResponseModelObject
+
 
 class PortalDeleteResponseModelObject(BaseModel):
     portal_id: Optional[int] = None
@@ -83,8 +96,10 @@ class PortalDeleteResponseModelObject(BaseModel):
     status: Optional[str] = None
     info: Optional[str] = None
 
+
 class PortalDeleteResponseModel(ResponseBaseModel):
     data: List[PortalDeleteResponseModelObject]
+
 
 class PortalRetrieveDataResponseModelObject(BaseModel):
     portal_id: Optional[int] = None
@@ -93,6 +108,7 @@ class PortalRetrieveDataResponseModelObject(BaseModel):
     data: Optional[dict] = None
     status: Optional[str] = None
     info: Optional[str] = None
+
 
 class PortalRetrieveDataResponseModel(ResponseBaseModel):
     data: PortalRetrieveDataResponseModelObject

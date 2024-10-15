@@ -1,4 +1,3 @@
-import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from utils.middleware.request_log_middleware import RequestLoggingMiddleware
@@ -22,7 +21,9 @@ app.add_middleware(
 app.add_middleware(RequestLoggingMiddleware)
 
 # Router registration with dynamic base path
-app.include_router(portal_router.router, prefix=f"{API_PREFIX}/portals", tags=["portals"])
+app.include_router(
+    portal_router.router, prefix=f"{API_PREFIX}/portals", tags=["portals"]
+)
 app.include_router(raw_router.router, prefix=f"{API_PREFIX}/raws", tags=["raws"])
 app.include_router(term_router.router, prefix=f"{API_PREFIX}/terms", tags=["terms"])
 app.include_router(taxon_router.router, prefix=f"{API_PREFIX}/taxa", tags=["taxa"])

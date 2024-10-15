@@ -1,7 +1,9 @@
 from typing import Annotated, List, Optional
 from pydantic import BaseModel, Field
 
-from models.base_model import ResponseBaseModel
+from models.base_custom_model import ResponseBaseModel
+
+
 # Request models
 class TaxonBaseModel(BaseModel):
     taxon_id: int = Field(..., ge=1)
@@ -11,11 +13,13 @@ class TaxonBaseModel(BaseModel):
     class Config:
         extra = "forbid"  # Forbid extra fields
 
+
 class TaxonGetModel(BaseModel):
     taxon_id: List[Annotated[int, Field(..., ge=1)]]
 
     class Config:
         extra = "forbid"  # Forbid extra fields
+
 
 class TaxonGetDetailModel(BaseModel):
     taxon_id: int = Field(..., ge=1)
@@ -23,11 +27,13 @@ class TaxonGetDetailModel(BaseModel):
     class Config:
         extra = "forbid"  # Forbid extra fields
 
+
 class TaxonDeleteModel(BaseModel):
     taxon_id: List[Annotated[int, Field(..., ge=1)]]
 
     class Config:
         extra = "forbid"  # Forbid extra fields
+
 
 # Response models
 class TaxonBaseResponseModelObject(BaseModel):
@@ -37,8 +43,10 @@ class TaxonBaseResponseModelObject(BaseModel):
     status: Optional[str] = None
     info: Optional[str] = None
 
+
 class TaxonBaseResponseModel(ResponseBaseModel):
     data: List[TaxonBaseResponseModelObject]
+
 
 class TaxonGetResponseModelObject(BaseModel):
     taxon_id: Optional[int] = None
@@ -47,8 +55,10 @@ class TaxonGetResponseModelObject(BaseModel):
     status: Optional[str] = None
     info: Optional[str] = None
 
+
 class TaxonGetResponseModel(ResponseBaseModel):
     data: List[TaxonGetResponseModelObject]
+
 
 class TaxonGetDetailResponseModel(ResponseBaseModel):
     data: TaxonGetResponseModelObject

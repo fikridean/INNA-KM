@@ -2,6 +2,7 @@ import asyncio
 import httpx
 from utils.helper.func_helper import convert_to_string
 
+
 async def retrieve(taxon: dict) -> dict:
     # Construct the URL for GBIF species match API using the species name
     url: str = f'https://api.gbif.org/v1/species/match?name={taxon["species"]}'
@@ -16,7 +17,7 @@ async def retrieve(taxon: dict) -> dict:
                 response = await client.get(url)
                 # Raise an exception if the request was unsuccessful
                 response.raise_for_status()
-                
+
                 # Parse the JSON response into a dictionary
                 data = response.json()
 
@@ -27,14 +28,14 @@ async def retrieve(taxon: dict) -> dict:
                 await asyncio.sleep(20)
                 retry_count += 1
                 continue  # Retry if unsuccessful
-    
+
     # Extract the usageKey from the data
-    usage_key = data.get('usageKey')
+    usage_key = data.get("usageKey")
     if not usage_key:
         return {}
-    
+
     # Construct the URL for GBIF occurrence API using the usageKey
-    url: str = f'https://api.gbif.org/v1/occurrence/search?taxonKey={usage_key}'
+    url: str = f"https://api.gbif.org/v1/occurrence/search?taxonKey={usage_key}"
 
     async with httpx.AsyncClient() as client:
         retry_count: int = 0
@@ -44,7 +45,7 @@ async def retrieve(taxon: dict) -> dict:
                 response = await client.get(url)
                 # Raise an exception if the request was unsuccessful
                 response.raise_for_status()
-                
+
                 # Parse the JSON response into a dictionary
                 data = response.json()
 
@@ -55,12 +56,13 @@ async def retrieve(taxon: dict) -> dict:
                 await asyncio.sleep(20)
                 retry_count += 1
                 continue  # Retry if unsuccessful
-    
+
     # Return the first result if available, otherwise return an empty dictionary
-    if not data['results'][0]:
+    if not data["results"][0]:
         return {}
 
-    return data['results'][0]
-  
+    return data["results"][0]
+
+
 async def data_processing(retrieve_data) -> str:
     return convert_to_string(retrieve_data)

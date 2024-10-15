@@ -8,6 +8,6 @@ try:
     raw_collection = database.get_collection("raws")
     term_collection = database.get_collection("terms")
     taxon_collection = database.get_collection("taxa")
-    print("Connected to MongoDB")
+
 except Exception as e:
     raise ConnectionError(f"Could not connect to MongoDB: {str(e)}")
