@@ -1,83 +1,98 @@
-from typing import List
+from typing import Annotated, List, Optional
 from pydantic import BaseModel, Field
 
 from models.base_model import ResponseBaseModel
 
 # Request models
 class PortalBaseModel(BaseModel):
-    species: str = Field(..., min_length=1, max_length=100)
+    portal_id: int = Field(..., gt=0)
     taxon_id: str = Field(..., min_length=1, max_length=100)
     web: str = Field(..., min_length=1, max_length=100)
+
+    class Config:
+        extra = "forbid"  # Forbid extra fields
+
+class PortalCreateModel(BaseModel):
+    portal_id: int = Field(..., gt=0)
+    taxon_id: int = Field(..., gt=0)
+    web: List[Annotated[str, Field(strict=True, min_length=1, max_length=100)]]
 
     class Config:
         extra = "forbid"  # Forbid extra fields
 
 class PortalGetModel(BaseModel):
-    taxon_id: list[str]
-    web: list[str]
-
-    class Config:
-        extra = "forbid"  # Forbid extra fields
-
-class PortalDeleteModel(BaseModel):
-    taxon_id: list[str] = Field(..., min_length=1, max_length=100)
-    web: list[str] = Field(..., min_length=1, max_length=100)
-
-    class Config:
-        extra = "forbid"  # Forbid extra fields
-
-class PortalRetrieveDataModel(BaseModel):
-    taxon_id: str = Field(..., min_length=1, max_length=100)
-    web: str = Field(..., min_length=1, max_length=100)
+    portal_id: List[Annotated[int, Field(strict=True, gt=0)]]
 
     class Config:
         extra = "forbid"  # Forbid extra fields
 
 class PortalDetailModel(BaseModel):
-    taxon_id: str = Field(..., min_length=1, max_length=100)
+    portal_id: int = Field(..., gt=0)
+
+    class Config:
+        extra = "forbid"  # Forbid extra fields
+
+class PortalDeleteModel(BaseModel):
+    portal_id: List[Annotated[int, Field(strict=True, gt=0)]]
+
+    class Config:
+        extra = "forbid"  # Forbid extra fields
+
+class PortalRetrieveDataModel(BaseModel):
+    ncbi_taxon_id: str = Field(..., min_length=1, max_length=100)
     web: str = Field(..., min_length=1, max_length=100)
 
     class Config:
         extra = "forbid"  # Forbid extra fields
 
 # Response models
-class PortalRetrieveDataResponseModel(ResponseBaseModel):
-    data: dict = {}
-
-class PortalCreateResponseObjectModel(BaseModel):
-    species: str
-    taxon_id: str
-    webs: List[str]
-    status: str
-    info: str
+class PortalCreateResponseModelObject(BaseModel):
+    portal_id: Optional[int] = None
+    taxon_id: Optional[int] = None
+    web: Optional[List[str]] = None
+    status: Optional[str] = None
+    info: Optional[str] = None
 
 class PortalCreateResponseModel(ResponseBaseModel):
-    data: List[PortalCreateResponseObjectModel]
+    data: List[PortalCreateResponseModelObject]
 
-class PortalDeleteResponseObjectModel(BaseModel):
-    taxon_id: str
-    species: str
-    found_webs: List[str]
-    missing_webs: List[str]
-    status: str
-    info: str
-
-class PortalDeleteResponseModel(ResponseBaseModel):
-    data: List[PortalDeleteResponseObjectModel]
+class PortalGetResponseModelObject(BaseModel):
+    portal_id: Optional[int] = None
+    taxon_id: Optional[int] = None
+    web: Optional[List[str]] = None
+    status: Optional[str] = None
+    info: Optional[str] = None
 
 class PortalGetResponseModel(ResponseBaseModel):
-    data: List[PortalBaseModel]
+    data: List[PortalGetResponseModelObject]
 
-class PortalGetWithDetailWebObjectModel(BaseModel):
-    taxon_id: str
-    species: str
-    found_webs: List[str]
-    missing_webs: List[str]
-    status: str
-    info: str
-
-class PortalGetWithDetailWebResponseModel(ResponseBaseModel):
-    data: List[PortalGetWithDetailWebObjectModel]
+class PortalDetailResponseModelObject(BaseModel):
+    portal_id: Optional[int] = None
+    taxon_id: Optional[int] = None
+    web: Optional[List[str]] = None
+    status: Optional[str] = None
+    info: Optional[str] = None
 
 class PortalDetailResponseModel(ResponseBaseModel):
-    data: PortalBaseModel
+    data: PortalDetailResponseModelObject
+
+class PortalDeleteResponseModelObject(BaseModel):
+    portal_id: Optional[int] = None
+    taxon_id: Optional[int] = None
+    web: Optional[List[str]] = None
+    status: Optional[str] = None
+    info: Optional[str] = None
+
+class PortalDeleteResponseModel(ResponseBaseModel):
+    data: List[PortalDeleteResponseModelObject]
+
+class PortalRetrieveDataResponseModelObject(BaseModel):
+    portal_id: Optional[int] = None
+    taxon_id: Optional[int] = None
+    web: Optional[str] = None
+    data: Optional[dict] = None
+    status: Optional[str] = None
+    info: Optional[str] = None
+
+class PortalRetrieveDataResponseModel(ResponseBaseModel):
+    data: PortalRetrieveDataResponseModelObject

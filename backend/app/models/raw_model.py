@@ -1,10 +1,11 @@
-from typing import List
+from typing import Annotated, List, Optional
 from pydantic import BaseModel, Field
+
+from models.base_model import ResponseBaseModel
 
 # Request models
 class RawBaseModel(BaseModel):
-    taxon_id: str = Field(..., min_length=1, max_length=100)
-    species: str = Field(..., min_length=1, max_length=100)
+    portal_id: int = Field(..., gt=0)
     web: str = Field(..., min_length=1, max_length=100)
     data: dict
 
@@ -12,63 +13,64 @@ class RawBaseModel(BaseModel):
         extra = "forbid"  # Forbid extra fields
 
 class RawGetModel(BaseModel):
-    taxon_id: list[str]
-    web: list[str]
+    ncbi_taxon_id: List[Annotated[str, Field(strict=True, min_length=1, max_length=100)]]
+    web: List[Annotated[str, Field(strict=True, min_length=1, max_length=100)]]
 
     class Config:
         extra = "forbid"  # Forbid extra fields
 
 class RawStoreModel(BaseModel):
-    taxon_id: list[str] 
-    web: list[str]
+    ncbi_taxon_id: List[Annotated[str, Field(strict=True, min_length=1, max_length=100)]]
+    web: List[Annotated[str, Field(strict=True, min_length=1, max_length=100)]]
 
     class Config:
         extra = "forbid"  # Forbid extra fields
 
 class RawDeleteModel(BaseModel):
-    taxon_id: list[str] 
-    web: list[str]
+    ncbi_taxon_id: List[Annotated[str, Field(strict=True, min_length=1, max_length=100)]]
+    web: List[Annotated[str, Field(strict=True, min_length=1, max_length=100)]]
 
     class Config:
         extra = "forbid"  # Forbid extra fields
 
 # Response models
-class RawGetResponseModel(BaseModel):
-    data: list[RawBaseModel]
+class RawGetResponseModelObject(BaseModel):
+    ncbi_taxon_id: Optional[str] = None
+    species: Optional[str] = None
+    web: Optional[str] = None
+    data: Optional[dict] = None
+    status: Optional[str] = None
+    info: Optional[str] = None
 
-class RawGetWithWebDetailResponseModel(BaseModel):
-    taxon_id: str
-    species: str
-    found_webs: dict
-    missing_webs: List[str]
-    status: str
-    info: str
+class RawGetResponseModel(ResponseBaseModel):
+    data: list[RawGetResponseModelObject]
 
 class InFoundWebsObjectModel(BaseModel):
-    web: str
-    status: str
-    info: str
+    web: Optional[str] = None
+    status: Optional[str] = None
+    info: Optional[str] = None
 
 class FoundWebsObjectModel(BaseModel):
     exist: List[InFoundWebsObjectModel]
     not_exist: List[InFoundWebsObjectModel]
 
-class RawStoreObjectModel(BaseModel):
-    taxon_id: str
-    species: str
+class RawStoreResponseModelObject(BaseModel):
+    ncbi_taxon_id: Optional[str] = None
+    species: Optional[str] = None
     found_webs: FoundWebsObjectModel
-    missing_webs: List[str]
+    missing_webs: Optional[List[str]] = None
+    status: Optional[str] = None
+    info: Optional[str] = None
 
-class RawStoreResponseModel(BaseModel):
-    data: List[RawStoreObjectModel]
+class RawStoreResponseModel(ResponseBaseModel):
+    data: List[RawStoreResponseModelObject]
 
-class RawDeleteResponseObjectModel(BaseModel):
-    taxon_id: str
-    species: str
-    found_webs: List[str]
-    missing_webs: List[str]
-    status: str
-    info: str
+class RawDeleteResponseModelObject(BaseModel):
+    ncbi_taxon_id: Optional[str] = None
+    species: Optional[str] = None
+    web: Optional[str] = None
+    status: Optional[str] = None
+    info: Optional[str] = None
 
 class RawDeleteResponseModel(BaseModel):
-    data: List[RawDeleteResponseObjectModel]
+    data: List[RawDeleteResponseModelObject]

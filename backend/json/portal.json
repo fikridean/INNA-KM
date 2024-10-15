@@ -1,0 +1,402 @@
+[
+  {
+    "taxon_id": 1,
+    "web": "wikidata",
+    "portal_id": 1
+  },
+  {
+    "taxon_id": 1,
+    "web": "ncbi",
+    "portal_id": 2
+  },
+  {
+    "taxon_id": 1,
+    "web": "bacdive",
+    "portal_id": 3
+  },
+  {
+    "taxon_id": 1,
+    "web": "gbif",
+    "portal_id": 4
+  },
+  {
+    "taxon_id": 2,
+    "web": "wikidata",
+    "portal_id": 5
+  },
+  {
+    "taxon_id": 2,
+    "web": "ncbi",
+    "portal_id": 6
+  },
+  {
+    "taxon_id": 2,
+    "web": "bacdive",
+    "portal_id": 7
+  },
+  {
+    "taxon_id": 2,
+    "web": "gbif",
+    "portal_id": 8
+  },
+  {
+    "taxon_id": 3,
+    "web": "wikidata",
+    "portal_id": 9
+  },
+  {
+    "taxon_id": 3,
+    "web": "ncbi",
+    "portal_id": 10
+  },
+  {
+    "taxon_id": 3,
+    "web": "bacdive",
+    "portal_id": 11
+  },
+  {
+    "taxon_id": 3,
+    "web": "gbif",
+    "portal_id": 12
+  },
+  {
+    "taxon_id": 4,
+    "web": "wikidata",
+    "portal_id": 13
+  },
+  {
+    "taxon_id": 4,
+    "web": "ncbi",
+    "portal_id": 14
+  },
+  {
+    "taxon_id": 4,
+    "web": "bacdive",
+    "portal_id": 15
+  },
+  {
+    "taxon_id": 4,
+    "web": "gbif",
+    "portal_id": 16
+  },
+  {
+    "taxon_id": 5,
+    "web": "wikidata",
+    "portal_id": 17
+  },
+  {
+    "taxon_id": 5,
+    "web": "ncbi",
+    "portal_id": 18
+  },
+  {
+    "taxon_id": 5,
+    "web": "bacdive",
+    "portal_id": 19
+  },
+  {
+    "taxon_id": 5,
+    "web": "gbif",
+    "portal_id": 20
+  },
+  {
+    "taxon_id": 6,
+    "web": "wikidata",
+    "portal_id": 21
+  },
+  {
+    "taxon_id": 6,
+    "web": "ncbi",
+    "portal_id": 22
+  },
+  {
+    "taxon_id": 6,
+    "web": "bacdive",
+    "portal_id": 23
+  },
+  {
+    "taxon_id": 6,
+    "web": "gbif",
+    "portal_id": 24
+  },
+  {
+    "taxon_id": 7,
+    "web": "wikidata",
+    "portal_id": 25
+  },
+  {
+    "taxon_id": 7,
+    "web": "ncbi",
+    "portal_id": 26
+  },
+  {
+    "taxon_id": 7,
+    "web": "bacdive",
+    "portal_id": 27
+  },
+  {
+    "taxon_id": 7,
+    "web": "gbif",
+    "portal_id": 28
+  },
+  {
+    "taxon_id": 8,
+    "web": "wikidata",
+    "portal_id": 29
+  },
+  {
+    "taxon_id": 8,
+    "web": "ncbi",
+    "portal_id": 30
+  },
+  {
+    "taxon_id": 8,
+    "web": "bacdive",
+    "portal_id": 31
+  },
+  {
+    "taxon_id": 8,
+    "web": "gbif",
+    "portal_id": 32
+  },
+  {
+    "taxon_id": 9,
+    "web": "wikidata",
+    "portal_id": 33
+  },
+  {
+    "taxon_id": 9,
+    "web": "ncbi",
+    "portal_id": 34
+  },
+  {
+    "taxon_id": 9,
+    "web": "bacdive",
+    "portal_id": 35
+  },
+  {
+    "taxon_id": 9,
+    "web": "gbif",
+    "portal_id": 36
+  },
+  {
+    "taxon_id": 10,
+    "web": "wikidata",
+    "portal_id": 37
+  },
+  {
+    "taxon_id": 10,
+    "web": "ncbi",
+    "portal_id": 38
+  },
+  {
+    "taxon_id": 10,
+    "web": "bacdive",
+    "portal_id": 39
+  },
+  {
+    "taxon_id": 10,
+    "web": "gbif",
+    "portal_id": 40
+  },
+  {
+    "taxon_id": 11,
+    "web": "wikidata",
+    "portal_id": 41
+  },
+  {
+    "taxon_id": 11,
+    "web": "ncbi",
+    "portal_id": 42
+  },
+  {
+    "taxon_id": 11,
+    "web": "bacdive",
+    "portal_id": 43
+  },
+  {
+    "taxon_id": 11,
+    "web": "gbif",
+    "portal_id": 44
+  },
+  {
+    "taxon_id": 12,
+    "web": "wikidata",
+    "portal_id": 45
+  },
+  {
+    "taxon_id": 12,
+    "web": "ncbi",
+    "portal_id": 46
+  },
+  {
+    "taxon_id": 12,
+    "web": "bacdive",
+    "portal_id": 47
+  },
+  {
+    "taxon_id": 12,
+    "web": "gbif",
+    "portal_id": 48
+  },
+  {
+    "taxon_id": 13,
+    "web": "wikidata",
+    "portal_id": 49
+  },
+  {
+    "taxon_id": 13,
+    "web": "ncbi",
+    "portal_id": 50
+  },
+  {
+    "taxon_id": 13,
+    "web": "bacdive",
+    "portal_id": 51
+  },
+  {
+    "taxon_id": 13,
+    "web": "gbif",
+    "portal_id": 52
+  },
+  {
+    "taxon_id": 14,
+    "web": "wikidata",
+    "portal_id": 53
+  },
+  {
+    "taxon_id": 14,
+    "web": "ncbi",
+    "portal_id": 54
+  },
+  {
+    "taxon_id": 14,
+    "web": "bacdive",
+    "portal_id": 55
+  },
+  {
+    "taxon_id": 14,
+    "web": "gbif",
+    "portal_id": 56
+  },
+  {
+    "taxon_id": 15,
+    "web": "wikidata",
+    "portal_id": 57
+  },
+  {
+    "taxon_id": 15,
+    "web": "ncbi",
+    "portal_id": 58
+  },
+  {
+    "taxon_id": 15,
+    "web": "bacdive",
+    "portal_id": 59
+  },
+  {
+    "taxon_id": 15,
+    "web": "gbif",
+    "portal_id": 60
+  },
+  {
+    "taxon_id": 16,
+    "web": "wikidata",
+    "portal_id": 61
+  },
+  {
+    "taxon_id": 16,
+    "web": "ncbi",
+    "portal_id": 62
+  },
+  {
+    "taxon_id": 16,
+    "web": "bacdive",
+    "portal_id": 63
+  },
+  {
+    "taxon_id": 16,
+    "web": "gbif",
+    "portal_id": 64
+  },
+  {
+    "taxon_id": 17,
+    "web": "wikidata",
+    "portal_id": 65
+  },
+  {
+    "taxon_id": 17,
+    "web": "ncbi",
+    "portal_id": 66
+  },
+  {
+    "taxon_id": 17,
+    "web": "bacdive",
+    "portal_id": 67
+  },
+  {
+    "taxon_id": 17,
+    "web": "gbif",
+    "portal_id": 68
+  },
+  {
+    "taxon_id": 18,
+    "web": "wikidata",
+    "portal_id": 69
+  },
+  {
+    "taxon_id": 18,
+    "web": "ncbi",
+    "portal_id": 70
+  },
+  {
+    "taxon_id": 18,
+    "web": "bacdive",
+    "portal_id": 71
+  },
+  {
+    "taxon_id": 18,
+    "web": "gbif",
+    "portal_id": 72
+  },
+  {
+    "taxon_id": 19,
+    "web": "wikidata",
+    "portal_id": 73
+  },
+  {
+    "taxon_id": 19,
+    "web": "ncbi",
+    "portal_id": 74
+  },
+  {
+    "taxon_id": 19,
+    "web": "bacdive",
+    "portal_id": 75
+  },
+  {
+    "taxon_id": 19,
+    "web": "gbif",
+    "portal_id": 76
+  },
+  {
+    "taxon_id": 20,
+    "web": "wikidata",
+    "portal_id": 77
+  },
+  {
+    "taxon_id": 20,
+    "web": "ncbi",
+    "portal_id": 78
+  },
+  {
+    "taxon_id": 20,
+    "web": "bacdive",
+    "portal_id": 79
+  },
+  {
+    "taxon_id": 20,
+    "web": "gbif",
+    "portal_id": 80
+  }
+]

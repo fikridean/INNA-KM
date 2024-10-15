@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 # Response model
 class ResponseBaseModel(BaseModel):
-    status_code: int
-    success: bool
+    status_code: int = 200
+    success: bool = True
     message: str
+    total_data: Optional[int]

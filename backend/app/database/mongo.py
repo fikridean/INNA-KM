@@ -6,7 +6,8 @@ try:
     database = client[DATABASE_NAME]
     portal_collection = database.get_collection("portals")
     raw_collection = database.get_collection("raws")
-    terms_collection = database.get_collection("terms")
+    term_collection = database.get_collection("terms")
+    taxon_collection = database.get_collection("taxa")
     print("Connected to MongoDB")
 except Exception as e:
     raise ConnectionError(f"Could not connect to MongoDB: {str(e)}")

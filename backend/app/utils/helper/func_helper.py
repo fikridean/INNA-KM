@@ -1,7 +1,11 @@
 import asyncio
 import importlib.util
 import os
+from typing import List
 
+from utils.enum.message_enum import ResponseMessage
+from utils.enum.status_code_enum import StatusCode
+from utils.helper.response_helper import error_response
 from config import OPERATIONS_FOLDERS
 
 def convert_to_string(obj: any) -> any:
@@ -39,7 +43,7 @@ async def run_function_from_module(module_name: str, function_name: str, *args: 
     except Exception as e:
         raise Exception(f"An error occurred while running function from module: {str(e)}")
     
-def get_portals_webs(directory: str) -> int:
+def get_directories(directory: str) -> int:
     try:
         # List all files in the directory
         files = os.listdir(directory)
@@ -84,3 +88,21 @@ def find_matching_parts(data_array, term):
     except Exception as e:
         raise Exception(f"An error occurred while finding matching parts: {str(e)}")
     
+portal_webs: List[str] = [web.split(".")[0] for web in get_directories(OPERATIONS_FOLDERS)]
+
+def handleError(e: Exception):
+    # Check if there are any arguments in e.args
+        if len(e.args) > 0:
+            error = e.args[0]
+
+            # Check if error is a dictionary and contains the required keys
+            if isinstance(error, dict) and all(key in error for key in ['data', 'message', 'status_code']):
+                error_data = error['data']
+                error_message = error['message']
+                error_status_code = error['status_code']
+
+                return error_response(data=error_data, message=error_message, status_code=error_status_code)
+            else:
+                return error_response(data=None, message=ResponseMessage.ERR_INTERNAL_SERVER_ERROR.value, status_code=StatusCode.INTERNAL_SERVER_ERROR.value)
+        else:
+            return error_response(data=None, message=ResponseMessage.ERR_INTERNAL_SERVER_ERROR.value, status_code=StatusCode.INTERNAL_SERVER_ERROR.value)

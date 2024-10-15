@@ -1,0 +1,247 @@
+[
+  {
+    "species": "Achromobacter mucicolens",
+    "ncbi_taxon_id": "1389922",
+    "taxon_id": 1
+  },
+  {
+    "species": "Aeromonas hydrophila",
+    "ncbi_taxon_id": "644",
+    "taxon_id": 2
+  },
+  {
+    "species": "Chelatococcus thermostellatus",
+    "ncbi_taxon_id": "2741498",
+    "taxon_id": 3
+  },
+  {
+    "species": "Cobetia marina",
+    "ncbi_taxon_id": "28258",
+    "taxon_id": 4
+  },
+  {
+    "species": "Dactylosporangium aurantiacum",
+    "ncbi_taxon_id": "35754",
+    "taxon_id": 5
+  },
+  {
+    "species": "Empedobacter tilapiae",
+    "ncbi_taxon_id": "2491114",
+    "taxon_id": 6
+  },
+  {
+    "species": "Escherichia fergusonii",
+    "ncbi_taxon_id": "564",
+    "taxon_id": 7
+  },
+  {
+    "species": "Klebsiella aerogenes",
+    "ncbi_taxon_id": "548",
+    "taxon_id": 8
+  },
+  {
+    "species": "Klebsiella pasteurii",
+    "ncbi_taxon_id": "2587529",
+    "taxon_id": 9
+  },
+  {
+    "species": "Klebsiella pneumoniae",
+    "ncbi_taxon_id": "573",
+    "taxon_id": 10
+  },
+  {
+    "species": "Lactiplantibacillus plantarum",
+    "ncbi_taxon_id": "1590",
+    "taxon_id": 11
+  },
+  {
+    "species": "Luteibacter jiangsuensis",
+    "ncbi_taxon_id": "637577",
+    "taxon_id": 12
+  },
+  {
+    "species": "Myxococcus stipitatus",
+    "ncbi_taxon_id": "83455",
+    "taxon_id": 13
+  },
+  {
+    "species": "Ochrobactrum quorumnocens",
+    "ncbi_taxon_id": "271865",
+    "taxon_id": 14
+  },
+  {
+    "species": "Pantoea agglomerans",
+    "ncbi_taxon_id": "549",
+    "taxon_id": 15
+  },
+  {
+    "species": "Pantoea dispersa",
+    "ncbi_taxon_id": "59814",
+    "taxon_id": 16
+  },
+  {
+    "species": "Pseudomonas ceruminis",
+    "ncbi_taxon_id": "2740516",
+    "taxon_id": 17
+  },
+  {
+    "species": "Pseudomonas palmensis",
+    "ncbi_taxon_id": "2815362",
+    "taxon_id": 18
+  },
+  {
+    "species": "Pseudomonas qingdaonensis",
+    "ncbi_taxon_id": "2056231",
+    "taxon_id": 19
+  },
+  {
+    "species": "Raoultella ornithinolytica",
+    "ncbi_taxon_id": "54291",
+    "taxon_id": 20
+  },
+  {
+    "species": "Rhodopseudomonas palustris",
+    "ncbi_taxon_id": "1076",
+    "taxon_id": 21
+  },
+  {
+    "species": "Stenotrophomonas maltophilia",
+    "ncbi_taxon_id": "40324",
+    "taxon_id": 22
+  },
+  {
+    "species": "Streptomyces fagopyri",
+    "ncbi_taxon_id": "2662397",
+    "taxon_id": 23
+  },
+  {
+    "species": "Streptomyces lutosisoli",
+    "ncbi_taxon_id": "2665721",
+    "taxon_id": 24
+  },
+  {
+    "species": "Streptomyces mirabilis",
+    "ncbi_taxon_id": "68239",
+    "taxon_id": 25
+  },
+  {
+    "species": "Stutzerimonas stutzeri",
+    "ncbi_taxon_id": "316",
+    "taxon_id": 26
+  },
+  {
+    "species": "Xanthomonas campestris",
+    "ncbi_taxon_id": "339",
+    "taxon_id": 27
+  },
+  {
+    "species": "Rhizobium leguminosarum",
+    "ncbi_taxon_id": "384",
+    "taxon_id": 28
+  },
+  {
+    "species": "Streptomyces kunmingensis",
+    "ncbi_taxon_id": "68225",
+    "taxon_id": 29
+  },
+  {
+    "species": "Streptomyces rochei",
+    "ncbi_taxon_id": "1928",
+    "taxon_id": 30
+  },
+  {
+    "species": "Streptomyces griseorubens",
+    "ncbi_taxon_id": "66897",
+    "taxon_id": 31
+  },
+  {
+    "species": "Streptomyces sp.",
+    "ncbi_taxon_id": "1931",
+    "taxon_id": 32
+  },
+  {
+    "species": "Streptomyces sampsonii",
+    "ncbi_taxon_id": "42239",
+    "taxon_id": 33
+  },
+  {
+    "species": "Micromonospora chalcea",
+    "ncbi_taxon_id": "1874",
+    "taxon_id": 34
+  },
+  {
+    "species": "Klebsiella quasivariicola",
+    "ncbi_taxon_id": "2026240",
+    "taxon_id": 35
+  },
+  {
+    "species": "Escherichia coli",
+    "ncbi_taxon_id": "562",
+    "taxon_id": 36
+  },
+  {
+    "species": "Gulosibacter sp.",
+    "ncbi_taxon_id": "2817531",
+    "taxon_id": 37
+  },
+  {
+    "species": "Pseudomonas hibiscicola",
+    "ncbi_taxon_id": "86189",
+    "taxon_id": 38
+  },
+  {
+    "species": "Providencia rettgeri",
+    "ncbi_taxon_id": "587",
+    "taxon_id": 39
+  },
+  {
+    "species": "Burkholderia sp.",
+    "ncbi_taxon_id": "36773",
+    "taxon_id": 40
+  },
+  {
+    "species": "Klebsiella oxytoca",
+    "ncbi_taxon_id": "571",
+    "taxon_id": 41
+  },
+  {
+    "species": "Brevibacterium ammoniilyticum",
+    "ncbi_taxon_id": "1046555",
+    "taxon_id": 42
+  },
+  {
+    "species": "Escherichia sp.",
+    "ncbi_taxon_id": "1884818",
+    "taxon_id": 43
+  },
+  {
+    "species": "Klebsiella quasipneumoniae",
+    "ncbi_taxon_id": "1463165",
+    "taxon_id": 44
+  },
+  {
+    "species": "Klebsiella sp.",
+    "ncbi_taxon_id": "576",
+    "taxon_id": 45
+  },
+  {
+    "species": "Pantoea",
+    "ncbi_taxon_id": "53335",
+    "taxon_id": 46
+  },
+  {
+    "species": "Pseudomonas sp.",
+    "ncbi_taxon_id": "306",
+    "taxon_id": 47
+  },
+  {
+    "species": "Stenotrophomonas sp.",
+    "ncbi_taxon_id": "69392",
+    "taxon_id": 48
+  },
+  {
+    "species": "Xanthomonas sp.",
+    "ncbi_taxon_id": "29446",
+    "taxon_id": 49
+  }
+]
