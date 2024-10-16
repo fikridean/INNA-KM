@@ -45,19 +45,6 @@ class RawDeleteModel(BaseModel):
 
 
 # Response models
-class RawGetResponseModelObject(BaseModel):
-    ncbi_taxon_id: Optional[str] = None
-    species: Optional[str] = None
-    web: Optional[str] = None
-    data: Optional[dict] = None
-    status: Optional[str] = None
-    info: Optional[str] = None
-
-
-class RawGetResponseModel(ResponseBaseModel):
-    data: list[RawGetResponseModelObject]
-
-
 class InFoundWebsObjectModel(BaseModel):
     web: Optional[str] = None
     status: Optional[str] = None
@@ -70,6 +57,7 @@ class FoundWebsObjectModel(BaseModel):
 
 
 class RawStoreResponseModelObject(BaseModel):
+    taxon_id: Optional[int] = None
     ncbi_taxon_id: Optional[str] = None
     species: Optional[str] = None
     found_webs: FoundWebsObjectModel
@@ -82,7 +70,22 @@ class RawStoreResponseModel(ResponseBaseModel):
     data: List[RawStoreResponseModelObject]
 
 
+class RawGetResponseModelObject(BaseModel):
+    taxon_id: Optional[int] = None
+    ncbi_taxon_id: Optional[str] = None
+    species: Optional[str] = None
+    web: Optional[str] = None
+    data: Optional[dict] = None
+    status: Optional[str] = None
+    info: Optional[str] = None
+
+
+class RawGetResponseModel(ResponseBaseModel):
+    data: list[RawGetResponseModelObject]
+
+
 class RawDeleteResponseModelObject(BaseModel):
+    taxon_id: Optional[int] = None
     ncbi_taxon_id: Optional[str] = None
     species: Optional[str] = None
     web: Optional[str] = None

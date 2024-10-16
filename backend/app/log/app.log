@@ -26,3 +26,105 @@ Error in Get taxa: bad operand type for unary +: 'list'
 
 Error in Create portal: {'data': [], 'message': 'Web sources not supported: testing1, testing2.', 'status_code': 400}
 
+Error in Store raw to terms documents: 1
+
+Error in Store raw to terms documents: 1
+
+Error in Store raw to terms documents: 'ncbi_taxon_id'
+
+Error in Store raw to terms documents: 'ncbi_taxon_id'
+
+Error in Store raw to terms documents: 'ncbi_taxon_id'
+
+Error in Store raw to terms documents: 'ncbi_taxon_id'
+
+Error in Store raw from portals: 'tuple' object has no attribute 'web'
+
+Error in Store raw from portals: 'tuple' object has no attribute 'web'
+
+Error in Store raw from portals: 'tuple' object has no attribute 'web'
+
+Error in Store raw from portals: 'tuple' object has no attribute 'web'
+
+Error in Store raw from portals: 'tuple' object has no attribute 'web'
+
+Error in Store raw from portals: 'tuple' object has no attribute 'web'
+
+Error in Store raw from portals: 'tuple' object has no attribute 'web'
+
+Error in Store raw from portals: 'tuple' object has no attribute 'web'
+
+Error in Store raw from portals: 'tuple' object has no attribute 'web'
+
+Error in Store raw from portals: 'tuple' object has no attribute 'web'
+
+Error in Store raw from portals: {'data': [], 'message': 'Web sources not supported: dawdawd.', 'status_code': 400}
+
+Error in Store raw from portals: {'data': [], 'message': 'Web sources not supported: dawdawd.', 'status_code': 400}
+
+Error in Get raw from raw collection: {'data': [], 'message': 'Web sources not supported: dawdawdawd.', 'status_code': 400}
+
+Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
+ncbi_taxon_id
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
+ncbi_taxon_id
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
+ncbi_taxon_id
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
+ncbi_taxon_id
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
+ncbi_taxon_id
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
+ncbi_taxon_id
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
+ncbi_taxon_id
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
+ncbi_taxon_id
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
+ncbi_taxon_id
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
+ncbi_taxon_id
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
+ncbi_taxon_id
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
+ncbi_taxon_id
+  Input should be a valid string [type=string_type, input_value=1, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+Error in Delete raw from raw collection: free variable 'taxon' referenced before assignment in enclosing scope
+
+Error in Delete raw from raw collection: free variable 'taxon' referenced before assignment in enclosing scope
+

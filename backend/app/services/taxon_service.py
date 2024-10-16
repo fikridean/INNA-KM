@@ -111,7 +111,7 @@ async def get_taxon(params: TaxonGetModel) -> List[TaxonGetResponseModelObject]:
             taxon_id=taxon_id,
             ncbi_taxon_id=None,
             species=SpeciesMessage.SPECIES_NOT_FOUND.value,
-            status=StatusMessage.DATA_NOT_FOUND.value,
+            status=StatusMessage.DATA_FAILED.value,
             info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.TAXON_NOT_EXIST.value}.",
         )
         for taxon_id in not_found_taxa
@@ -150,7 +150,7 @@ async def get_taxon_details(params: TaxonGetDetailModel) -> TaxonGetResponseMode
             taxon_id=taxon_id_for_query,
             ncbi_taxon_id=None,
             species=SpeciesMessage.SPECIES_NOT_FOUND.value,
-            status=StatusMessage.DATA_NOT_FOUND.value,
+            status=StatusMessage.DATA_FAILED.value,
             info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.TAXON_NOT_EXIST.value}.",
         )
 

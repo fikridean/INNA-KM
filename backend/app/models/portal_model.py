@@ -5,15 +5,6 @@ from models.base_custom_model import ResponseBaseModel
 
 
 # Request models
-class PortalBaseModel(BaseModel):
-    portal_id: int = Field(..., gt=0)
-    taxon_id: str = Field(..., min_length=1, max_length=100)
-    web: str = Field(..., min_length=1, max_length=100)
-
-    class Config:
-        extra = "forbid"  # Forbid extra fields
-
-
 class PortalCreateModel(BaseModel):
     portal_id: int = Field(..., gt=0)
     taxon_id: int = Field(..., gt=0)

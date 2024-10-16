@@ -33,6 +33,8 @@ class searchModel(BaseModel):
 # Response models
 class TermStoreResponseModelObject(BaseModel):
     taxon_id: Optional[int] = Field(None, ge=1)
+    ncbi_taxon_id: Optional[str] = Field(None, min_length=1, max_length=100)
+    species: Optional[str] = Field(None, min_length=1, max_length=100)
     data: Optional[dict] = Field(None)
     status: Optional[str] = None
     info: Optional[str] = None
@@ -55,11 +57,16 @@ class TermGetResponseModel(ResponseBaseModel):
     data: List[TermGetResponseModelObject]
 
 
-class TermDeleteResponseModel(BaseModel):
+class TermDeleteResponseModelObject(BaseModel):
     taxon_id: Optional[int] = Field(None, ge=1)
+    ncbi_taxon_id: Optional[str] = Field(None, min_length=1, max_length=100)
     species: Optional[str] = Field(None, min_length=1, max_length=100)
     status: Optional[str] = Field(None, min_length=1, max_length=100)
     info: Optional[str] = Field(None, min_length=1, max_length=100)
+
+
+class TermDeleteResponseModel(ResponseBaseModel):
+    data: List[TermDeleteResponseModelObject]
 
 
 class searchResponseModelObject(BaseModel):

@@ -144,7 +144,7 @@ async def get_portals(params: PortalGetModel) -> List[PortalGetResponseModelObje
             portal_id=portal_id,
             taxon_id=None,
             web=None,
-            status=StatusMessage.DATA_NOT_FOUND.value,
+            status=StatusMessage.DATA_FAILED.value,
             info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}",
         )
         for portal_id in missing_portals
@@ -173,7 +173,7 @@ async def get_portal_detail(
             portal_id=portal_id_for_query,
             taxon_id=None,
             web=None,
-            status=StatusMessage.DATA_NOT_FOUND.value,
+            status=StatusMessage.DATA_FAILED.value,
             info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}",
         )
 
@@ -334,7 +334,7 @@ async def retrieve_data(
                     taxon_id=None,
                     web=params.web,
                     data={},
-                    status=StatusMessage.DATA_NOT_FOUND.value,
+                    status=StatusMessage.DATA_FAILED.value,
                     info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.TAXON_NOT_EXIST.value}",
                 )
 
@@ -352,7 +352,7 @@ async def retrieve_data(
             taxon_id=taxon.get("taxon_id"),
             web=params.web,
             data={},
-            status=StatusMessage.DATA_NOT_FOUND.value,
+            status=StatusMessage.DATA_FAILED.value,
             info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}",
         )
 
@@ -365,7 +365,7 @@ async def retrieve_data(
         status=(
             StatusMessage.DATA_SUCCESS.value
             if taxon
-            else StatusMessage.DATA_NOT_FOUND.value
+            else StatusMessage.DATA_FAILED.value
         ),
         info=(
             InfoMessage.DATA_RETRIEVED.value

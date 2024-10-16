@@ -68,16 +68,16 @@ class InfoMessage(Enum):
     DATA_NOT_DELETED = "Data deletion failed"
 
     # Exist
-    TAXON_EXIST = "Taxon ID already exist"
-    PORTAL_EXIST = "Portal ID already exist"
+    TAXON_EXIST = "Taxon already exist"
+    PORTAL_EXIST = "Portal already exist"
 
-    TAXON_NOT_EXIST = "Taxon ID does not exist"
-    PORTAL_NOT_EXIST = "Portal ID does not exist"
+    TAXON_NOT_EXIST = "Taxon does not exist"
+    PORTAL_NOT_EXIST = "Portal does not exist"
     RAW_NOT_EXIST = "Raw data does not exist"
 
     # Used
-    TAXON_USED = "Taxon ID is used in other collections"
-    PORTAL_USED = "Portal ID is used in other collections"
+    TAXON_USED = "Taxon is used in other collections"
+    PORTAL_USED = "Portal is used in other collections"
 
 
 class StatusMessage(Enum):

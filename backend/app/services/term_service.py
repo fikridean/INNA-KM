@@ -9,7 +9,7 @@ from utils.enum.message_enum import (
 )
 from models.term_model import (
     TermDeleteModel,
-    TermDeleteResponseModel,
+    TermDeleteResponseModelObject,
     TermGetModel,
     TermGetResponseModelObject,
     TermStoreModel,
@@ -66,7 +66,8 @@ async def store_raw_to_terms(params: TermStoreModel) -> TermStoreResponseModelOb
                             taxon_id=None,
                             ncbi_taxon_id=None,
                             species=SpeciesMessage.SPECIES_NOT_FOUND.value,
-                            status=StatusMessage.DATA_NOT_FOUND.value,
+                            data=None,
+                            status=StatusMessage.DATA_FAILED.value,
                             info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}.",
                         )
                     )
@@ -75,6 +76,15 @@ async def store_raw_to_terms(params: TermStoreModel) -> TermStoreResponseModelOb
 
                 for taxon_id in existing_taxon_ids:
                     portal = portal_map.get(taxon_id)
+                    taxon = next(
+                        (
+                            taxon
+                            for taxon in existing_taxons
+                            if taxon["taxon_id"] == taxon_id
+                        ),
+                        None,
+                    )
+
                     if portal:
                         raws = await raw_collection.find(
                             {"portal_id": portal["portal_id"]}, {"_id": 0}
@@ -91,6 +101,8 @@ async def store_raw_to_terms(params: TermStoreModel) -> TermStoreResponseModelOb
                         result.append(
                             TermStoreResponseModelObject(
                                 taxon_id=taxon_id,
+                                ncbi_taxon_id=taxon["ncbi_taxon_id"],
+                                species=taxon["species"],
                                 data=mapped,
                                 status=StatusMessage.DATA_SUCCESS.value,
                                 info=f"{InfoMessage.DATA_RETRIEVED_AND_STORED.value}.",
@@ -104,7 +116,7 @@ async def store_raw_to_terms(params: TermStoreModel) -> TermStoreResponseModelOb
                         taxon_id=not_existing_taxon_id,
                         ncbi_taxon_id=None,
                         species=SpeciesMessage.SPECIES_NOT_FOUND.value,
-                        status=StatusMessage.DATA_NOT_FOUND.value,
+                        status=StatusMessage.DATA_FAILED.value,
                         info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.TAXON_NOT_EXIST.value}.",
                     )
                 )
@@ -147,7 +159,7 @@ async def get_terms(params: TermGetModel) -> TermGetResponseModelObject:
                             taxon_id=None,
                             ncbi_taxon_id=None,
                             species=SpeciesMessage.SPECIES_NOT_FOUND.value,
-                            status=StatusMessage.DATA_NOT_FOUND.value,
+                            status=StatusMessage.DATA_FAILED.value,
                             info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}.",
                         )
                     )
@@ -181,7 +193,7 @@ async def get_terms(params: TermGetModel) -> TermGetResponseModelObject:
                                     taxon_id=portal["taxon_id"],
                                     ncbi_taxon_id=ncbi_taxon_id,
                                     species=SpeciesMessage.SPECIES_NOT_FOUND.value,
-                                    status=StatusMessage.DATA_NOT_FOUND.value,
+                                    status=StatusMessage.DATA_FAILED.value,
                                     info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.RAW_NOT_EXIST.value}.",
                                 )
                             )
@@ -193,7 +205,7 @@ async def get_terms(params: TermGetModel) -> TermGetResponseModelObject:
                         taxon_id=None,
                         ncbi_taxon_id=not_existing_ncbi_taxon_id,
                         species=SpeciesMessage.SPECIES_NOT_FOUND.value,
-                        status=StatusMessage.DATA_NOT_FOUND.value,
+                        status=StatusMessage.DATA_FAILED.value,
                         info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.TAXON_NOT_EXIST.value}.",
                     )
                 )
@@ -203,7 +215,7 @@ async def get_terms(params: TermGetModel) -> TermGetResponseModelObject:
 
 # Delete terms document
 @log_function("Delete term document")
-async def delete_term(params: TermDeleteModel) -> TermDeleteResponseModel:
+async def delete_term(params: TermDeleteModel) -> TermDeleteResponseModelObject:
     async with await client.start_session() as session:
         async with session.start_transaction():
             # Retrieve existing taxons
@@ -232,12 +244,12 @@ async def delete_term(params: TermDeleteModel) -> TermDeleteResponseModel:
 
                 if not portals:
                     result.append(
-                        TermGetResponseModelObject(
+                        TermDeleteResponseModelObject(
                             taxon_id=None,
                             ncbi_taxon_id=None,
                             species=SpeciesMessage.SPECIES_NOT_FOUND.value,
-                            status=StatusMessage.DATA_NOT_FOUND.value,
-                            info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}.",
+                            status=StatusMessage.DATA_FAILED.value,
+                            info=f"{InfoMessage.DATA_NOT_DELETED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}.",
                         )
                     )
 
@@ -259,23 +271,23 @@ async def delete_term(params: TermDeleteModel) -> TermDeleteResponseModel:
 
                         if term:
                             result.append(
-                                TermGetResponseModelObject(
+                                TermDeleteResponseModelObject(
                                     taxon_id=term["taxon_id"],
                                     ncbi_taxon_id=ncbi_taxon_id,
                                     species=taxon["species"],
                                     data=term["data"],
-                                    status=StatusMessage.DATA_FOUND.value,
-                                    info=f"{InfoMessage.DATA_RETRIEVED.value}.",
+                                    status=StatusMessage.DATA_SUCCESS.value,
+                                    info=f"{InfoMessage.DATA_DELETED.value}.",
                                 )
                             )
                         else:
                             result.append(
-                                TermGetResponseModelObject(
+                                TermDeleteResponseModelObject(
                                     taxon_id=portal["taxon_id"],
                                     ncbi_taxon_id=ncbi_taxon_id,
                                     species=SpeciesMessage.SPECIES_NOT_FOUND.value,
-                                    status=StatusMessage.DATA_NOT_FOUND.value,
-                                    info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.RAW_NOT_EXIST.value}.",
+                                    status=StatusMessage.DATA_FAILED.value,
+                                    info=f"{InfoMessage.DATA_NOT_DELETED.value}: {InfoMessage.RAW_NOT_EXIST.value}.",
                                 )
                             )
 
@@ -286,7 +298,7 @@ async def delete_term(params: TermDeleteModel) -> TermDeleteResponseModel:
                         taxon_id=None,
                         ncbi_taxon_id=not_existing_ncbi_taxon_id,
                         species=SpeciesMessage.SPECIES_NOT_FOUND.value,
-                        status=StatusMessage.DATA_NOT_FOUND.value,
+                        status=StatusMessage.DATA_FAILED.value,
                         info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.TAXON_NOT_EXIST.value}.",
                     )
                 )
