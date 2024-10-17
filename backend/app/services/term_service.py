@@ -52,9 +52,7 @@ async def store_raw_to_terms(params: TermStoreModel) -> TermStoreResponseModelOb
     ).to_list(length=None)
 
     # Gather existing taxon
-    existing_taxon_ids: List[int] = [
-        taxon["taxon_id"] for taxon in existing_taxons
-    ]
+    existing_taxon_ids: List[int] = [taxon["taxon_id"] for taxon in existing_taxons]
 
     # Gather existing ncbi_taxon_ids
     existing_ncbi_taxon_ids: List[str] = [
@@ -86,7 +84,7 @@ async def store_raw_to_terms(params: TermStoreModel) -> TermStoreResponseModelOb
                     info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}.",
                 )
             )
-        
+
     async with await client.start_session() as session:
         async with session.start_transaction():
             # Process existing taxons

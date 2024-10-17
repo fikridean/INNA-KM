@@ -35,50 +35,49 @@ async def create_taxon(
                 "status_code": StatusCode.BAD_REQUEST.value,
             }
         )
-    
-    taxa: dict = await taxon_collection.find(
-        {}, {"_id": 0}
-    ).to_list(length=None)
 
-    taxon_to_store: List[TaxonBaseModel] = params.copy()
+    # Retrieve all existing taxa without _id field
+    existing_taxa = {
+        (taxon["species"], taxon["ncbi_taxon_id"]): taxon
+        for taxon in await taxon_collection.find({}, {"_id": 0}).to_list(length=None)
+    }
 
-    taxon_in_params_with_same_species_and_ncbi_taxon_id: List[str] = []
+    taxon_to_store: List[TaxonBaseModel] = []
+    taxon_in_params_with_same_species_and_ncbi_taxon_id: List[TaxonBaseModel] = []
 
     # Check if taxon with the same species and ncbi_taxon_id already exists
     for taxon in params:
-        for existing_taxon in taxa:
-            if (
-                taxon.taxon_id != existing_taxon.get("taxon_id")
-                and taxon.species == existing_taxon.get("species")
-                and taxon.ncbi_taxon_id == existing_taxon.get("ncbi_taxon_id")
-            ):
-                taxon_in_params_with_same_species_and_ncbi_taxon_id.append(taxon.__dict__)
-                taxon_to_store.remove(taxon)
-        
-    # Use a single transaction for the bulk operation
-    async with await client.start_session() as session:
-        async with session.start_transaction():
-            bulk_ops: List[UpdateOne] = [
-                UpdateOne(
-                    {"taxon_id": taxon.taxon_id},
-                    {
-                        "$set": {
-                            "taxon_id": taxon.taxon_id,
-                            "ncbi_taxon_id": taxon.ncbi_taxon_id,
-                            "species": taxon.species,
-                        }
-                    },
-                    upsert=True,
-                )
-                for taxon in taxon_to_store
-            ]
+        key = (taxon.species, taxon.ncbi_taxon_id)
+        if key in existing_taxa and taxon.taxon_id != existing_taxa[key].get(
+            "taxon_id"
+        ):
+            taxon_in_params_with_same_species_and_ncbi_taxon_id.append(taxon.__dict__)
+        else:
+            taxon_to_store.append(taxon)
 
-            # bulk write the operations
-            if bulk_ops:
+    # Use a single transaction for the bulk operation
+    if taxon_to_store:
+        bulk_ops = [
+            UpdateOne(
+                {"taxon_id": taxon.taxon_id},
+                {
+                    "$set": {
+                        "taxon_id": taxon.taxon_id,
+                        "ncbi_taxon_id": taxon.ncbi_taxon_id,
+                        "species": taxon.species,
+                    }
+                },
+                upsert=True,
+            )
+            for taxon in taxon_to_store
+        ]
+
+        async with await client.start_session() as session:
+            async with session.start_transaction():
                 await taxon_collection.bulk_write(bulk_ops, session=session)
 
-    # prepare response
-    result: List[TaxonBaseResponseModelObject] = [
+    # Prepare response
+    result = [
         TaxonBaseResponseModelObject(
             taxon_id=taxon.taxon_id,
             ncbi_taxon_id=taxon.ncbi_taxon_id,

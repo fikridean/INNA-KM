@@ -23071,3 +23071,147 @@ System Memory usage after request: 32.6%
 Activity: GET http://127.0.0.1:8000/livereload/6853480/6857374
 Total Requests: 67, Total Errors: 0
 
+Request: POST http://127.0.0.1:8000/api/v1/taxa/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '1c77b784-88b9-4de2-b4ce-48274ae71688', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '5049'})
+System CPU usage before request: 3.1%
+System Memory usage before request: 32.0%
+Response status: 200
+Time taken: 0.51 seconds
+Response size: 6372 bytes
+System CPU usage after request: 1.6%
+System Memory usage after request: 32.1%
+Activity: POST http://127.0.0.1:8000/api/v1/taxa/create
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/api/v1/taxa/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'f527cb55-1cbe-4e85-9662-fb60102f33b6', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '5049'})
+System CPU usage before request: 0.9%
+System Memory usage before request: 32.2%
+Response status: 200
+Time taken: 0.10 seconds
+Response size: 6372 bytes
+System CPU usage after request: 2.5%
+System Memory usage after request: 32.2%
+Activity: POST http://127.0.0.1:8000/api/v1/taxa/create
+Total Requests: 2, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/api/v1/taxa/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '9d94afb6-243e-4ffe-888d-9df885ec9d42', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '5049'})
+System CPU usage before request: 2.3%
+System Memory usage before request: 36.5%
+Response status: 200
+Time taken: 0.68 seconds
+Response size: 6372 bytes
+System CPU usage after request: 0.9%
+System Memory usage after request: 36.6%
+Activity: POST http://127.0.0.1:8000/api/v1/taxa/create
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/api/v1/taxa/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'd3b7beea-c46e-4199-a5e5-dff24f5725fc', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '5054'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 36.6%
+Response status: 200
+Time taken: 0.09 seconds
+Response size: 6423 bytes
+System CPU usage after request: 1.3%
+System Memory usage after request: 36.6%
+Activity: POST http://127.0.0.1:8000/api/v1/taxa/create
+Total Requests: 2, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/api/v1/taxa/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '1e412cfc-d960-495f-88d9-4e5af43c9a13', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '5054'})
+System CPU usage before request: 3.3%
+System Memory usage before request: 32.8%
+Response status: 200
+Time taken: 0.46 seconds
+Response size: 6377 bytes
+System CPU usage after request: 4.1%
+System Memory usage after request: 32.9%
+Activity: POST http://127.0.0.1:8000/api/v1/taxa/create
+Total Requests: 1, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/api/v1/portals/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'a272b631-c45c-4040-bc76-f13de8244b2f', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '6898'})
+System CPU usage before request: 0.9%
+System Memory usage before request: 32.9%
+Response status: 200
+Time taken: 1.35 seconds
+Response size: 6375 bytes
+System CPU usage after request: 1.1%
+System Memory usage after request: 32.9%
+Activity: POST http://127.0.0.1:8000/api/v1/portals/create
+Total Requests: 2, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/api/v1/portals/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'fdd24be3-953f-4be7-95a0-42f0c7976875', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '6894'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 32.9%
+Response status: 200
+Time taken: 1.40 seconds
+Response size: 6371 bytes
+System CPU usage after request: 0.9%
+System Memory usage after request: 32.9%
+Activity: POST http://127.0.0.1:8000/api/v1/portals/create
+Total Requests: 3, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/api/v1/taxa/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '13b67da9-800c-4b5c-89f2-066838f4dfe6', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '5049'})
+System CPU usage before request: 0.8%
+System Memory usage before request: 32.9%
+Response status: 200
+Time taken: 0.12 seconds
+Response size: 6372 bytes
+System CPU usage after request: 1.1%
+System Memory usage after request: 32.9%
+Activity: POST http://127.0.0.1:8000/api/v1/taxa/create
+Total Requests: 4, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/api/v1/portals/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '4b54d4f4-3220-4d5c-8087-370c6caba654', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '6894'})
+System CPU usage before request: 1.2%
+System Memory usage before request: 32.9%
+Response status: 200
+Time taken: 1.57 seconds
+Response size: 6355 bytes
+System CPU usage after request: 1.0%
+System Memory usage after request: 32.9%
+Activity: POST http://127.0.0.1:8000/api/v1/portals/create
+Total Requests: 5, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/api/v1/terms/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': '3f0a7969-8175-4839-9218-5b1b49dc1b4a', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '68'})
+System CPU usage before request: 0.9%
+System Memory usage before request: 32.7%
+Response status: 200
+Time taken: 0.18 seconds
+Response size: 9033 bytes
+System CPU usage after request: 0.3%
+System Memory usage after request: 32.7%
+Activity: POST http://127.0.0.1:8000/api/v1/terms/create
+Total Requests: 6, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/api/v1/terms/create
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'f2edc51b-a1ca-431c-a884-e3dd66115034', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '919'})
+System CPU usage before request: 0.9%
+System Memory usage before request: 32.7%
+Response status: 200
+Time taken: 4.66 seconds
+Response size: 673126 bytes
+System CPU usage after request: 1.2%
+System Memory usage after request: 32.8%
+Activity: POST http://127.0.0.1:8000/api/v1/terms/create
+Total Requests: 7, Total Errors: 0
+
+Request: POST http://127.0.0.1:8000/api/v1/terms/get
+Headers: Headers({'content-type': 'application/json', 'user-agent': 'PostmanRuntime/7.42.0', 'accept': '*/*', 'postman-token': 'b4913934-5598-4aa1-b001-601e4c5ee962', 'host': '127.0.0.1:8000', 'accept-encoding': 'gzip, deflate, br', 'connection': 'keep-alive', 'content-length': '61'})
+System CPU usage before request: 0.7%
+System Memory usage before request: 32.8%
+Response status: 200
+Time taken: 0.12 seconds
+Response size: 24231 bytes
+System CPU usage after request: 1.6%
+System Memory usage after request: 32.8%
+Activity: POST http://127.0.0.1:8000/api/v1/terms/get
+Total Requests: 8, Total Errors: 0
+

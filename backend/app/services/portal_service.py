@@ -60,7 +60,7 @@ async def create_portal(
                 "status_code": StatusCode.BAD_REQUEST.value,
             }
         )
-    
+
     result: List[PortalCreateResponseModelObject] = []
 
     portal_to_store: List[PortalCreateModel] = params.copy()
@@ -107,7 +107,6 @@ async def create_portal(
     async with await client.start_session() as session:
         async with session.start_transaction():
             await portal_collection.bulk_write(operations, session=session)
-
 
     # Prepare the result response
     result += [
