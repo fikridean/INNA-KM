@@ -51,28 +51,43 @@ async def create_portal(
             }
         )
 
-    # Gather taxon_ids to check their existence
-    taxon_ids: List[str] = [portal.taxon_id for portal in params]
+    # Check if the payload is empty
+    if not params:
+        raise Exception(
+            {
+                "data": [],
+                "message": ResponseMessage.INVALID_PAYLOAD.value,
+                "status_code": StatusCode.BAD_REQUEST.value,
+            }
+        )
+    
+    result: List[PortalCreateResponseModelObject] = []
 
-    # Check for existing taxon_ids in the taxon_collection
-    existing_taxons: List[dict] = await taxon_collection.find(
-        {"taxon_id": {"$in": taxon_ids}}, {"_id": 0}
-    ).to_list(length=None)
+    portal_to_store: List[PortalCreateModel] = params.copy()
 
-    # Gather existing taxon_ids
-    existing_taxon_ids: Set[str] = {taxon["taxon_id"] for taxon in existing_taxons}
+    # Check if taxon with the same species and ncbi_taxon_id already exists
+    for portal in params:
+        taxon: dict = await taxon_collection.find_one(
+            {"taxon_id": portal.taxon_id}, {"_id": 0}
+        )
+
+        if not taxon:
+            result.append(
+                PortalCreateResponseModelObject(
+                    portal_id=portal.portal_id,
+                    taxon_id=portal.taxon_id,
+                    web=portal.web,
+                    status=StatusMessage.DATA_FAILED.value,
+                    info=f"{InfoMessage.DATA_NOT_CREATED.value}: {InfoMessage.TAXON_NOT_EXIST.value}",
+                )
+            )
+
+            portal_to_store.remove(portal)
 
     # Prepare operations and check for missing taxons
     operations: List[UpdateOne] = []
-    for portal in params:
-        if portal.taxon_id not in existing_taxon_ids:
-            raise Exception(
-                {
-                    "data": [],
-                    "message": f"Taxon ID {portal.taxon_id} does not exist in the taxon collection.",
-                    "status_code": StatusCode.BAD_REQUEST.value,
-                }
-            )
+
+    for portal in portal_to_store:
         # Append the update operation
         operations.append(
             UpdateOne(
@@ -93,8 +108,9 @@ async def create_portal(
         async with session.start_transaction():
             await portal_collection.bulk_write(operations, session=session)
 
+
     # Prepare the result response
-    result: List[PortalCreateResponseModelObject] = [
+    result += [
         PortalCreateResponseModelObject(
             portal_id=portal.portal_id,
             taxon_id=portal.taxon_id,
@@ -102,7 +118,7 @@ async def create_portal(
             status=StatusMessage.DATA_SUCCESS.value,
             info=InfoMessage.DATA_CREATED.value,
         )
-        for portal in params
+        for portal in portal_to_store
     ]
 
     return result

@@ -327,7 +327,7 @@ async def get_raw(params: RawGetModel) -> List[RawGetResponseModelObject]:
                     web=web,
                     data=None,
                     status=StatusMessage.DATA_FAILED.value,
-                    info=InfoMessage.DATA_NOT_RETRIEVED.value,
+                    info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.RAW_NOT_EXIST.value}",
                 )
             )
 
@@ -479,7 +479,7 @@ async def delete_raw_from_db(
                     web=web,
                     data=None,
                     status=StatusMessage.DATA_FAILED.value,
-                    info=InfoMessage.DATA_NOT_RETRIEVED.value,
+                    info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.RAW_NOT_EXIST.value}",
                 )
             )
 

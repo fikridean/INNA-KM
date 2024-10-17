@@ -13,7 +13,7 @@ class TermGetModel(BaseModel):
 
 
 class TermStoreModel(BaseModel):
-    taxon_id: List[Annotated[int, Field(..., ge=1)]]
+    ncbi_taxon_id: List[Annotated[str, Field(..., min_length=1, max_length=100)]]
 
     class Config:
         extra = "forbid"  # Forbid extra fields

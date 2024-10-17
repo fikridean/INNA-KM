@@ -35,7 +35,26 @@ async def create_taxon(
                 "status_code": StatusCode.BAD_REQUEST.value,
             }
         )
+    
+    taxa: dict = await taxon_collection.find(
+        {}, {"_id": 0}
+    ).to_list(length=None)
 
+    taxon_to_store: List[TaxonBaseModel] = params.copy()
+
+    taxon_in_params_with_same_species_and_ncbi_taxon_id: List[str] = []
+
+    # Check if taxon with the same species and ncbi_taxon_id already exists
+    for taxon in params:
+        for existing_taxon in taxa:
+            if (
+                taxon.taxon_id != existing_taxon.get("taxon_id")
+                and taxon.species == existing_taxon.get("species")
+                and taxon.ncbi_taxon_id == existing_taxon.get("ncbi_taxon_id")
+            ):
+                taxon_in_params_with_same_species_and_ncbi_taxon_id.append(taxon.__dict__)
+                taxon_to_store.remove(taxon)
+        
     # Use a single transaction for the bulk operation
     async with await client.start_session() as session:
         async with session.start_transaction():
@@ -51,7 +70,7 @@ async def create_taxon(
                     },
                     upsert=True,
                 )
-                for taxon in params
+                for taxon in taxon_to_store
             ]
 
             # bulk write the operations
@@ -67,7 +86,16 @@ async def create_taxon(
             status=StatusMessage.DATA_SUCCESS.value,
             info=InfoMessage.DATA_CREATED.value,
         )
-        for taxon in params
+        for taxon in taxon_to_store
+    ] + [
+        TaxonBaseResponseModelObject(
+            taxon_id=taxon.get("taxon_id"),
+            ncbi_taxon_id=taxon.get("ncbi_taxon_id"),
+            species=taxon.get("species") or SpeciesMessage.SPECIES_NOT_FOUND.value,
+            status=StatusMessage.DATA_FAILED.value,
+            info=f"{InfoMessage.DATA_NOT_CREATED.value}: {InfoMessage.TAXON_WITH_SPECIES_AND_NCBI_TAXON_ID_EXIST.value}",
+        )
+        for taxon in taxon_in_params_with_same_species_and_ncbi_taxon_id
     ]
 
     return result
