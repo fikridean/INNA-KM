@@ -5,7 +5,7 @@ from typing import Any
 def success_response(
     data: Any, message: str = "Operation successful", status_code: int = 200
 ) -> JSONResponse:
-    content = {
+    content: dict = {
         "status": status_code,
         "success": True,
         "message": message,

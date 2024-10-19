@@ -75,6 +75,7 @@ class InfoMessage(Enum):
     TAXON_WITH_SPECIES_AND_NCBI_TAXON_ID_EXIST = (
         "Taxon with species and ncbi_taxon_id already exist"
     )
+    PORTAL_WITH_TAXON_ID_EXIST = "Portal with taxon_id already exist"
 
     TAXON_NOT_EXIST = "Taxon does not exist"
     PORTAL_NOT_EXIST = "Portal does not exist"

@@ -28,6 +28,7 @@ async def run_function_from_module(
     spec = importlib.util.spec_from_file_location(
         module_name, OPERATIONS_FOLDERS + "/" + module_name + ".py"
     )
+
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
 
@@ -45,20 +46,23 @@ async def run_function_from_module(
 def get_directories(directory: str) -> int:
     try:
         # List all files in the directory
-        files = os.listdir(directory)
+        files: List[str] = os.listdir(directory)
+
         # Filter out directories, only count files
-        files = [f for f in files if os.path.isfile(os.path.join(directory, f))]
+        files: List[str] = [
+            f for f in files if os.path.isfile(os.path.join(directory, f))
+        ]
         return files
     except FileNotFoundError:
         print(f"The directory {directory} does not exist.")
         return 0
 
 
-def find_matching_parts(data_array: list, term: str) -> list:
-    results = []
+def find_matching_parts(data_array: List[dict], term: str) -> List[dict]:
+    results: List[dict] = []
 
-    def search_dict(d):
-        matched_items = {}
+    def search_dict(d: dict) -> dict:
+        matched_items: dict = {}
         for key, value in d.items():
             if isinstance(value, dict):
                 result = search_dict(value)
@@ -70,9 +74,12 @@ def find_matching_parts(data_array: list, term: str) -> list:
 
     for data in data_array:
         # Always include 'taxon_id' and 'species' if they exist
-        result = {"taxon_id": data.get("taxon_id"), "species": data.get("species")}
+        result: dict = {
+            "taxon_id": data.get("taxon_id"),
+            "species": data.get("species"),
+        }
 
-        matched_data = search_dict(data)
+        matched_data: dict = search_dict(data)
         if matched_data:
             result.update(matched_data)
         if result:
@@ -118,7 +125,7 @@ def handleError(e: Exception):
 
 # Check for unsupported web sources
 def checkUnsupportedWeb(webs: List[str]) -> List[str]:
-    unsupported_webs = []
+    unsupported_webs: List["str"] = []
     for web in webs:
         if web not in portal_webs:
             unsupported_webs.append(web)

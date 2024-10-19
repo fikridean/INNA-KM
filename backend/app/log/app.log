@@ -1,180 +1,32 @@
-Error in Create portal: sequence item 0: expected str instance, list found
+Error in Create portal: No operations to execute
 
-Error in Create portal: checkUnsupportedWeb() missing 1 required positional argument: 'webs'
+Error in Create portal: No operations to execute
 
-Error in Create portal: checkUnsupportedWeb() missing 1 required positional argument: 'webs'
+Error in Create portal: No operations to execute
 
-Error in Create portal: checkUnsupportedWeb() missing 1 required positional argument: 'webs'
+Error in Create portal: No operations to execute
 
-Error in Create portal: {'data': [], 'message': 'Web sources not supported: testing1, testing2.', 'status_code': 400}
+Error in Create portal: No operations to execute
 
-Error in Get taxa: bad operand type for unary +: 'list'
+Error in Create portal: No operations to execute
 
-Error in Get taxa: bad operand type for unary +: 'list'
+Error in Create portal: No operations to execute
 
-Error in Get taxa: bad operand type for unary +: 'list'
+Error in Create portal: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.portals index: taxon_id_index_portal dup key: { taxon_id: 1 }', 'keyPattern': {'taxon_id': 1}, 'keyValue': {'taxon_id': 1}, 'op': {'q': {'portal_id': 111}, 'u': {'$set': {'portal_id': 111, 'taxon_id': 1, 'web': ['wikidata', 'ncbi', 'bacdive', 'gbif']}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
 
-Error in Get taxa: bad operand type for unary +: 'list'
+Error in Create portal: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.portals index: taxon_id_index_portal dup key: { taxon_id: 1 }', 'keyPattern': {'taxon_id': 1}, 'keyValue': {'taxon_id': 1}, 'op': {'q': {'portal_id': 111}, 'u': {'$set': {'portal_id': 111, 'taxon_id': 1, 'web': ['wikidata', 'ncbi', 'bacdive', 'gbif']}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
 
-Error in Get taxa: bad operand type for unary +: 'list'
+Error in Create portal: name 'portal_cannot_be_stored' is not defined
 
-Error in Get taxa: bad operand type for unary +: 'list'
+Error in Create portal: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.portals index: taxon_id_index_portal dup key: { taxon_id: 1 }', 'keyPattern': {'taxon_id': 1}, 'keyValue': {'taxon_id': 1}, 'op': {'q': {'portal_id': 111}, 'u': {'$set': {'portal_id': 111, 'taxon_id': 1, 'web': ['wikidata', 'ncbi', 'bacdive', 'gbif']}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
 
-Error in Get taxa: bad operand type for unary +: 'list'
+Error in Create portal: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.portals index: taxon_id_index_portal dup key: { taxon_id: 1 }', 'keyPattern': {'taxon_id': 1}, 'keyValue': {'taxon_id': 1}, 'op': {'q': {'portal_id': 111}, 'u': {'$set': {'portal_id': 111, 'taxon_id': 1, 'web': ['wikidata', 'ncbi', 'bacdive', 'gbif']}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
 
-Error in Get taxa: bad operand type for unary +: 'list'
+Error in Create portal: PORTAL_WITH_TAXON_ID_AND_PORTAL_ID_EXIST
 
-Error in Create portal: {'data': [], 'message': 'Web sources not supported: testing1, testing2.', 'status_code': 400}
+Error in Create portal: PORTAL_WITH_TAXON_ID_AND_PORTAL_ID_EXIST
 
-Error in Store raw to terms documents: 1
+Error in Create portal: PORTAL_WITH_TAXON_ID_AND_PORTAL_ID_EXIST
 
-Error in Store raw to terms documents: 1
-
-Error in Store raw to terms documents: 'ncbi_taxon_id'
-
-Error in Store raw to terms documents: 'ncbi_taxon_id'
-
-Error in Store raw to terms documents: 'ncbi_taxon_id'
-
-Error in Store raw to terms documents: 'ncbi_taxon_id'
-
-Error in Store raw from portals: 'tuple' object has no attribute 'web'
-
-Error in Store raw from portals: 'tuple' object has no attribute 'web'
-
-Error in Store raw from portals: 'tuple' object has no attribute 'web'
-
-Error in Store raw from portals: 'tuple' object has no attribute 'web'
-
-Error in Store raw from portals: 'tuple' object has no attribute 'web'
-
-Error in Store raw from portals: 'tuple' object has no attribute 'web'
-
-Error in Store raw from portals: 'tuple' object has no attribute 'web'
-
-Error in Store raw from portals: 'tuple' object has no attribute 'web'
-
-Error in Store raw from portals: 'tuple' object has no attribute 'web'
-
-Error in Store raw from portals: 'tuple' object has no attribute 'web'
-
-Error in Store raw from portals: {'data': [], 'message': 'Web sources not supported: dawdawd.', 'status_code': 400}
-
-Error in Store raw from portals: {'data': [], 'message': 'Web sources not supported: dawdawd.', 'status_code': 400}
-
-Error in Get raw from raw collection: {'data': [], 'message': 'Web sources not supported: dawdawdawd.', 'status_code': 400}
-
-Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
-ncbi_taxon_id
-  Input should be a valid string [type=string_type, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.9/v/string_type
-
-Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
-ncbi_taxon_id
-  Input should be a valid string [type=string_type, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.9/v/string_type
-
-Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
-ncbi_taxon_id
-  Input should be a valid string [type=string_type, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.9/v/string_type
-
-Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
-ncbi_taxon_id
-  Input should be a valid string [type=string_type, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.9/v/string_type
-
-Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
-ncbi_taxon_id
-  Input should be a valid string [type=string_type, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.9/v/string_type
-
-Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
-ncbi_taxon_id
-  Input should be a valid string [type=string_type, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.9/v/string_type
-
-Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
-ncbi_taxon_id
-  Input should be a valid string [type=string_type, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.9/v/string_type
-
-Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
-ncbi_taxon_id
-  Input should be a valid string [type=string_type, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.9/v/string_type
-
-Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
-ncbi_taxon_id
-  Input should be a valid string [type=string_type, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.9/v/string_type
-
-Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
-ncbi_taxon_id
-  Input should be a valid string [type=string_type, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.9/v/string_type
-
-Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
-ncbi_taxon_id
-  Input should be a valid string [type=string_type, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.9/v/string_type
-
-Error in Get raw from raw collection: 1 validation error for RawGetResponseModelObject
-ncbi_taxon_id
-  Input should be a valid string [type=string_type, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.9/v/string_type
-
-Error in Delete raw from raw collection: free variable 'taxon' referenced before assignment in enclosing scope
-
-Error in Delete raw from raw collection: free variable 'taxon' referenced before assignment in enclosing scope
-
-Error in Get terms data: type() takes 1 or 3 arguments
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 111}, 'u': {'$set': {'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 111}, 'u': {'$set': {'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 111}, 'u': {'$set': {'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 111}, 'u': {'$set': {'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 111}, 'u': {'$set': {'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Create portal: {'data': [], 'message': 'Taxon ID 111 does not exist in the taxon collection.', 'status_code': 400}
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 111}, 'u': {'$set': {'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 111}, 'u': {'$set': {'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 111}, 'u': {'$set': {'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 111}, 'u': {'$set': {'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 111}, 'u': {'$set': {'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 1}, 'u': {'$set': {'taxon_id': 1, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Create taxon: sequence item 0: expected str instance, int found
-
-Error in Create taxon: {'data': [], 'message': 'Taxon with species and ncbi_taxon_id already exist for species: Achromobacter mucicolens, Aeromonas hydrophila, Chelatococcus thermostellatus, Cobetia marina, Dactylosporangium aurantiacum, Empedobacter tilapiae, Escherichia fergusonii, Klebsiella aerogenes, Klebsiella pasteurii, Klebsiella pneumoniae, Lactiplantibacillus plantarum, Luteibacter jiangsuensis, Myxococcus stipitatus, Ochrobactrum quorumnocens, Pantoea agglomerans, Pantoea dispersa, Pseudomonas ceruminis, Pseudomonas palmensis, Pseudomonas qingdaonensis, Raoultella ornithinolytica, Rhodopseudomonas palustris, Stenotrophomonas maltophilia, Streptomyces fagopyri, Streptomyces lutosisoli, Streptomyces mirabilis, Stutzerimonas stutzeri, Xanthomonas campestris, Rhizobium leguminosarum, Streptomyces kunmingensis, Streptomyces rochei, Streptomyces griseorubens, Streptomyces sp., Streptomyces sampsonii, Micromonospora chalcea, Klebsiella quasivariicola, Escherichia coli, Gulosibacter sp., Pseudomonas hibiscicola, Providencia rettgeri, Burkholderia sp., Klebsiella oxytoca, Brevibacterium ammoniilyticum, Escherichia sp., Klebsiella quasipneumoniae, Klebsiella sp., Pantoea, Pseudomonas sp., Stenotrophomonas sp., Xanthomonas sp.', 'status_code': 400}
-
-Error in Create taxon: {'data': [], 'message': 'Taxon with species and ncbi_taxon_id already exist for species: Achromobacter mucicolens', 'status_code': 400}
-
-Error in Create taxon: {'data': [TaxonBaseModel(taxon_id=1, ncbi_taxon_id='1389922', species='Achromobacter mucicolens')], 'message': 'Taxon with species and ncbi_taxon_id already exist', 'status_code': 400}
-
-Error in Create taxon: {'data': [{'taxon_id': 1, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}], 'message': 'Taxon with species and ncbi_taxon_id already exist', 'status_code': 400}
-
-Error in Create taxon: {'data': {'taxon_in_params_with_same_species_and_ncbi_taxon_id': [{'taxon_id': 1, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}], 'taxon_exist_in_db_with_same_species_and_ncbi_taxon_id': [{'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}]}, 'message': 'Taxon with species and ncbi_taxon_id already exist', 'status_code': 400}
-
-Error in Create taxon: {'data': {'taxon_in_params_with_same_species_and_ncbi_taxon_id': [{'taxon_id': 1, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}], 'taxon_exist_in_db_with_same_species_and_ncbi_taxon_id': [{'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}]}, 'message': 'Taxon with species and ncbi_taxon_id already exist', 'status_code': 400}
-
-Error in Create taxon: {'data': {'taxon_in_params_with_same_species_and_ncbi_taxon_id': [{'taxon_id': 1, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}, {'taxon_id': 2111, 'ncbi_taxon_id': '644', 'species': 'Aeromonas hydrophila'}], 'taxon_exist_in_db_with_same_species_and_ncbi_taxon_id': [{'taxon_id': 111, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}, {'taxon_id': 2, 'ncbi_taxon_id': '644', 'species': 'Aeromonas hydrophila'}]}, 'message': 'Taxon with species and ncbi_taxon_id already exist', 'status_code': 400}
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 1}, 'u': {'$set': {'taxon_id': 1, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Create taxon: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.taxa index: ncbi_taxon_id_index_taxa dup key: { ncbi_taxon_id: "1389922" }', 'keyPattern': {'ncbi_taxon_id': 1}, 'keyValue': {'ncbi_taxon_id': '1389922'}, 'op': {'q': {'taxon_id': 1}, 'u': {'$set': {'taxon_id': 1, 'ncbi_taxon_id': '1389922', 'species': 'Achromobacter mucicolens'}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
-
-Error in Store raw from portals: {'data': [], 'message': 'Web sources not supported: testing.', 'status_code': 400}
-
-Error in Create portal: {'data': [], 'message': 'Taxon ID 11111 does not exist in the taxon collection.', 'status_code': 400}
+Error in Create portal: PORTAL_WITH_TAXON_ID_AND_PORTAL_ID_EXIST
 

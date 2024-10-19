@@ -31,7 +31,7 @@ def log_function(action: str):
         @wraps(func)
         async def wrapper(*args, **kwargs):
             try:
-
+                # If debug mode is on, log function entry
                 if DEBUG == True:
                     # Log function entry
                     appLogger.info(
@@ -42,6 +42,7 @@ def log_function(action: str):
                 # Call the actual function
                 result = await func(*args, **kwargs)
 
+                # If debug mode is on, log function exit
                 if DEBUG == True:
                     # Log function exit
                     elapsed_time = time.utcnow() - start_time

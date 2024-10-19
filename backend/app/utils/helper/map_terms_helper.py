@@ -1,5 +1,5 @@
 def mapping(params: list) -> dict:
-    combined_data = {}
+    combined_data: dict = {}
 
     for item in params:
         match item["web"]:

@@ -65,24 +65,18 @@ async def create_portal(
 
     portal_to_store: List[PortalCreateModel] = params.copy()
 
-    # Check if taxon with the same species and ncbi_taxon_id already exists
-    for portal in params:
-        taxon: dict = await taxon_collection.find_one(
-            {"taxon_id": portal.taxon_id}, {"_id": 0}
-        )
+    # Check if portal_id not in database, but taxon_id is in database, then dont store
+    portal_cannot_be_stored: List[PortalCreateModel] = []
 
-        if not taxon:
-            result.append(
-                PortalCreateResponseModelObject(
-                    portal_id=portal.portal_id,
-                    taxon_id=portal.taxon_id,
-                    web=portal.web,
-                    status=StatusMessage.DATA_FAILED.value,
-                    info=f"{InfoMessage.DATA_NOT_CREATED.value}: {InfoMessage.TAXON_NOT_EXIST.value}",
-                )
-            )
-
-            portal_to_store.remove(portal)
+    for portal in portal_to_store:
+        if not await portal_collection.find_one(
+            {"portal_id": portal.portal_id}, {"_id": 0}
+        ):
+            if await portal_collection.find_one(
+                {"taxon_id": portal.taxon_id}, {"_id": 0}
+            ):
+                portal_to_store.remove(portal)
+                portal_cannot_be_stored.append(portal)
 
     # Prepare operations and check for missing taxons
     operations: List[UpdateOne] = []
@@ -118,6 +112,15 @@ async def create_portal(
             info=InfoMessage.DATA_CREATED.value,
         )
         for portal in portal_to_store
+    ] + [
+        PortalCreateResponseModelObject(
+            portal_id=portal.portal_id,
+            taxon_id=portal.taxon_id,
+            web=portal.web,
+            status=StatusMessage.DATA_FAILED.value,
+            info=f"{InfoMessage.DATA_NOT_CREATED.value}: {InfoMessage.PORTAL_WITH_TAXON_ID_EXIST.value}",
+        )
+        for portal in portal_cannot_be_stored
     ]
 
     return result
@@ -142,7 +145,7 @@ async def get_portals(params: PortalGetModel) -> List[PortalGetResponseModelObje
 
     # Gather missing portal_ids
     if portal_id_for_query:
-        missing_portals: set = set(portal_id_for_query) - found_portal_ids
+        missing_portals: Set[int] = set(portal_id_for_query) - found_portal_ids
 
     # Prepare the result response
     result: List[PortalGetResponseModelObject] = [
@@ -207,8 +210,11 @@ async def delete_portal(
     params: PortalDeleteModel,
 ) -> List[PortalDeleteResponseModelObject]:
 
+    # prepare query
+    portal_id_for_query: List[int] = params.portal_id or []
+
     # If portal_id is not provided, return an error
-    if not params.portal_id:
+    if not portal_id_for_query:
         raise Exception(
             {
                 "data": [],
@@ -216,9 +222,6 @@ async def delete_portal(
                 "status_code": StatusCode.BAD_REQUEST.value,
             }
         )
-
-    # prepare query
-    portal_id_for_query: List[int] = params.portal_id or []
 
     async with await client.start_session() as session:
         async with session.start_transaction():
@@ -311,8 +314,11 @@ async def retrieve_data(
             }
         )
 
+    ncbi_taxon_id_for_query: List[int] = params.ncbi_taxon_id or []
+    web_for_query: List[str] = params.web or []
+
     # Check if ncbi_taxon_id and web are provided
-    if not params.ncbi_taxon_id or not params.web:
+    if not ncbi_taxon_id_for_query or not web_for_query:
         raise Exception(
             {
                 "data": [],
@@ -322,17 +328,17 @@ async def retrieve_data(
         )
 
     # Check for unsupported web sources
-    if params.web not in portal_webs:
+    if web_for_query not in portal_webs:
         raise Exception(
             {
                 "data": [],
-                "message": f"Web source not supported: {params.web}.",
+                "message": f"Web source not supported: {web_for_query}.",
                 "status_code": StatusCode.BAD_REQUEST.value,
             }
         )
 
     # prepare query
-    ncbi_taxon_id_for_query: List[int] = params.ncbi_taxon_id or []
+    ncbi_taxon_id_for_query: List[int] = ncbi_taxon_id_for_query or []
 
     async with await client.start_session() as session:
         async with session.start_transaction():
