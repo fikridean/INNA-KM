@@ -35,3 +35,7 @@ if not OPERATIONS_FOLDERS:
 DEBUG = os.getenv("DEBUG")
 if not DEBUG:
     raise ValueError("DEBUG must be defined.")
+
+API_PREFIX = os.getenv("API_PREFIX")
+if not API_PREFIX:
+    raise ValueError("API_PREFIX must be defined.")

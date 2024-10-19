@@ -1,368 +1,517 @@
-from fastapi import HTTPException
-from config import OPERATIONS_FOLDERS
-from models.portal_model import PortalRetrieveDataModel
-from models.raw_model import RawBaseModel, RawDeleteModel, RawDeleteResponseModel, RawGetModel, RawGetResponseModel, RawStoreModel, RawStoreResponseModel
+from typing import Any, List, Set, Tuple, Dict
+
+from pymongo import UpdateOne
+from utils.enum.status_code_enum import StatusCode
+from utils.enum.message_enum import (
+    SpeciesMessage,
+    StatusMessage,
+    InfoMessage,
+)
+from models.portal_model import (
+    PortalRetrieveDataModel,
+    PortalRetrieveDataResponseModelObject,
+)
+from models.raw_model import (
+    RawDeleteModel,
+    RawDeleteResponseModelObject,
+    RawGetModel,
+    RawGetResponseModelObject,
+    RawStoreModel,
+    RawStoreResponseModelObject,
+)
 from utils.decorator.app_log_decorator import log_function
-from utils.helper.func_helper import get_portals_webs, run_function_from_module
-from database.mongo import client, raw_collection
-from .portal_service import get_portals, retrieve_data
+from utils.helper.func_helper import (
+    checkUnsupportedWeb,
+    run_function_from_module,
+    portal_webs,
+)
+from database.mongo import client, raw_collection, taxon_collection, portal_collection
+from .portal_service import retrieve_data
+
+
+# Helper to filter webs for processing
+def filter_webs_for_processing(
+    portal_webs: List[str], web_for_query: List[str]
+) -> List[str]:
+    """Returns a list of webs that are present in both portal webs and the query."""
+    return list(set(portal_webs).intersection(set(web_for_query)))
+
+
+# Store raw from portals to raw collection
+@log_function("Store raw from portals")
+async def store_raw_from_portals(
+    params: RawStoreModel,
+) -> List[RawStoreResponseModelObject]:
+    # prepare query parameters
+    ncbi_taxon_id_for_query: List[str] = params.ncbi_taxon_id
+    web_for_query: List[str] = params.web or portal_webs
+
+    # Check for unsupported web sources
+    unsupported_webs: List[str] = checkUnsupportedWeb(web_for_query)
+    if unsupported_webs:
+        raise Exception(
+            {
+                "data": [],
+                "message": f"Web sources not supported: {', '.join(unsupported_webs)}.",
+                "status_code": StatusCode.BAD_REQUEST.value,
+            }
+        )
+
+    # Retrieve taxa
+    taxa: List[dict] = await taxon_collection.find(
+        {  # List of taxon dictionaries
+            "ncbi_taxon_id": {"$in": ncbi_taxon_id_for_query}
+        },
+        {"_id": 0},
+    ).to_list(length=None)
+
+    # Determine taxa not found
+    taxa_not_found: Set[str] = set(ncbi_taxon_id_for_query) - {
+        taxon["ncbi_taxon_id"] for taxon in taxa
+    }
+
+    # Prepare data structures
+    data_to_store: List[dict] = []
+    found_taxon_web: dict = {
+        taxon["ncbi_taxon_id"]: {
+            "taxon_id": taxon["taxon_id"],
+            "species": taxon["species"],
+            "found_webs": {"exist": [], "not_exist": []},
+            "missing_webs": set(web_for_query),
+            "status": StatusMessage.DATA_FAILED.value,
+            "info": InfoMessage.DATA_NOT_RETRIEVED_AND_STORED.value,
+        }
+        for taxon in taxa
+    }
+
+    # Retrieve taxon portals
+    taxon_ids: List[str] = [taxon["taxon_id"] for taxon in taxa]
+    portals: List[dict] = await portal_collection.find(
+        {"taxon_id": {"$in": taxon_ids}},
+        {"_id": 0, "taxon_id": 1, "portal_id": 1, "web": 1},
+    ).to_list(length=None)
+
+    # Create a map of taxon_id to portal
+    portal_map: dict = {portal["taxon_id"]: portal for portal in portals}
+
+    # Process each taxon
+    for taxon in taxa:
+        # Check if portal exists for taxon
+        portal: dict = portal_map.get(taxon["taxon_id"])
+        if portal:
+            # Store portal_id in taxon
+            taxon["portal_id"] = portal["portal_id"]
+
+            # Process each web
+            web_need_to_process: List[str] = filter_webs_for_processing(
+                portal["web"], web_for_query
+            )
+
+            for web in web_need_to_process:
+
+                # Retrieve data from portal
+                params: PortalRetrieveDataModel = PortalRetrieveDataModel(
+                    ncbi_taxon_id=taxon["ncbi_taxon_id"], web=web
+                )
+                retrieved_data: PortalRetrieveDataResponseModelObject = (
+                    await retrieve_data(params)
+                )
+
+                # Store data if retrieved
+                if retrieved_data:
+                    retrieved_data = retrieved_data.data
+
+                    # Store found data
+                    found_taxon_web[taxon["ncbi_taxon_id"]]["found_webs"][
+                        "exist"
+                    ].append(
+                        {
+                            "web": web,
+                            "status": StatusMessage.DATA_FOUND.value,
+                            "info": InfoMessage.DATA_RETRIEVED_AND_STORED.value,
+                        }
+                    )
+                    data_to_store.append(
+                        {
+                            "portal_id": taxon.get("portal_id"),
+                            "web": web,
+                            "data": await run_function_from_module(
+                                web, "data_processing", retrieved_data
+                            ),
+                        }
+                    )
+                else:
+                    # Store not found data
+                    found_taxon_web[taxon["ncbi_taxon_id"]]["found_webs"][
+                        "not_exist"
+                    ].append(
+                        {
+                            "web": web,
+                            "status": StatusMessage.DATA_NOT_FOUND.value,
+                            "info": InfoMessage.DATA_NOT_RETRIEVED_AND_STORED.value,
+                        }
+                    )
+
+                # Remove web from missing webs
+                found_taxon_web[taxon["ncbi_taxon_id"]]["missing_webs"].discard(web)
+
+    async with await client.start_session() as session:
+        async with session.start_transaction():
+            # Bulk write data to raw collection
+            bulk_operations = []
+            for data in data_to_store:
+                bulk_operations.append(
+                    UpdateOne(
+                        {
+                            "portal_id": data["portal_id"],
+                            "web": data["web"],
+                        },
+                        {"$set": data},
+                        upsert=True,
+                    )
+                )
+
+            # Execute bulk operations in one go
+            if bulk_operations:  # Ensure there are operations to execute
+                await raw_collection.bulk_write(bulk_operations, session=session)
+
+    # Prepare final result
+    result: List[RawStoreResponseModelObject] = []
+    for ncbi_taxon_id, details in found_taxon_web.items():
+        # Determine status and info
+        if not details["found_webs"]["exist"]:
+            # No data found
+            details["status"] = StatusMessage.DATA_FAILED.value
+            details["info"] = (
+                InfoMessage.DATA_NOT_RETRIEVED_AND_STORED_FROM_ALL_WEB.value
+            )
+        elif len(details["found_webs"]["exist"]) == len(web_for_query):
+            # All data found
+            details["status"] = StatusMessage.DATA_SUCCESS.value
+            details["info"] = InfoMessage.DATA_RETRIEVED_AND_STORED_FROM_ALL_WEB.value
+
+        result.append(
+            RawStoreResponseModelObject(
+                taxon_id=details["taxon_id"],
+                ncbi_taxon_id=ncbi_taxon_id,
+                species=details["species"],
+                found_webs=details["found_webs"],
+                missing_webs=list(details["missing_webs"]),
+                status=details["status"],
+                info=details["info"],
+            )
+        )
+
+    result.extend(
+        [
+            RawStoreResponseModelObject(
+                taxon_id=None,
+                ncbi_taxon_id=ncbi_taxon_id,
+                species=SpeciesMessage.SPECIES_NOT_FOUND.value,
+                found_webs={"exist": [], "not_exist": []},
+                missing_webs=web_for_query.copy(),
+                status=StatusMessage.DATA_FAILED.value,
+                info=f"{InfoMessage.DATA_NOT_RETRIEVED_AND_STORED.value}: {InfoMessage.TAXON_NOT_EXIST.value}",
+            )
+            for ncbi_taxon_id in taxa_not_found
+        ]
+    )
+
+    return result
+
 
 # Get raw from raw collection
 @log_function("Get raw from raw collection")
-async def get_raw(params: RawGetModel) -> RawGetResponseModel:
-    async with await client.start_session() as session:
-        async with session.start_transaction():
-            try:
-                taxon_id_for_query = params.taxon_id
-                web_for_query = params.web
+async def get_raw(params: RawGetModel) -> List[RawGetResponseModelObject]:
 
-                if ((taxon_id_for_query == None or taxon_id_for_query == []) and (web_for_query == None or web_for_query == [])):
-                    raw = await raw_collection.find({}, {'_id': 0}, session=session).to_list(length=None)
-                
-                elif ((taxon_id_for_query == None or taxon_id_for_query == []) and (web_for_query != None)):
-                    raw = await raw_collection.find({'web': {'$in': web_for_query}}, {'_id': 0}, session=session).to_list(length=None)
-                
-                elif ((taxon_id_for_query != None) and (web_for_query == None or web_for_query == [])):
-                    raw = await raw_collection.find({'taxon_id': {'$in': taxon_id_for_query}}, {'_id': 0}, session=session).to_list(length=None)
+    # Extract necessary parameters
+    ncbi_taxon_id__for_query: List[str] = params.ncbi_taxon_id
+    web_for_query: List[str] = params.web or portal_webs
 
-                else:
-                    raw = await raw_collection.find({
-                        'taxon_id': {'$in': taxon_id_for_query},
-                        'web': {'$in': web_for_query}
-                    }, {'_id': 0}, session=session).to_list(length=None)
+    # Build query for taxa
+    query_ncbi_taxon_id: dict = (
+        {"ncbi_taxon_id": {"$in": ncbi_taxon_id__for_query}}
+        if ncbi_taxon_id__for_query
+        else {}
+    )
 
-                return raw
-
-            except Exception as e:
-                raise Exception(f"An error occurred while retrieving raw: {str(e)}")
-            
-# Get raw with web detail
-@log_function("Get raw with web detail")
-async def get_raw_with_web_detail(params: RawGetModel) -> RawGetResponseModel:
-    try:
-        raws = await get_raw(params)
-        
-        taxon_id_for_query = params.taxon_id
-        web_for_query = params.web
-
-        # If no web is provided, get a default list of web sources
-        if not web_for_query:
-            web_for_query = [web.split(".")[0] for web in get_portals_webs(OPERATIONS_FOLDERS)]
-
-        # Get taxon id with no data
-        taxon_with_no_data = [taxon_id for taxon_id in taxon_id_for_query if taxon_id not in [raw['taxon_id'] for raw in raws]]
-
-        # Track found and missing taxon_id and web pairs
-        found_taxon_web = {}
-    
-        # Loop through the raws to build the result
-        for raw in raws:
-            taxon_id = raw['taxon_id']
-            web_source = raw['web']
-
-            if taxon_id not in found_taxon_web:
-                found_taxon_web[taxon_id] = {
-                    'species': raw.get('species', 'Unknown species'),  # Add species field
-                    'found_webs': {},
-                    'missing_webs': list(web_for_query),  # Initialize with all provided web sources
-                    'status': 'not_found',
-                    'info': 'No data found for any provided web sources.',
-                }
-
-            if web_source not in found_taxon_web[taxon_id]['found_webs']:
-                found_taxon_web[taxon_id]['found_webs'][web_source] = {
-                    'status': 'found',
-                    'info': 'Data found',
-                    'data': raw.get('data', {})
-                }
-
-            # Remove found webs from missing_webs
-            if web_source in found_taxon_web[taxon_id]['missing_webs']:
-                found_taxon_web[taxon_id]['missing_webs'].remove(web_source)
-
-            # Update status and info
-            found_taxon_web[taxon_id]['status'] = 'partially_found'
-            found_taxon_web[taxon_id]['info'] = 'Data found for some webs.'
-
-        result = []
-
-        # Loop through the found_taxon_web to build the result
-        for taxon_id, details in found_taxon_web.items():
-
-            if not details['found_webs']:
-                details['status'] = 'not_found'
-                details['info'] = 'No data found for any provided web sources.'
-            elif len(details['found_webs']) == len(web_for_query):
-                details['status'] = 'found'
-                details['info'] = 'Data found for all provided web sources.'
-
-            result.append({
-                'taxon_id': taxon_id,
-                'species': details['species'],
-                'found_webs': details['found_webs'],
-                'missing_webs': details['missing_webs'],
-                'status': details['status'],
-                'info': details['info']
-            })
-
-        # Handle taxon IDs not found in the raws
-        for taxon_id in taxon_with_no_data:
-            result.append({
-                'taxon_id': taxon_id,
-                'species': 'Unknown species',
-                'found_webs': {},
-                'missing_webs': web_for_query.copy(),
-                'status': 'not_found',
-                'info': 'No data found for any provided web sources.'
-            })
-
-        return result
-
-    except Exception as e:
-        raise Exception(f"An error occurred while retrieving raw with web detail: {str(e)}")
-            
-# Store raw to db with transaction
-@log_function("Store raw to db with transaction")
-async def store_raw_to_db(params: RawBaseModel):
-    async with await client.start_session() as session:
-        async with session.start_transaction():
-            try:
-                for data in params:
-                    await raw_collection.update_one({
-                        'taxon_id': data['taxon_id'],
-                        'web': data['web']
-                    }, {"$set": data}, upsert=True, session=session)
-
-            except Exception as e:
-                raise Exception(f"An error occurred while storing raw: {str(e)}")
-        
-# Store raw from portals to raw collection
-@log_function("Store raw from portals")
-async def store_raw_from_portals(params: RawStoreModel) -> RawStoreResponseModel:
-    try:
-        taxon_id_for_query = params.taxon_id
-        web_for_query = params.web
-
-        # If no web is provided, get a default list of web sources
-        if not web_for_query:
-            web_for_query = [web.split(".")[0] for web in get_portals_webs(OPERATIONS_FOLDERS)]
-
-        # Retrieve available portals for the provided taxon IDs
-        portals = await get_portals(params)
-
-        # Find taxon IDs that don't have corresponding portals
-        taxon_with_no_portal = [taxon_id for taxon_id in taxon_id_for_query if taxon_id not in [portal['taxon_id'] for portal in portals]]
-
-        # Prepare to store processed data and track which taxon_id and web combinations were found
-        data_to_store = []
-        found_taxon_web = {}
-
-        # Loop through each portal to process and retrieve data
-        for portal in portals:
-            species_name = portal['species']
-            taxon_id = portal['taxon_id']
-            web_source = portal['web']
-            
-            # Define parameters for data retrieval
-            paramsObj = {
-                "taxon_id": taxon_id,
-                "web": web_source
+    # Check for unsupported web sources
+    unsupported_webs: List[str] = checkUnsupportedWeb(web_for_query)
+    if unsupported_webs:
+        raise Exception(
+            {
+                "data": [],
+                "message": f"Web sources not supported: {', '.join(unsupported_webs)}.",
+                "status_code": StatusCode.BAD_REQUEST.value,
             }
+        )
 
-            params = PortalRetrieveDataModel(**paramsObj)
+    # Retrieve taxa
+    taxa: List[dict] = await taxon_collection.find(
+        query_ncbi_taxon_id, {"_id": 0}
+    ).to_list(length=None)
 
-            # Retrieve data for the given taxon_id and web source
-            retrieved_data = await retrieve_data(params)
+    # Extract ncbi_taxon_ids and taxon_ids from taxa
+    ncbi_taxon_ids = [taxon["ncbi_taxon_id"] for taxon in taxa]
+    taxon_ids = [taxon["taxon_id"] for taxon in taxa]
 
-            # Initialize tracking for taxon_id if not already set
-            if taxon_id not in found_taxon_web:
-                found_taxon_web[taxon_id] = {
-                    'species': species_name,  # Add species field
-                    'found_webs': {
-                        'exist': [],
-                        'not_exist': []
-                    },
-                    'missing_webs': list(web_for_query),  # Initialize with all webs to be checked,
-                    'status': 'not_found',
-                    'info': 'No data found for any provided web sources.',
-                }
+    # Find taxa not found in the database
+    not_found_taxa = [
+        ncbi_id for ncbi_id in ncbi_taxon_id__for_query if ncbi_id not in ncbi_taxon_ids
+    ]
 
-            # Check if data was retrieved successfully
-            if retrieved_data:
-                # Avoid duplicate entries in 'exist'
-                if not any(web['web'] == web_source for web in found_taxon_web[taxon_id]['found_webs']['exist']):
-                    found_taxon_web[taxon_id]['found_webs']['exist'].append({
-                        'web': web_source,
-                        'status': 'success',
-                        'info': 'Data retrieved from source and stored successfully.',
-                    })
+    # Retrieve portals
+    portals = await portal_collection.find(
+        {"taxon_id": {"$in": taxon_ids}}, {"_id": 0}
+    ).to_list(length=None)
 
-                # If data was found, remove the web from the missing list
-                if web_source in found_taxon_web[taxon_id]['missing_webs']:
-                    found_taxon_web[taxon_id]['missing_webs'].remove(web_source)
+    # Create maps for easy lookup
+    portal_map = {portal["taxon_id"]: portal["portal_id"] for portal in portals}
+    taxa_with_no_portal = [
+        taxon for taxon in taxa if taxon["taxon_id"] not in portal_map
+    ]
 
-                # Update status and info
-                found_taxon_web[taxon_id]['status'] = 'partially_found'
-                found_taxon_web[taxon_id]['info'] = 'Data retrieved from source and stored for some webs'
+    # Update taxa with portal_id
+    for taxon in taxa:
+        taxon["portal_id"] = portal_map.get(taxon["taxon_id"])
 
-                # Process and store the data
-                data_to_store.append({
-                    'web': portal['web'],
-                    'species': portal['species'],
-                    'taxon_id': portal['taxon_id'],
-                    'data': await run_function_from_module(portal['web'], "data_processing", retrieved_data)
-                })
-            else:
-                # Avoid duplicate entries in 'not_exist'
-                if not any(web['web'] == web_source for web in found_taxon_web[taxon_id]['found_webs']['not_exist']):
-                    found_taxon_web[taxon_id]['found_webs']['not_exist'].append({
-                        'web': web_source,
-                        'status': 'not_found',
-                        'info': 'No data retrieved from source and no data stored.',
-                    })
+    # Prepare to retrieve raw data
+    portal_ids = [taxon["portal_id"] for taxon in taxa if taxon.get("portal_id")]
+    raws = await raw_collection.find(
+        {"portal_id": {"$in": portal_ids}, "web": {"$in": web_for_query}}, {"_id": 0}
+    ).to_list(length=None)
 
-                # If data was not found, remove the web from the missing list
-                if web_source in found_taxon_web[taxon_id]['missing_webs']:
-                    found_taxon_web[taxon_id]['missing_webs'].remove(web_source)
+    # Create raw data map
+    raw_map = {}
+    for raw in raws:
+        raw_key = (raw["portal_id"], raw["web"])
+        raw_map.setdefault(raw_key, []).append(raw)
 
-        # Store the processed data in the database
-        await store_raw_to_db(data_to_store)
+    # Prepare results
+    result: List[RawGetResponseModelObject] = []
 
-        # Prepare the final result structure
-        result = []
+    # Process each taxon
+    for taxon in taxa:
+        portal_id = taxon.get("portal_id")
+        if not portal_id:
+            continue
 
-        # Loop through the found_taxon_web to build the result
-        for taxon_id, details in found_taxon_web.items():
-            if not details['found_webs']:
-                details['status'] = 'not_found'
-                details['info'] = 'No data found for any provided web sources.'
-            elif len(details['found_webs']['exist']) == len(web_for_query):
-                details['status'] = 'found'
-                details['info'] = 'Data retrieved from source and stored for all provided web sources.'
+        found_webs = set()
+        web_need_to_process = filter_webs_for_processing(portal_webs, web_for_query)
 
-            result.append({
-                'taxon_id': taxon_id,
-                'species': details['species'],
-                'found_webs': details['found_webs'],
-                'missing_webs': details['missing_webs'],
-                'status': details['status'],
-                'info': details['info']
-            })
-            
-        # Add taxon_ids that have no corresponding portal (not found)
-        for taxon_id in taxon_with_no_portal:
-            result.append({
-                'taxon_id': taxon_id,
-                'species': 'Unknown species',
-                'found_webs': {
-                    'exist': [],
-                    'not_exist': []
-                },
-                'missing_webs': list(web_for_query),
-                'status': 'not_found',
-                'info': 'No portal found for this taxon_id.'
-            })
+        for web in web_need_to_process:
+            raw_key = (portal_id, web)
+            if raw_key in raw_map:
+                for raw in raw_map[raw_key]:
+                    result.append(
+                        RawGetResponseModelObject(
+                            taxon_id=taxon["taxon_id"],
+                            ncbi_taxon_id=taxon["ncbi_taxon_id"],
+                            species=taxon["species"],
+                            web=web,
+                            data=raw["data"],
+                            status=StatusMessage.DATA_SUCCESS.value,
+                            info=InfoMessage.DATA_RETRIEVED.value,
+                        )
+                    )
+                found_webs.add(web)
 
-        # Return the final result
-        return result
+        # Handle missing webs
+        missing_webs = set(web_for_query) - found_webs
+        for web in missing_webs:
+            result.append(
+                RawGetResponseModelObject(
+                    taxon_id=taxon["taxon_id"],
+                    ncbi_taxon_id=taxon["ncbi_taxon_id"],
+                    species=taxon["species"],
+                    web=web,
+                    data=None,
+                    status=StatusMessage.DATA_FAILED.value,
+                    info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.RAW_NOT_EXIST.value}",
+                )
+            )
 
+    # Append not found taxa
+    result.extend(
+        [
+            RawGetResponseModelObject(
+                ncbi_taxon_id=ncbi_id,
+                species=SpeciesMessage.SPECIES_NOT_FOUND.value,
+                web=None,
+                data=None,
+                status=StatusMessage.DATA_FAILED.value,
+                info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.TAXON_NOT_EXIST.value}",
+            )
+            for ncbi_id in not_found_taxa
+        ]
+    )
 
-    except Exception as e:
-        raise Exception(f"An error occurred while storing data from all portals: {str(e)}")
+    # Append taxa with no portal
+    result.extend(
+        [
+            RawGetResponseModelObject(
+                taxon_id=taxon["taxon_id"],
+                ncbi_taxon_id=taxon["ncbi_taxon_id"],
+                species=taxon["species"],
+                web=None,
+                data=None,
+                status=StatusMessage.DATA_FAILED.value,
+                info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}",
+            )
+            for taxon in taxa_with_no_portal
+        ]
+    )
+
+    return result
+
 
 # Delete raw from raw collection
 @log_function("Delete raw from raw collection")
-async def delete_raw_from_db(params: RawDeleteModel) -> RawDeleteResponseModel:
-    async with await client.start_session() as session:
-        async with session.start_transaction():
-            try:
-                # Ensure both taxon_id and web are provided
-                if not params.taxon_id or not params.web:
-                    raise HTTPException(status_code=400, detail="For security reasons, you must provide both taxon_id and web.")
+async def delete_raw_from_db(
+    params: RawDeleteModel,
+) -> List[RawDeleteResponseModelObject]:
+    # Extract necessary parameters
+    ncbi_taxon_id__for_query: List[str] = params.ncbi_taxon_id
+    web_for_query: List[str] = params.web or portal_webs
 
-                taxon_id_for_query = params.taxon_id
-                web_for_query = params.web
+    # Build query for taxa
+    query_ncbi_taxon_id: dict = (
+        {"ncbi_taxon_id": {"$in": ncbi_taxon_id__for_query}}
+        if ncbi_taxon_id__for_query
+        else {}
+    )
 
-                # If no web is provided, get a default list of web sources
-                if not web_for_query:
-                    web_for_query = [web.split(".")[0] for web in get_portals_webs(OPERATIONS_FOLDERS)]
+    # Check for unsupported web sources
+    unsupported_webs: List[str] = checkUnsupportedWeb(web_for_query)
+    if unsupported_webs:
+        raise Exception(
+            {
+                "data": [],
+                "message": f"Web sources not supported: {', '.join(unsupported_webs)}.",
+                "status_code": StatusCode.BAD_REQUEST.value,
+            }
+        )
 
-                raws = await raw_collection.find({
-                    'taxon_id': {'$in': taxon_id_for_query},
-                    'web': {'$in': web_for_query}
-                }, {'_id': 0}, session=session).to_list(length=None)
+    # Retrieve taxa
+    taxa: List[dict] = await taxon_collection.find(
+        query_ncbi_taxon_id, {"_id": 0}
+    ).to_list(length=None)
 
-                await raw_collection.delete_many({
-                    'taxon_id': {'$in': taxon_id_for_query},
-                    'web': {'$in': web_for_query}
-                }, session=session)
+    # Extract ncbi_taxon_ids and taxon_ids from taxa
+    ncbi_taxon_ids = [taxon["ncbi_taxon_id"] for taxon in taxa]
+    taxon_ids = [taxon["taxon_id"] for taxon in taxa]
 
-                # Track found taxon IDs and web sources
-                found_taxon_web = {}
-                for raw in raws:
-                    taxon_id = raw['taxon_id']
-                    web_source = raw['web']
+    # Find taxa not found in the database
+    not_found_taxa = [
+        ncbi_id for ncbi_id in ncbi_taxon_id__for_query if ncbi_id not in ncbi_taxon_ids
+    ]
 
-                    if taxon_id not in found_taxon_web:
-                        found_taxon_web[taxon_id] = {
-                            'species': raw.get('species', 'Unknown species'),  # Add species field
-                            'found_webs': [],
-                            'missing_webs': list(web_for_query),  # Initialize with all provided web sources
-                            'status': 'not_found',
-                            'info': 'No data found for any provided web sources.',
-                        }
+    # Retrieve portals
+    portals = await portal_collection.find(
+        {"taxon_id": {"$in": taxon_ids}}, {"_id": 0}
+    ).to_list(length=None)
 
-                    # Avoid redundancy in 'exist' list
-                    if web_source not in [entry['web'] for entry in found_taxon_web[taxon_id]['found_webs']]:
-                        # Add web source to found webs
-                        found_taxon_web[taxon_id]['found_webs'].append({
-                            "web": web_source,
-                            "status": "deleted",
-                            "info": "Data deleted successfully."
-                        })
+    # Create maps for easy lookup
+    portal_map = {portal["taxon_id"]: portal["portal_id"] for portal in portals}
+    taxa_with_no_portal = [
+        taxon for taxon in taxa if taxon["taxon_id"] not in portal_map
+    ]
 
-                    # Remove found webs from missing_webs
-                    if web_source in found_taxon_web[taxon_id]['missing_webs']:
-                        found_taxon_web[taxon_id]['missing_webs'].remove(web_source)
+    # Update taxa with portal_id
+    for taxon in taxa:
+        taxon["portal_id"] = portal_map.get(taxon["taxon_id"])
 
-                    # Update status and info
-                    found_taxon_web[taxon_id]['status'] = 'partially_found'
-                    found_taxon_web[taxon_id]['info'] = 'Data deleted for some web sources.'
+    # Prepare to retrieve raw data
+    portal_ids = [taxon["portal_id"] for taxon in taxa if taxon.get("portal_id")]
+    raws = await raw_collection.find(
+        {"portal_id": {"$in": portal_ids}, "web": {"$in": web_for_query}}, {"_id": 0}
+    ).to_list(length=None)
 
-                # Handle taxon IDs not found in the portals
-                for taxon_id in taxon_id_for_query:
-                    if taxon_id not in found_taxon_web:
-                        found_taxon_web[taxon_id] = {
-                            'species': 'Unknown species',  # In case the species isn't found
-                            'found_webs': [],
-                            'missing_webs': list(web_for_query),  # All webs are missing
-                            'status': 'not_found',
-                            'info': 'No data found for any provided web sources.',
-                            'portal': None  # No portal found for this taxon_id
-                        }
+    # Create raw data map
+    raw_map = {}
+    for raw in raws:
+        raw_key = (raw["portal_id"], raw["web"])
+        raw_map.setdefault(raw_key, []).append(raw)
 
-                # Update status to 'found' for taxon_ids where all webs are found
-                for taxon_id, details in found_taxon_web.items():
-                    if not details['found_webs']:
-                        details['status'] = 'not_found'
-                        details['info'] = 'No data found for any provided web sources.'
-                    elif len(details['found_webs']) == len(web_for_query):
-                        details['status'] = 'found'
-                        details['info'] = 'Data deleted for all provided web sources.'
+    # Prepare results
+    result: List[RawDeleteResponseModelObject] = []
 
-                # Structure the result
-                result = [{
-                            'taxon_id': taxon_id,
-                            'species': found_taxon_web[taxon_id].get('species', 'Unknown species'),
-                            'found_webs': found_taxon_web[taxon_id]['found_webs'],
-                            'missing_webs': found_taxon_web[taxon_id]['missing_webs'],
-                            'status': found_taxon_web[taxon_id]['status'],
-                            'info': found_taxon_web[taxon_id]['info']
-                        }
-                        for taxon_id in found_taxon_web
-                    ]
+    # Process each taxon
+    for taxon in taxa:
+        portal_id = taxon.get("portal_id")
+        if not portal_id:
+            continue
 
-                return result
+        found_webs = set()
+        web_need_to_process = filter_webs_for_processing(portal_webs, web_for_query)
 
-            except Exception as e:
-                raise Exception(f"An error occurred while deleting raw: {str(e)}")
+        for web in web_need_to_process:
+            raw_key = (portal_id, web)
+            if raw_key in raw_map:
+                for raw in raw_map[raw_key]:
+                    async with await client.start_session() as session:
+                        async with session.start_transaction():
+                            await raw_collection.delete_one(
+                                {"portal_id": raw["portal_id"], "web": raw["web"]}
+                            )
+
+                    result.append(
+                        RawDeleteResponseModelObject(
+                            taxon_id=taxon["taxon_id"],
+                            ncbi_taxon_id=taxon["ncbi_taxon_id"],
+                            species=taxon["species"],
+                            web=web,
+                            data=raw["data"],
+                            status=StatusMessage.DATA_SUCCESS.value,
+                            info=InfoMessage.DATA_RETRIEVED.value,
+                        )
+                    )
+                found_webs.add(web)
+
+        # Handle missing webs
+        missing_webs = set(web_for_query) - found_webs
+        for web in missing_webs:
+            result.append(
+                RawDeleteResponseModelObject(
+                    taxon_id=taxon["taxon_id"],
+                    ncbi_taxon_id=taxon["ncbi_taxon_id"],
+                    species=taxon["species"],
+                    web=web,
+                    data=None,
+                    status=StatusMessage.DATA_FAILED.value,
+                    info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.RAW_NOT_EXIST.value}",
+                )
+            )
+
+    # Append not found taxa
+    result.extend(
+        [
+            RawDeleteResponseModelObject(
+                ncbi_taxon_id=ncbi_id,
+                species=SpeciesMessage.SPECIES_NOT_FOUND.value,
+                web=None,
+                data=None,
+                status=StatusMessage.DATA_FAILED.value,
+                info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.TAXON_NOT_EXIST.value}",
+            )
+            for ncbi_id in not_found_taxa
+        ]
+    )
+
+    # Append taxa with no portal
+    result.extend(
+        [
+            RawDeleteResponseModelObject(
+                taxon_id=taxon["taxon_id"],
+                ncbi_taxon_id=taxon["ncbi_taxon_id"],
+                species=taxon["species"],
+                web=None,
+                data=None,
+                status=StatusMessage.DATA_FAILED.value,
+                info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}",
+            )
+            for taxon in taxa_with_no_portal
+        ]
+    )
+
+    return result

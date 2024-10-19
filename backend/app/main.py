@@ -1,10 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import raw_router
 from utils.middleware.request_log_middleware import RequestLoggingMiddleware
-from routers import portal_router, term_router
+from routers import taxon_router, portal_router, raw_router, term_router
 import uvicorn
-from config import HOST, PORT
+from config import HOST, PORT, API_PREFIX
 from prometheus_fastapi_instrumentator import Instrumentator
 
 # Create FastAPI instance
@@ -21,10 +20,13 @@ app.add_middleware(
 
 app.add_middleware(RequestLoggingMiddleware)
 
-# Router registration
-app.include_router(portal_router.router, prefix="/portals", tags=["portals"])
-app.include_router(raw_router.router, prefix="/raws", tags=["raws"])
-app.include_router(term_router.router, prefix="/terms", tags=["terms"])
+# Router registration with dynamic base path
+app.include_router(
+    portal_router.router, prefix=f"{API_PREFIX}/portals", tags=["portals"]
+)
+app.include_router(raw_router.router, prefix=f"{API_PREFIX}/raws", tags=["raws"])
+app.include_router(term_router.router, prefix=f"{API_PREFIX}/terms", tags=["terms"])
+app.include_router(taxon_router.router, prefix=f"{API_PREFIX}/taxa", tags=["taxa"])
 
 # Instrumentator registration
 Instrumentator().instrument(app).expose(app)

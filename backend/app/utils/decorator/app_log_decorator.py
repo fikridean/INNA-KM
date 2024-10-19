@@ -1,7 +1,6 @@
 from functools import wraps
 from aiologger import Logger
 from aiologger.handlers.files import AsyncFileHandler
-from aiologger.handlers.streams import AsyncStreamHandler
 import logging
 from datetime import datetime as time
 from config import DEBUG
@@ -26,30 +25,37 @@ formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 # Set the formatter to the logger (not the handler)
 appLogger.formatter = formatter
 
+
 def log_function(action: str):
     def decorator(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):
             try:
-
+                # If debug mode is on, log function entry
                 if DEBUG == True:
                     # Log function entry
-                    appLogger.info(f"Entering {action} with args: {args}, kwargs: {kwargs}")
+                    appLogger.info(
+                        f"Entering {action} with args: {args}, kwargs: {kwargs}"
+                    )
                     start_time = time.utcnow()
-                    
+
                 # Call the actual function
                 result = await func(*args, **kwargs)
-                    
+
+                # If debug mode is on, log function exit
                 if DEBUG == True:
                     # Log function exit
                     elapsed_time = time.utcnow() - start_time
-                    appLogger.info(f"Exiting {action} with result: {result}, took {elapsed_time}\n")
-                    
-                
+                    appLogger.info(
+                        f"Exiting {action} with result: {result}, took {elapsed_time}\n"
+                    )
+
                 return result
             except Exception as e:
                 # Log exceptions
                 appLogger.error(f"Error in {action}: {str(e)}\n")
                 raise e
+
         return wrapper
+
     return decorator

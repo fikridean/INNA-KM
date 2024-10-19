@@ -1,225 +1,461 @@
-from fastapi import HTTPException
-from models.term_model import TermDeleteModel, TermDeleteResponseModel, TermGetModel, TermGetResponseModel, TermStoreModel, TermStoreResponseModel, searchModel, searchResponseModel
+from typing import List, Set
 from utils.helper.map_terms_helper import mapping
+from utils.enum.status_code_enum import StatusCode
+from utils.enum.message_enum import (
+    ResponseMessage,
+    SpeciesMessage,
+    StatusMessage,
+    InfoMessage,
+)
+from models.term_model import (
+    TermDeleteModel,
+    TermDeleteResponseModelObject,
+    TermGetModel,
+    TermGetResponseModelObject,
+    TermStoreModel,
+    TermStoreResponseModelObject,
+    searchModel,
+    searchResponseModelObject,
+)
 from utils.decorator.app_log_decorator import log_function
-from database.mongo import client, terms_collection, raw_collection, portal_collection
+from database.mongo import (
+    client,
+    taxon_collection,
+    term_collection,
+    raw_collection,
+    portal_collection,
+)
 
-from utils.helper.func_helper import find_matching_parts
+from utils.helper.func_helper import find_matching_parts, portal_webs
 
-# Get raw from raw collection based on only taxon_id with transaction
-@log_function("Get raw from raw collection based on only taxon_id with transaction")
-async def get_raw_based_only_taxon_id_with_transaction(params: TermStoreModel) -> list:
-    async with await client.start_session() as session:
-        async with session.start_transaction():
-            try:
-                taxon_id_for_query = params.taxon_id
-
-                if ((taxon_id_for_query == None or taxon_id_for_query == [])):
-                    taxon_id_for_query = await portal_collection.distinct('taxon_id', session=session)
-
-                raw_by_taxon_id = []
-
-                for taxon_id in taxon_id_for_query:
-                    raw = await raw_collection.find({
-                        'taxon_id': taxon_id
-                    }, {'_id': 0}).to_list(length=None)
-                    
-                    if not raw:
-                        continue
-
-                    raw_by_taxon_id.append(raw)
-
-                return raw_by_taxon_id
-
-            except Exception as e:
-                raise Exception(f"An error occurred while retrieving raw: {str(e)}")
-            
-# Store raw to terms documents with transaction
-@log_function("Store raw to terms documents with transaction")
-async def store_raw_to_terms_with_transaction(params: list) -> list:
-    async with await client.start_session() as session:
-        async with session.start_transaction():
-            try:
-                for data in params:
-                    await terms_collection.update_one({"taxon_id": data['taxon_id']}, {"$set": data}, upsert=True, session=session)
-
-            except Exception as e:
-                raise Exception(f"An error occurred while storing raw to terms documents: {str(e)}")
 
 # Store raw to terms documents
 @log_function("Store raw to terms documents")
-async def store_raw_to_terms(params: TermStoreModel) -> TermStoreResponseModel:
-    try:
-        taxon_id_for_query = params.taxon_id
+async def store_raw_to_terms(params: TermStoreModel) -> TermStoreResponseModelObject:
 
-        raws = await get_raw_based_only_taxon_id_with_transaction(params)
+    # prepare taxon_id for query
+    ncbi_taxon_id_for_query = params.ncbi_taxon_id
 
-        combined_data_list = []
-    
-        for data in raws:
-            mapped = await mapping(data)
-            combined_data_list.append(mapped)
+    # Validate input parameters
+    if not ncbi_taxon_id_for_query:
+        raise Exception(
+            {
+                "data": [],
+                "message": ResponseMessage.INVALID_PAYLOAD.value,
+                "status_code": StatusCode.BAD_REQUEST.value,
+            }
+        )
 
-        await store_raw_to_terms_with_transaction(combined_data_list)
+    # Retrieve existing taxons from the collection
+    existing_taxons: List[dict] = await taxon_collection.find(
+        {"ncbi_taxon_id": {"$in": ncbi_taxon_id_for_query}}, {"_id": 0}
+    ).to_list(length=None)
 
-        taxon_with_no_raw_data = [taxon_id for taxon_id in taxon_id_for_query if taxon_id not in [data['taxon_id'] for data in combined_data_list]]
+    # Gather existing taxon
+    existing_taxon_ids: List[int] = [taxon["taxon_id"] for taxon in existing_taxons]
 
-        result = []
+    # Gather existing ncbi_taxon_ids
+    existing_ncbi_taxon_ids: List[str] = [
+        taxon["ncbi_taxon_id"] for taxon in existing_taxons
+    ]
 
-        for data in combined_data_list:
-            result.append({
-                **data,
-                "status": "found",
-                "info:": "Data stored successfully."
-            })
+    # Determine which ncbi_taxon_ids are missing
+    missing_ncbi_taxon_ids: Set[str] = set(ncbi_taxon_id_for_query) - set(
+        existing_ncbi_taxon_ids
+    )
 
-        for taxon_id in taxon_with_no_raw_data:
-            result.append({
-                "taxon_id": taxon_id,
-                "species": "",
-                "data": {},
-                "status": "not_found",
-                "info": "No data found for this taxon_id."
-            })
+    # Prepare result object
+    result: TermStoreResponseModelObject = []
 
-        return result
-    except Exception as e:
-        raise Exception(f"An error occurred while storing raw to terms documents: {str(e)}")
+    portals: List[dict] = await portal_collection.find(
+        {"taxon_id": {"$in": list(existing_taxon_ids)}}, {"_id": 0}
+    ).to_list(length=None)
+
+    # Check if taxon exist but the portal that related to taxon is not exist
+    for taxon in existing_taxons:
+        if taxon["taxon_id"] not in [portal["taxon_id"] for portal in portals]:
+            result.append(
+                TermStoreResponseModelObject(
+                    taxon_id=taxon["taxon_id"],
+                    ncbi_taxon_id=taxon["ncbi_taxon_id"],
+                    species=taxon["species"],
+                    data=None,
+                    status=StatusMessage.DATA_FAILED.value,
+                    info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}.",
+                )
+            )
+
+    async with await client.start_session() as session:
+        async with session.start_transaction():
+            # Process existing taxons
+            if existing_taxon_ids:
+                # Map portals to taxon_id
+                portal_map: dict = {portal["taxon_id"]: portal for portal in portals}
+
+                for taxon_id in existing_taxon_ids:
+                    # Retrieve portal
+                    portal: dict = portal_map.get(taxon_id)
+
+                    # Retrieve taxon
+                    taxon = next(
+                        (
+                            taxon
+                            for taxon in existing_taxons
+                            if taxon["taxon_id"] == taxon_id
+                        ),
+                        None,
+                    )
+
+                    # Check if portal exist
+                    if portal:
+                        # Retrieve raws
+                        raws: dict = await raw_collection.find(
+                            {"portal_id": portal["portal_id"]}, {"_id": 0}
+                        ).to_list(length=None)
+
+                        # mapping raws
+                        mapped: dict = mapping(raws)
+
+                        # Store mapped data along with taxon_id
+                        data_to_store: dict = {"taxon_id": taxon_id, "data": mapped}
+
+                        # Update or insert data to terms collection
+                        await term_collection.update_one(
+                            {"taxon_id": taxon_id}, {"$set": data_to_store}, upsert=True
+                        )
+
+                        # Append result
+                        result.append(
+                            TermStoreResponseModelObject(
+                                taxon_id=taxon_id,
+                                ncbi_taxon_id=taxon["ncbi_taxon_id"],
+                                species=taxon["species"],
+                                data=mapped,
+                                status=StatusMessage.DATA_SUCCESS.value,
+                                info=f"{InfoMessage.DATA_RETRIEVED_AND_STORED.value}.",
+                            )
+                        )
+
+            # Handle missing taxons
+            for not_existing_taxon_id in missing_ncbi_taxon_ids:
+                result.append(
+                    TermStoreResponseModelObject(
+                        taxon_id=None,
+                        ncbi_taxon_id=not_existing_taxon_id,
+                        species=SpeciesMessage.SPECIES_NOT_FOUND.value,
+                        status=StatusMessage.DATA_FAILED.value,
+                        info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.TAXON_NOT_EXIST.value}.",
+                    )
+                )
+
+    return result
+
 
 # Get terms data from database
 @log_function("Get terms data")
-async def get_terms(params: TermGetModel) -> TermGetResponseModel:
+async def get_terms(params: TermGetModel) -> TermGetResponseModelObject:
     async with await client.start_session() as session:
         async with session.start_transaction():
-            try:    
-                taxon_id_for_query = params.taxon_id
+            # prepare taxon_id for query
+            ncbi_taxon_id_for_query = params.ncbi_taxon_id
 
-                if ((taxon_id_for_query == None or taxon_id_for_query == [])):
-                    terms = await terms_collection.find({}, {'_id': 0}, session=session).to_list(length=None)
+            # Validate input parameters
+            if not ncbi_taxon_id_for_query:
+                raise Exception(
+                    {
+                        "data": [],
+                        "message": ResponseMessage.INVALID_PAYLOAD.value,
+                        "status_code": StatusCode.BAD_REQUEST.value,
+                    }
+                )
 
-                else:
-                    terms = await terms_collection.find({
-                        'taxon_id': {'$in': taxon_id_for_query},
-                    }, {'_id': 0}, session=session ).to_list(length=1000)
-            
-                taxon_with_no_data = [taxon_id for taxon_id in taxon_id_for_query if taxon_id not in [data['taxon_id'] for data in terms]]
+            # Retrieve existing taxons from the collection
+            existing_taxons: List[dict] = await taxon_collection.find(
+                {"ncbi_taxon_id": {"$in": ncbi_taxon_id_for_query}}, {"_id": 0}
+            ).to_list(length=None)
 
-                result = []
+            # Gather existing taxon
+            existing_taxon_ids: List[int] = [
+                taxon["taxon_id"] for taxon in existing_taxons
+            ]
 
-                for data in terms:
-                    result.append({
-                        **data,
-                        "status": "found",
-                        "info": "Data retrieved successfully."
-                    })
+            # Gather existing ncbi_taxon_ids
+            existing_ncbi_taxon_ids: List[str] = [
+                taxon["ncbi_taxon_id"] for taxon in existing_taxons
+            ]
 
-                for taxon_id in taxon_with_no_data:
-                    result.append({
-                        "taxon_id": taxon_id,
-                        "species": "",
-                        "data": {},
-                        "status": "not_found",
-                        "info": "No data found for this taxon_id."
-                    })
+            # Determine which ncbi_taxon_ids are missing
+            missing_ncbi_taxon_ids: Set[str] = set(ncbi_taxon_id_for_query) - set(
+                existing_ncbi_taxon_ids
+            )
 
-                return result
+            # Prepare result object
+            result: TermStoreResponseModelObject = []
 
-            except Exception as e:
-                raise Exception(f"An error occurred while retrieving terms data: {str(e)}")
-            
+            portals: List[dict] = await portal_collection.find(
+                {"taxon_id": {"$in": list(existing_taxon_ids)}}, {"_id": 0}
+            ).to_list(length=None)
+
+            # Check if taxon exist but the portal that related to taxon is not exist
+            for taxon in existing_taxons:
+                if taxon["taxon_id"] not in [portal["taxon_id"] for portal in portals]:
+                    result.append(
+                        TermStoreResponseModelObject(
+                            taxon_id=taxon["taxon_id"],
+                            ncbi_taxon_id=taxon["ncbi_taxon_id"],
+                            species=taxon["species"],
+                            data=None,
+                            status=StatusMessage.DATA_FAILED.value,
+                            info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}.",
+                        )
+                    )
+
+            # Process existing taxons
+            if existing_taxon_ids:
+                # Create portal map and taxon map
+                portal_map: dict = {portal["taxon_id"]: portal for portal in portals}
+                taxon_map: dict = {
+                    taxon["ncbi_taxon_id"]: taxon for taxon in existing_taxons
+                }
+
+                # Process existing taxons
+                for ncbi_taxon_id in existing_ncbi_taxon_ids:
+
+                    # Retrieve taxon and portal
+                    taxon: dict = taxon_map.get(ncbi_taxon_id)
+                    portal: dict = portal_map.get(taxon["taxon_id"]) if taxon else None
+
+                    if portal:
+                        # Retrieve term
+                        term: dict = await term_collection.find_one(
+                            {"taxon_id": portal["taxon_id"]}, {"_id": 0}
+                        )
+
+                        if term:
+                            result.append(
+                                TermGetResponseModelObject(
+                                    taxon_id=term["taxon_id"],
+                                    ncbi_taxon_id=ncbi_taxon_id,
+                                    species=taxon["species"],
+                                    data=term["data"],
+                                    status=StatusMessage.DATA_FOUND.value,
+                                    info=f"{InfoMessage.DATA_RETRIEVED.value}.",
+                                )
+                            )
+                        else:
+                            result.append(
+                                TermGetResponseModelObject(
+                                    taxon_id=portal["taxon_id"],
+                                    ncbi_taxon_id=ncbi_taxon_id,
+                                    species=SpeciesMessage.SPECIES_NOT_FOUND.value,
+                                    status=StatusMessage.DATA_FAILED.value,
+                                    info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.RAW_NOT_EXIST.value}.",
+                                )
+                            )
+
+            # Handle missing taxons
+            for missing_ncbi_taxon_id in missing_ncbi_taxon_ids:
+                result.append(
+                    TermGetResponseModelObject(
+                        taxon_id=None,
+                        ncbi_taxon_id=missing_ncbi_taxon_id,
+                        species=SpeciesMessage.SPECIES_NOT_FOUND.value,
+                        status=StatusMessage.DATA_FAILED.value,
+                        info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.TAXON_NOT_EXIST.value}.",
+                    )
+                )
+
+            return result
+
+
 # Delete terms document
 @log_function("Delete term document")
-async def delete_term(params: TermDeleteModel) -> TermDeleteResponseModel:
+async def delete_term(params: TermDeleteModel) -> TermDeleteResponseModelObject:
     async with await client.start_session() as session:
         async with session.start_transaction():
-            try:
-                taxon_id_for_query = params.taxon_id
+            # prepare taxon_id for query
+            ncbi_taxon_id_for_query = params.ncbi_taxon_id
 
-                if ((taxon_id_for_query == None or taxon_id_for_query == [])):
-                    raise HTTPException(status_code=400, detail="For security reasons, you must provide taxon_id to delete terms.")
-                
-                terms = await terms_collection.find({
-                    'taxon_id': {'$in': taxon_id_for_query},
-                }, session=session).to_list(length=None)
+            # Validate input parameters
+            if not ncbi_taxon_id_for_query:
+                raise Exception(
+                    {
+                        "data": [],
+                        "message": ResponseMessage.INVALID_PAYLOAD.value,
+                        "status_code": StatusCode.BAD_REQUEST.value,
+                    }
+                )
 
-                await terms_collection.delete_many({
-                    'taxon_id': {'$in': taxon_id_for_query},
-                }, session=session)
+            # Retrieve existing taxons from the collection
+            existing_taxons: List[dict] = await taxon_collection.find(
+                {"ncbi_taxon_id": {"$in": ncbi_taxon_id_for_query}}, {"_id": 0}
+            ).to_list(length=None)
 
-                taxon_with_no_data = [taxon_id for taxon_id in taxon_id_for_query if taxon_id not in [data['taxon_id'] for data in terms]]
+            # Gather existing taxon
+            existing_taxon_ids: List[int] = [
+                taxon["taxon_id"] for taxon in existing_taxons
+            ]
 
-                result = []
+            # Gather existing ncbi_taxon_ids
+            existing_ncbi_taxon_ids: List[str] = [
+                taxon["ncbi_taxon_id"] for taxon in existing_taxons
+            ]
 
-                for data in terms:
-                    result.append({
-                        "taxon_id": data['taxon_id'],
-                        "species": data['species'],
-                        "status": "found",
-                        "info": "Data deleted successfully."
-                    })
+            # Determine which ncbi_taxon_ids are missing
+            missing_ncbi_taxon_ids: Set[str] = set(ncbi_taxon_id_for_query) - set(
+                existing_ncbi_taxon_ids
+            )
 
-                for taxon_id in taxon_with_no_data:
-                    result.append({
-                        "taxon_id": taxon_id,
-                        "species": "",
-                        "status": "not_found",
-                        "info": "No data found for this taxon_id."
-                    })
-                
-                return result
-            
-            except Exception as e:
-                raise Exception(f"An error occurred while deleting terms documents: {str(e)}")
+            # Prepare result object
+            result: TermStoreResponseModelObject = []
+
+            portals: List[dict] = await portal_collection.find(
+                {"taxon_id": {"$in": list(existing_taxon_ids)}}, {"_id": 0}
+            ).to_list(length=None)
+
+            # Check if taxon exist but the portal that related to taxon is not exist
+            for taxon in existing_taxons:
+                if taxon["taxon_id"] not in [portal["taxon_id"] for portal in portals]:
+                    result.append(
+                        TermStoreResponseModelObject(
+                            taxon_id=taxon["taxon_id"],
+                            ncbi_taxon_id=taxon["ncbi_taxon_id"],
+                            species=taxon["species"],
+                            data=None,
+                            status=StatusMessage.DATA_FAILED.value,
+                            info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}.",
+                        )
+                    )
+
+            # Process existing taxons
+            if existing_taxon_ids:
+                # Create portal map and taxon map
+                portal_map: dict = {portal["taxon_id"]: portal for portal in portals}
+                taxon_map: dict = {
+                    taxon["ncbi_taxon_id"]: taxon for taxon in existing_taxons
+                }
+
+                for ncbi_taxon_id in existing_ncbi_taxon_ids:
+                    # Retrieve taxon and portal
+                    taxon: dict = taxon_map.get(ncbi_taxon_id)
+                    portal: dict = portal_map.get(taxon["taxon_id"]) if taxon else None
+
+                    if portal:
+
+                        # Retrieve term
+                        term: dict = await term_collection.find_one(
+                            {"taxon_id": portal["taxon_id"]}, {"_id": 0}
+                        )
+
+                        # Delete term
+                        await term_collection.delete_one(
+                            {"taxon_id": portal["taxon_id"]}
+                        )
+
+                        # If term exists, append to result
+                        if term:
+                            result.append(
+                                TermDeleteResponseModelObject(
+                                    taxon_id=term["taxon_id"],
+                                    ncbi_taxon_id=ncbi_taxon_id,
+                                    species=taxon["species"],
+                                    data=term["data"],
+                                    status=StatusMessage.DATA_SUCCESS.value,
+                                    info=f"{InfoMessage.DATA_DELETED.value}.",
+                                )
+                            )
+                        else:
+                            result.append(
+                                TermDeleteResponseModelObject(
+                                    taxon_id=portal["taxon_id"],
+                                    ncbi_taxon_id=ncbi_taxon_id,
+                                    species=SpeciesMessage.SPECIES_NOT_FOUND.value,
+                                    status=StatusMessage.DATA_FAILED.value,
+                                    info=f"{InfoMessage.DATA_NOT_DELETED.value}: {InfoMessage.TERMS_NOT_EXIST.value}.",
+                                )
+                            )
+
+            # Handle missing taxons
+            for missing_ncbi_taxon_id in missing_ncbi_taxon_ids:
+                result.append(
+                    TermGetResponseModelObject(
+                        taxon_id=None,
+                        ncbi_taxon_id=missing_ncbi_taxon_id,
+                        species=SpeciesMessage.SPECIES_NOT_FOUND.value,
+                        status=StatusMessage.DATA_FAILED.value,
+                        info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.TAXON_NOT_EXIST.value}.",
+                    )
+                )
+
+            return result
+
 
 # Search terms data from database
 @log_function("Search terms data")
-async def search_terms(params: searchModel) -> searchResponseModel:
-    try:
-        search_query = params.search
+async def search_terms(params: searchModel) -> searchResponseModelObject:
+    search_result = await term_collection.find(
+        {"$text": {"$search": params.search}}, {"_id": 0, "taxon_id": 1, "data": 1}
+    ).to_list(length=None)
 
-        projection = {
-            '_id': 0,
-        }
+    for item in search_result:
+        taxon = await taxon_collection.find_one(
+            {"taxon_id": item["taxon_id"]}, {"_id": 0, "species": 1}
+        )
 
-        result = await terms_collection.find(
-            { '$text': { '$search': search_query }},
-            projection,
-        ).to_list(1000)
+        item["species"] = taxon["species"]
 
-        return find_matching_parts(result, search_query)
-        
-    except Exception as e:
-        raise Exception(f"An error occurred while retrieving terms data: {str(e)}")
-    
+    search_result_filtered = find_matching_parts(search_result, params.search)
+
+    return search_result_filtered
+
+
 # Create indexes
 @log_function("Create indexes")
 async def create_indexes() -> str:
-    try:
-        indexes = await terms_collection.index_information()
+    # Check if indexes already exist
+    # indexes = await term_collection.index_information()
 
-        await terms_collection.create_index(
-            { "$**": "text" },
-            name='search_index',
-            weights={
-                "taxon_id": 10,
-                "species": 8,
-                "data": 6
-            },
-            language_override='none',
-            default_language='en',
-        )
+    # Create taxon_id index in taxon collection
+    await taxon_collection.create_index(
+        "taxon_id",
+        name="taxon_id_index_taxa",
+        unique=True,
+    )
 
-        await terms_collection.create_index(
-            "taxon_id",
-            name='taxon_id_index',
-            unique=True,
-        )
+    # Create ncbi_taxon_id index in taxon collection
+    await taxon_collection.create_index(
+        "ncbi_taxon_id",
+        name="ncbi_taxon_id_index_taxa",
+        unique=True,
+    )
 
-        await terms_collection.create_index(
-            "species",
-            name='species_index',
-        )
+    # Create taxon_id index in portal collection
+    await portal_collection.create_index(
+        "taxon_id",
+        name="taxon_id_index_portal",
+        unique=True,
+    )
 
-        return "Indexes created successfully."
-    except Exception as e:
-        raise Exception(f"An error occurred while creating indexes: {str(e)}")
+    # Create portal_id index in portal collection
+    await portal_collection.create_index(
+        "portal_id",
+        name="portal_id_index_portal",
+        unique=True,
+    )
+
+    # Create taxon_id index in term collection
+    await term_collection.create_index(
+        "taxon_id",
+        name="taxon_id_index",
+        unique=True,
+    )
+
+    # Create text index in term collection
+    await term_collection.create_index(
+        {"$**": "text"},
+        name="search_index",
+        language_override="none",
+        default_language="en",
+    )
+
+    return "Indexes created successfully."

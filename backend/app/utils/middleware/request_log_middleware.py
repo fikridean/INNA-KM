@@ -7,7 +7,6 @@ from aiologger.handlers.files import AsyncFileHandler
 import logging
 import time
 import psutil
-import asyncio
 
 # Create an asynchronous logger instance
 requestLogger = Logger(name="request_logger")
@@ -27,11 +26,12 @@ requestLogger.formatter = formatter
 request_count = 0
 error_count = 0
 
+
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         global request_count, error_count
         start_time = time.time()
-        
+
         # System resource usage before processing the request
         cpu_usage_before = psutil.cpu_percent(interval=None)
         memory_usage_before = psutil.virtual_memory().percent
@@ -41,7 +41,9 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         requestLogger.info(f"Request: {request.method} {request.url}")
         requestLogger.info(f"Headers: {request.headers}")
         requestLogger.info(f"System CPU usage before request: {cpu_usage_before}%")
-        requestLogger.info(f"System Memory usage before request: {memory_usage_before}%")
+        requestLogger.info(
+            f"System Memory usage before request: {memory_usage_before}%"
+        )
 
         # Call the request and get the response
         try:
@@ -54,7 +56,11 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
             response_body_size = len(response_body)
 
             # Create a new response using the captured body
-            response = Response(content=response_body, status_code=response.status_code, headers=response.headers)
+            response = Response(
+                content=response_body,
+                status_code=response.status_code,
+                headers=response.headers,
+            )
 
         except Exception as e:
             error_count += 1
@@ -75,8 +81,9 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         requestLogger.info(f"System CPU usage after request: {cpu_usage_after}%")
         requestLogger.info(f"System Memory usage after request: {memory_usage_after}%")
         requestLogger.info(f"Activity: {request.method} {request.url}")
-        requestLogger.info(f"Total Requests: {request_count}, Total Errors: {error_count}\n")
+        requestLogger.info(
+            f"Total Requests: {request_count}, Total Errors: {error_count}\n"
+        )
 
         # Return the new response
         return response
-
