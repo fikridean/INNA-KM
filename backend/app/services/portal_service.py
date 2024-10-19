@@ -51,59 +51,53 @@ async def create_portal(
             }
         )
 
-    # Check if the payload is empty
-    if not params:
-        raise Exception(
-            {
-                "data": [],
-                "message": ResponseMessage.INVALID_PAYLOAD.value,
-                "status_code": StatusCode.BAD_REQUEST.value,
-            }
-        )
-
     result: List[PortalCreateResponseModelObject] = []
-
     portal_to_store: List[PortalCreateModel] = params.copy()
-
-    # Check if portal_id not in database, but taxon_id is in database, then dont store
     portal_cannot_be_stored: List[PortalCreateModel] = []
 
-    for portal in portal_to_store:
-        if not await portal_collection.find_one(
-            {"portal_id": portal.portal_id}, {"_id": 0}
-        ):
-            if await portal_collection.find_one(
-                {"taxon_id": portal.taxon_id}, {"_id": 0}
-            ):
-                portal_to_store.remove(portal)
+    # Fetch portal IDs and taxon IDs in a single query
+    portal_ids = [portal.portal_id for portal in params]
+    taxon_ids = [portal.taxon_id for portal in params]
+
+    existing_portals = await portal_collection.find(
+        {"$or": [{"portal_id": {"$in": portal_ids}}, {"taxon_id": {"$in": taxon_ids}}]},
+        {"portal_id": 1, "taxon_id": 1, "_id": 0},
+    ).to_list(None)
+
+    existing_portal_ids = {item["portal_id"] for item in existing_portals if "portal_id" in item}
+    existing_taxon_ids = {item["taxon_id"] for item in existing_portals if "taxon_id" in item}
+
+    # Split the portals based on existing taxon_id
+    for portal in params:
+        if portal.portal_id not in existing_portal_ids:
+            if portal.taxon_id in existing_taxon_ids:
                 portal_cannot_be_stored.append(portal)
+                portal_to_store.remove(portal)
 
-    # Prepare operations and check for missing taxons
-    operations: List[UpdateOne] = []
-
-    for portal in portal_to_store:
-        # Append the update operation
-        operations.append(
-            UpdateOne(
-                {"portal_id": portal.portal_id},
-                {
-                    "$set": {
-                        "portal_id": portal.portal_id,
-                        "taxon_id": portal.taxon_id,
-                        "web": portal.web,
-                    }
-                },
-                upsert=True,
-            )
+    # Prepare operations for bulk write
+    operations: List[UpdateOne] = [
+        UpdateOne(
+            {"portal_id": portal.portal_id},
+            {
+                "$set": {
+                    "portal_id": portal.portal_id,
+                    "taxon_id": portal.taxon_id,
+                    "web": portal.web,
+                }
+            },
+            upsert=True,
         )
+        for portal in portal_to_store
+    ]
 
-    # Execute operations in a transaction
+    # Execute bulk write inside a transaction
     async with await client.start_session() as session:
         async with session.start_transaction():
-            await portal_collection.bulk_write(operations, session=session)
+            if operations:
+                await portal_collection.bulk_write(operations, session=session)
 
     # Prepare the result response
-    result += [
+    result.extend(
         PortalCreateResponseModelObject(
             portal_id=portal.portal_id,
             taxon_id=portal.taxon_id,
@@ -112,7 +106,9 @@ async def create_portal(
             info=InfoMessage.DATA_CREATED.value,
         )
         for portal in portal_to_store
-    ] + [
+    )
+
+    result.extend(
         PortalCreateResponseModelObject(
             portal_id=portal.portal_id,
             taxon_id=portal.taxon_id,
@@ -121,7 +117,7 @@ async def create_portal(
             info=f"{InfoMessage.DATA_NOT_CREATED.value}: {InfoMessage.PORTAL_WITH_TAXON_ID_EXIST.value}",
         )
         for portal in portal_cannot_be_stored
-    ]
+    )
 
     return result
 
