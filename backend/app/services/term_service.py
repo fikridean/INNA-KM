@@ -159,19 +159,14 @@ async def get_terms(params: TermGetModel) -> TermGetResponseModelObject:
             # prepare taxon_id for query
             ncbi_taxon_id_for_query = params.ncbi_taxon_id
 
-            # Validate input parameters
+            query = {"ncbi_taxon_id": {"$in": ncbi_taxon_id_for_query}}
+
             if not ncbi_taxon_id_for_query:
-                raise Exception(
-                    {
-                        "data": [],
-                        "message": ResponseMessage.INVALID_PAYLOAD.value,
-                        "status_code": StatusCode.BAD_REQUEST.value,
-                    }
-                )
+                query = {}
 
             # Retrieve existing taxons from the collection
             existing_taxons: List[dict] = await taxon_collection.find(
-                {"ncbi_taxon_id": {"$in": ncbi_taxon_id_for_query}}, {"_id": 0}
+                query, {"_id": 0}
             ).to_list(length=None)
 
             # Gather existing taxon

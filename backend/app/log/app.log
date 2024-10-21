@@ -40,3 +40,5 @@ Error in Create portal: batch op errors occurred, full error: {'writeErrors': [{
 
 Error in Create portal: batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: innakm_db.portals index: taxon_id_index_portal dup key: { taxon_id: 1 }', 'keyPattern': {'taxon_id': 1}, 'keyValue': {'taxon_id': 1}, 'op': {'q': {'portal_id': 111}, 'u': {'$set': {'portal_id': 111, 'taxon_id': 1, 'web': ['wikidata', 'ncbi', 'bacdive', 'gbif']}}, 'multi': False, 'upsert': True}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []}
 
+Error in Get terms data: {'data': [], 'message': 'No data was provided in the request payload. Please include the required fields and try again.', 'status_code': 400}
+
