@@ -3,6 +3,7 @@ from typing import Any, List, Set, Tuple, Dict
 from pymongo import UpdateOne
 from utils.enum.status_code_enum import StatusCode
 from utils.enum.message_enum import (
+    ResponseMessage,
     SpeciesMessage,
     StatusMessage,
     InfoMessage,
@@ -371,15 +372,22 @@ async def delete_raw_from_db(
     params: RawDeleteModel,
 ) -> List[RawDeleteResponseModelObject]:
     # Extract necessary parameters
-    ncbi_taxon_id__for_query: List[str] = params.ncbi_taxon_id
+    ncbi_taxon_id_for_query: List[str] = params.ncbi_taxon_id
     web_for_query: List[str] = params.web or portal_webs
 
+    if not ncbi_taxon_id_for_query:
+        raise Exception(
+            {
+                "data": [],
+                "message": ResponseMessage.INVALID_PAYLOAD.value,
+                "status_code": StatusCode.BAD_REQUEST.value,
+            }
+        )
+
     # Build query for taxa
-    query_ncbi_taxon_id: dict = (
-        {"ncbi_taxon_id": {"$in": ncbi_taxon_id__for_query}}
-        if ncbi_taxon_id__for_query
-        else {}
-    )
+    query_ncbi_taxon_id: dict = {
+        "ncbi_taxon_id": {"$in": ncbi_taxon_id_for_query}
+    }
 
     # Check for unsupported web sources
     unsupported_webs: List[str] = checkUnsupportedWeb(web_for_query)
@@ -403,7 +411,7 @@ async def delete_raw_from_db(
 
     # Find taxa not found in the database
     not_found_taxa = [
-        ncbi_id for ncbi_id in ncbi_taxon_id__for_query if ncbi_id not in ncbi_taxon_ids
+        ncbi_id for ncbi_id in ncbi_taxon_id_for_query if ncbi_id not in ncbi_taxon_ids
     ]
 
     # Retrieve portals
