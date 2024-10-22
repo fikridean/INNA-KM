@@ -1,7 +1,7 @@
 import asyncio
 import importlib.util
 import os
-from typing import List
+from typing import Dict, List
 
 from utils.enum.message_enum import ResponseMessage
 from utils.enum.status_code_enum import StatusCode
@@ -86,6 +86,33 @@ def find_matching_parts(data_array: List[dict], term: str) -> List[dict]:
             results.append(result)
 
     return results
+
+def searchFilter(data_array: List[Dict]) -> List[Dict]:
+    result: List[Dict] = []
+    
+    for data in data_array:
+        # Always include 'taxon_id' and 'species' if they exist
+        result_item = {
+            "taxon_id": data.get("taxon_id"),
+            "species": data.get("species"),
+            "data": {}
+        }
+
+        data_info = data.get("data", {})
+        
+        # Add 'Morphology' if it exists
+        morphology = data_info.get("Morphology")
+        if morphology:
+            result_item['data']['Morphology'] = morphology
+        
+        # Add 'Lineage' if it exists under 'Name and taxonomic classification'
+        lineage = data_info.get("Name and taxonomic classification", {}).get("Lineage")
+        if lineage:
+            result_item['data']['Lineage'] = lineage
+
+        result.append(result_item)
+    
+    return result
 
 
 portal_webs: List[str] = [

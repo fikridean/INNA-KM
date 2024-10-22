@@ -42,3 +42,15 @@ Error in Create portal: batch op errors occurred, full error: {'writeErrors': [{
 
 Error in Get terms data: {'data': [], 'message': 'No data was provided in the request payload. Please include the required fields and try again.', 'status_code': 400}
 
+Error in Search terms data: searchFilter() takes 1 positional argument but 2 were given
+
+Error in Search terms data: 'Name and taxonomic classification'
+
+Error in Search terms data: 'Name and taxonomic classification'
+
+Error in Search terms data: 'Name and taxonomic classification'
+
+Error in Search terms data: 'Name and taxonomic classification'
+
+Error in Search terms data: 'Name and taxonomic classification'
+

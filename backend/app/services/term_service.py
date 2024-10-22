@@ -26,7 +26,7 @@ from database.mongo import (
     portal_collection,
 )
 
-from utils.helper.func_helper import find_matching_parts, portal_webs
+from utils.helper.func_helper import find_matching_parts, portal_webs, searchFilter
 
 
 # Store raw to terms documents
@@ -394,7 +394,7 @@ async def search_terms(params: searchModel) -> searchResponseModelObject:
 
         item["species"] = taxon["species"]
 
-    search_result_filtered = find_matching_parts(search_result, params.search)
+    search_result_filtered = searchFilter(search_result)
 
     return search_result_filtered
 

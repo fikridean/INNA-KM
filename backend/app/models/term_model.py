@@ -73,8 +73,6 @@ class searchResponseModelObject(BaseModel):
     taxon_id: Optional[str] = Field(None, min_length=1, max_length=100)
     species: Optional[str] = Field(None, min_length=1, max_length=100)
     data: Optional[dict] = Field(None)
-    status: Optional[str] = Field(None, min_length=1, max_length=100)
-    info: Optional[str] = Field(None, min_length=1, max_length=100)
 
 
 class searchResponseModel(ResponseBaseModel):
