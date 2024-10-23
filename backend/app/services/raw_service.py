@@ -57,12 +57,12 @@ async def store_raw_from_portals(
                 "status_code": StatusCode.BAD_REQUEST.value,
             }
         )
+    
+    query = {"ncbi_taxon_id": {"$in": ncbi_taxon_id_for_query}} if ncbi_taxon_id_for_query else {}
 
     # Retrieve taxa
     taxa: List[dict] = await taxon_collection.find(
-        {  # List of taxon dictionaries
-            "ncbi_taxon_id": {"$in": ncbi_taxon_id_for_query}
-        },
+        query,
         {"_id": 0},
     ).to_list(length=None)
 
