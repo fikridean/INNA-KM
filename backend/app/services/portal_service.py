@@ -139,9 +139,11 @@ async def get_portals(params: PortalGetModel) -> List[PortalGetResponseModelObje
     # Gather found portal_ids
     found_portal_ids: Set[str] = {portal["portal_id"] for portal in portals}
 
+    missing_portals: Set[int] = set()
+
     # Gather missing portal_ids
     if portal_id_for_query:
-        missing_portals: Set[int] = set(portal_id_for_query) - found_portal_ids
+        missing_portals = set(portal_id_for_query) - found_portal_ids
 
     # Prepare the result response
     result: List[PortalGetResponseModelObject] = [
@@ -310,8 +312,8 @@ async def retrieve_data(
             }
         )
 
-    ncbi_taxon_id_for_query: List[int] = params.ncbi_taxon_id or []
-    web_for_query: List[str] = params.web or []
+    ncbi_taxon_id_for_query: str = params.ncbi_taxon_id
+    web_for_query: str = params.web
 
     # Check if ncbi_taxon_id and web are provided
     if not ncbi_taxon_id_for_query or not web_for_query:
@@ -333,9 +335,6 @@ async def retrieve_data(
             }
         )
 
-    # prepare query
-    ncbi_taxon_id_for_query: List[int] = ncbi_taxon_id_for_query or []
-
     async with await client.start_session() as session:
         async with session.start_transaction():
 
@@ -349,7 +348,7 @@ async def retrieve_data(
                 return PortalRetrieveDataResponseModelObject(
                     portal_id=None,
                     taxon_id=None,
-                    web=params.web,
+                    web=web_for_query,
                     data={},
                     status=StatusMessage.DATA_FAILED.value,
                     info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.TAXON_NOT_EXIST.value}",
@@ -357,28 +356,28 @@ async def retrieve_data(
 
             # fetch portal from database
             portal: dict = await portal_collection.find_one(
-                {"taxon_id": taxon.get("taxon_id"), "web": params.web},
+                {"taxon_id": taxon.get("taxon_id"), "web": web_for_query},
                 {"_id": 0},
                 session=session,
             )
-
+    
     # Return not found message if portal not found
     if not portal:
         return PortalRetrieveDataResponseModelObject(
             portal_id=None,
             taxon_id=taxon.get("taxon_id"),
-            web=params.web,
+            web=web_for_query,
             data={},
             status=StatusMessage.DATA_FAILED.value,
             info=f"{InfoMessage.DATA_NOT_RETRIEVED.value}: {InfoMessage.PORTAL_NOT_EXIST.value}",
         )
-
+    
     # Return data if found
     return PortalRetrieveDataResponseModelObject(
         portal_id=portal.get("portal_id"),
         taxon_id=taxon.get("taxon_id"),
-        web=params.web,
-        data=await run_function_from_module(params.web, "retrieve", taxon),
+        web=web_for_query,
+        data=await run_function_from_module(web_for_query, "retrieve", taxon),
         status=(
             StatusMessage.DATA_SUCCESS.value
             if taxon

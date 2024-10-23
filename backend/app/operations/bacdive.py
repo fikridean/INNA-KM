@@ -7,7 +7,7 @@ from utils.helper.func_helper import convert_to_string
 
 
 # Get bacdive data
-async def retrieve(taxon: dict) -> dict:
+async def retrieve(taxon: dict) -> dict:    
     # Get the taxon ID from the taxon data
     ncbi_taxon_id: str = taxon["ncbi_taxon_id"]
 
