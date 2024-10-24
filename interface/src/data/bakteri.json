@@ -1,0 +1,91 @@
+[
+    {
+        "nama": "Achromobacter mucicolens",
+        "last_update": "14-12-2023",
+        "domain": "Bacteria",
+        "phylum": "Pseudomonadota",
+        "class": "Betaproteobacteria",
+        "order": "Burkholderiales",
+        "family": "Alcaligenaceae",
+        "genus": "Achromobacter",
+        "species": "Achromobacter mucicolens",
+        "lpsn": "Achromobacter mucicolens Vandamme et al. 2013",
+        "morphology": {
+            "gram_stain1": "negative",
+            "gram_stain2": "negative",
+            "confidence": 98.472,
+            "cell_shape": "rod-shape",
+            "motility": "yes",
+            "incubation_period1": "1-2 days",
+            "incubation_period2": "1 day"
+        }
+    },
+    {
+        "nama": "Aeromonas hydrophila",
+        "last_update": "14-12-2023",
+        "domain": "Bacteria",
+        "phylum": "Pseudomonadota",
+        "class": "Gammaproteobacteria",
+        "order": "Aeromonadales",
+        "family": "Aeromonadaceae",
+        "genus": "Aeromonas",
+        "species": "Aeromonas hydrophila",
+        "lpsn": "Aeromonas hydrophila (Chester 1901) Stanier 1943 (Approved Lists 1980)",
+        "synonym": "Bacillus hydrophilus"
+    },
+    {
+        "nama": "Chelatococcus thermostellatus",
+        "last_update": "14-12-2023",
+        "domain": "Bacteria",
+        "phylum": "Pseudomonadota",
+        "class": "Alphaproteobacteria",
+        "order": "Hypomicrobiales",
+        "family": "Chelatococcaceae",
+        "genus": "Chelatococcus",
+        "species": "Chelatococcus thermostellatus",
+        "lpsn": "Chelatococcus thermostellatus Ibrahim et al. 2016"
+    },
+    {
+        "nama": "Cobetia marina",
+        "last_update": "14-12-2023",
+        "domain": "Bacteria",
+        "phylum": "Pseudomonadota",
+        "class": "Gammaproteobacteria",
+        "order": "Aeromonadales",
+        "family": "Aeromonadaceae",
+        "genus": "Aeromonas",
+        "species": "Aeromonas hydrophila",
+        "lpsn": "Aeromonas hydrophila (Chester 1901) Stanier 1943 (Approved Lists 1980)",
+        "synonym": "Bacillus hydrophilus"
+    },
+    {
+        "nama": "Dactylosporangium aurantiacum",
+        "last_update": "14-12-2023",
+        "domain": "Bacteria",
+        "phylum": "Pseudomonadota",
+        "class": "Gammaproteobacteria",
+        "order": "Aeromonadales",
+        "family": "Aeromonadaceae",
+        "genus": "Aeromonas",
+        "species": "Aeromonas hydrophila",
+        "lpsn": "Aeromonas hydrophila (Chester 1901) Stanier 1943 (Approved Lists 1980)",
+        "synonym": "Bacillus hydrophilus"
+    },
+    {
+        "nama": "Empedobacter tilapiae",
+        "last_update": "14-12-2023",
+        "domain": "Bacteria",
+        "phylum": "Pseudomonadota",
+        "class": "Gammaproteobacteria",
+        "order": "Aeromonadales",
+        "family": "Aeromonadaceae",
+        "genus": "Aeromonas",
+        "species": "Aeromonas hydrophila",
+        "lpsn": "Aeromonas hydrophila (Chester 1901) Stanier 1943 (Approved Lists 1980)",
+        "synonym": "Bacillus hydrophilus"
+    }
+     
+ 	 
+              
+
+]

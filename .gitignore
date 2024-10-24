@@ -1,3 +1,27 @@
 backend/app/.env
 **/__pycache__/
 backend/venv/
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+interface/node_modules
+interface/.pnp
+interface/.pnp.js
+
+# testing
+interface/coverage
+
+# production
+interface/build
+
+# misc
+interface/.DS_Store
+interface/.env.local
+interface/.env.development.local
+interface/.env.test.local
+interface/.env.production.local
+
+interface/npm-debug.log*
+interface/yarn-debug.log*
+interface/yarn-error.log*
