@@ -16,6 +16,7 @@ The `taxa` collection stores data about taxon_id, ncbi_taxon_id, and species.
 - **species**: The scientific name of the species.
 
 **Example Document:**
+
 ```json
 {
   "_id": "xxxxxxxxxxxxxxxxxxxxxxx",
@@ -23,7 +24,6 @@ The `taxa` collection stores data about taxon_id, ncbi_taxon_id, and species.
   "ncbi_taxon_id": "Achromobacter mucicolens",
   "species": "wikidata"
 }
-
 ```
 
 ### Portals
@@ -76,17 +76,17 @@ The `terms` collection stores structured and detailed information about species.
 
 #### Sections and Sources
 
-| **Section**                                           | **Source**            |
-| ----------------------------------------------------- | --------------------- |
-| **Name and Taxonomic Classification**                 | NCBI                  |
-| **Morphology**                                        | BacDive               |
-| **Culture and Growth Conditions**                     | BacDive               |
-| **Physiology and Metabolism**                         | BacDive               |
-| **Isolation, Sampling and Environmental Information** | BacDive               |
-| **Safety Information**                                | BacDive               |
-| **Sequence Information**                              | BacDive               |
-| **Genome-based Prediction**                           | BacDive               |
-| **Occurrences (georeference records)**                | GBIF                  |
+| **Section**                                           | **Source** |
+| ----------------------------------------------------- | ---------- |
+| **Name and Taxonomic Classification**                 | NCBI       |
+| **Morphology**                                        | BacDive    |
+| **Culture and Growth Conditions**                     | BacDive    |
+| **Physiology and Metabolism**                         | BacDive    |
+| **Isolation, Sampling and Environmental Information** | BacDive    |
+| **Safety Information**                                | BacDive    |
+| **Sequence Information**                              | BacDive    |
+| **Genome-based Prediction**                           | BacDive    |
+| **Occurrences (georeference records)**                | GBIF       |
 
 **Fields:**
 
@@ -100,7 +100,6 @@ The `terms` collection stores structured and detailed information about species.
 {
   "_id": "66e1dae562896968e8c5af10",
   "taxon_id": "1389922",
-  "species": "Achromobacter mucicolens",
   "data": {
     "Name and taxonomic classification": {},
     "Morphology": {},
@@ -110,8 +109,8 @@ The `terms` collection stores structured and detailed information about species.
     "Safety information": {},
     "Sequence information": {},
     "Genome-based predictions": {},
-    "Occurrence (georeference records)": {},
-  },
+    "Occurrence (georeference records)": {}
+  }
 }
 ```
 

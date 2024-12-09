@@ -7,10 +7,10 @@ This project is a **FastAPI-based web service** that aggregates, processes, and 
 - **Type**: FastAPI-based web service
 - **Database**: MongoDB, using **Motor** (an async MongoDB driver for Python)
 - **Main Collections**:
-    - `taxa`
-    - `portals`
-    - `raws`
-    - `terms`
+  - `taxa`
+  - `portals`
+  - `raws`
+  - `terms`
 
 ## Primary Objective
 
@@ -27,81 +27,93 @@ The primary goal of this project is to **aggregate data** from external portals 
 Follow these steps to set up the project:
 
 1. **Initialize a Git repository**:
-    ```sh
-    git init
-    ```
+
+   ```sh
+   git init
+   ```
 
 2. **Add the remote repository**:
-    ```sh
-    git remote add origin https://github.com/fikridean/INNA-KM.git
-    ```
+
+   ```sh
+   git remote add origin https://github.com/fikridean/INNA-KM.git
+   ```
 
 3. **Fetch the latest changes from the remote repository**:
-    ```sh
-    git fetch
-    ```
+
+   ```sh
+   git fetch
+   ```
 
 4. **Checkout the `dev` branch**:
-    ```sh
-    git checkout dev
-    ```
+
+   ```sh
+   git checkout dev
+   ```
 
 5. **Navigate to the backend directory**:
-    ```sh
-    cd backend
-    ```
+
+   ```sh
+   cd backend
+   ```
 
 6. **Copy the example environment file to create your own `.env` file**:
-    ```sh
-    cp app/.env.example app/.env
-    ```
+   ```sh
+   cp app/.env.example app/.env
+   ```
 
 Make sure to fill in the necessary environment variables in the `.env` file before running the application.
 
 - **Create a virtual environment**:
-    ```sh
-    python3 -m venv venv
-    ```
+
+  ```sh
+  python3 -m venv venv
+  ```
 
 - **Activate the virtual environment**:
-    - For Linux/macOS:
-        ```sh
-        source venv/bin/activate
-        ```
-    - For Windows:
-        ```sh
-        venv\Scripts\activate
-        ```
+
+  - For Linux/macOS:
+    ```sh
+    source venv/bin/activate
+    ```
+  - For Windows:
+    ```sh
+    venv\Scripts\activate
+    ```
 
 - **Install the required dependencies**:
-    ```sh
-    pip install -r requirements.txt
-    ```
+
+  ```sh
+  pip install -r requirements.txt
+  ```
 
 - **Run FastAPI**:
-    ```sh
-    fastapi dev app/main.py
-    ```
+
+  ```sh
+  fastapi dev app/main.py
+  ```
 
 - **Preview the documentation locally using MkDocs**:
-    ```sh
-    mkdocs serve
-    ```
+
+  ```sh
+  mkdocs serve
+  ```
 
 - **Setting up the Search feature**:
-    For code to create the search index, please visit the [Search Index Section](/E/#setting-up-the-search-index).
+  For code to create the search index, please visit the [Search Index Section](/E/#setting-up-the-search-index).
 
 For more information, please visit <a target=_blank href='https://github.com/fikridean/INNAKM'>INNAKM Github Repository</a>.
 
 # Portals & Species
 
 ## Types of portals
+
 - <a href="https://www.wikidata.org/" target="_blank">WikiData</a>
 - <a href="https://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a>
 - <a href="https://bacdive.dsmz.de/" target="_blank">BacDive</a>
 - <a href="https://www.gbif.org/" target="_blank">GBIF</a>
 
 ## Species
+
 1. Achromobacter mucicolens
 2. Aeromonas hydrophila
 3. Chelatococcus thermostellatus
@@ -155,56 +167,70 @@ For more information, please visit <a target=_blank href='https://github.com/fik
 **Total count: 49 species**
 
 # Data Parsing
+
 ## Why is data parsing needed before adding data to the database?
+
 Before inserting data into the database, it is crucial to follow the appropriate data parsing steps for each portal. Data parsing ensures that the data is correctly retrieved, processed, and transformed into the desired format before being stored.
 
 ## Wikidata
 
 ### Steps
 
-1. **Define Variables**:  
-    - Set the constant `NCBI_TAXON_ID_CODE` to `"P685"`, representing the NCBI Taxon ID property from Wikidata.
-    - Retrieve the NCBI Taxon ID (`ncbi_taxon_id`) from the provided `taxon` dictionary.
+1. **Define Variables**:
 
-2. **Formulate SPARQL Query**:  
-    - Construct a SPARQL query to fetch the Wikidata entity based on the NCBI Taxon ID.
+   - Set the constant `NCBI_TAXON_ID_CODE` to `"P685"`, representing the NCBI Taxon ID property from Wikidata.
+   - Retrieve the NCBI Taxon ID (`ncbi_taxon_id`) from the provided `taxon` dictionary.
 
-3. **Send SPARQL Query Request**:  
-    - Use `httpx.AsyncClient` to send an asynchronous GET request to the Wikidata SPARQL endpoint (`https://query.wikidata.org/sparql`) with the SPARQL query and proper headers.
+2. **Formulate SPARQL Query**:
 
-4. **Retry Mechanism for SPARQL Query**:  
-    - Implement a retry mechanism that attempts to send the request up to 5 times in case of failure, with a 20-second delay between retries.
+   - Construct a SPARQL query to fetch the Wikidata entity based on the NCBI Taxon ID.
 
-5. **Check for Empty Data**:  
-    - Check if the response contains valid data. If no data is returned, proceed to construct a new query using the species name.
+3. **Send SPARQL Query Request**:
 
-6. **Query by Species Name (Fallback)**:  
-    - If the NCBI Taxon ID query returns no data, formulate a new SPARQL query to search for the species using the `taxon_species` field from the `taxon` dictionary.
+   - Use `httpx.AsyncClient` to send an asynchronous GET request to the Wikidata SPARQL endpoint (`https://query.wikidata.org/sparql`) with the SPARQL query and proper headers.
 
-7. **Send Species Query Request**:  
-    - Use `httpx.AsyncClient` again to send the species-based query to the Wikidata SPARQL endpoint, applying the same retry mechanism (up to 5 retries).
+4. **Retry Mechanism for SPARQL Query**:
 
-8. **Extract the Entity ID**:  
-    - After successfully receiving the response, extract the entity's ID from the `item` field in the query results. The ID is derived from the URL provided in the response.
+   - Implement a retry mechanism that attempts to send the request up to 5 times in case of failure, with a 20-second delay between retries.
 
-9. **Check for Empty or Invalid ID**:  
-    - If no entity ID is found, return an empty dictionary to indicate no data was retrieved.
+5. **Check for Empty Data**:
 
-10. **Fetch Entity Data**:  
+   - Check if the response contains valid data. If no data is returned, proceed to construct a new query using the species name.
+
+6. **Query by Species Name (Fallback)**:
+
+   - If the NCBI Taxon ID query returns no data, formulate a new SPARQL query to search for the species using the `taxon_species` field from the `taxon` dictionary.
+
+7. **Send Species Query Request**:
+
+   - Use `httpx.AsyncClient` again to send the species-based query to the Wikidata SPARQL endpoint, applying the same retry mechanism (up to 5 retries).
+
+8. **Extract the Entity ID**:
+
+   - After successfully receiving the response, extract the entity's ID from the `item` field in the query results. The ID is derived from the URL provided in the response.
+
+9. **Check for Empty or Invalid ID**:
+
+   - If no entity ID is found, return an empty dictionary to indicate no data was retrieved.
+
+10. **Fetch Entity Data**:
+
     - Construct a URL (`https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&ids={id}&languages=en`) using the extracted entity ID to retrieve detailed entity data from the Wikidata API.
 
-11. **Retry Mechanism for Entity Data**:  
+11. **Retry Mechanism for Entity Data**:
+
     - Implement a retry mechanism similar to previous requests, retrying up to 5 times in case of HTTP errors, with a 20-second delay between attempts.
 
-12. **Check for Empty Entity Data**:  
+12. **Check for Empty Entity Data**:
+
     - If the API response contains no data or the `id` is not found in the `entities` field, return an empty dictionary.
 
-13. **Return Final Data**:  
+13. **Return Final Data**:
+
     - If the entity data is successfully retrieved, return the entity data; otherwise, return an empty dictionary.
 
-14. **Data Processing**:  
+14. **Data Processing**:
     - Use the `convert_to_string()` function from `utils.helper.func_helper` to process the retrieved data and return it as a string.
-
 
 ### Codes
 
@@ -349,57 +375,72 @@ async def data_processing(retrieve_data) -> str:
 
 ### Steps
 
-1. **Define Variables**:  
-    - Retrieve the `ncbi_taxon_id` and `species` from the provided taxon dictionary.
+1. **Define Variables**:
 
-2. **Construct URL for Taxon ID**:  
-    - Build the URL to fetch data from NCBI using the extracted `ncbi_taxon_id`.
+   - Retrieve the `ncbi_taxon_id` and `species` from the provided taxon dictionary.
 
-3. **Send GET Request for Taxon ID**:  
-    - Use `httpx.AsyncClient` to send a GET request to the NCBI API with the constructed URL.
+2. **Construct URL for Taxon ID**:
 
-4. **Retry Mechanism for Taxon ID Request**:  
-    - Implement a retry mechanism that attempts the request up to 5 times if it fails, with a 20-second delay between retries.
+   - Build the URL to fetch data from NCBI using the extracted `ncbi_taxon_id`.
 
-5. **Parse XML Response for Taxon ID**:  
+3. **Send GET Request for Taxon ID**:
+
+   - Use `httpx.AsyncClient` to send a GET request to the NCBI API with the constructed URL.
+
+4. **Retry Mechanism for Taxon ID Request**:
+
+   - Implement a retry mechanism that attempts the request up to 5 times if it fails, with a 20-second delay between retries.
+
+5. **Parse XML Response for Taxon ID**:
+
+   - Convert the XML response from the NCBI API into a Python dictionary using `xmltodict`.
+
+6. **Check for Empty Data from Taxon ID**:
+
+   - Ensure the response contains valid data before proceeding. If no data is found, attempt to retrieve data using the species name.
+
+7. **Construct URL for Species Name**:
+
+   - Build a new URL to search for the taxon using the species name.
+
+8. **Send GET Request for Species Name**:
+
+   - Use `httpx.AsyncClient` to send a GET request to the NCBI API to search for the taxon by species name.
+
+9. **Retry Mechanism for Species Name Request**:
+
+   - Implement a retry mechanism that attempts the request up to 5 times if it fails, with a 20-second delay between retries.
+
+10. **Parse XML Response for Species Name**:
+
     - Convert the XML response from the NCBI API into a Python dictionary using `xmltodict`.
 
-6. **Check for Empty Data from Taxon ID**:  
-    - Ensure the response contains valid data before proceeding. If no data is found, attempt to retrieve data using the species name.
+11. **Extract Taxon ID from Search Results**:
 
-7. **Construct URL for Species Name**:  
-    - Build a new URL to search for the taxon using the species name.
-
-8. **Send GET Request for Species Name**:  
-    - Use `httpx.AsyncClient` to send a GET request to the NCBI API to search for the taxon by species name.
-
-9. **Retry Mechanism for Species Name Request**:  
-    - Implement a retry mechanism that attempts the request up to 5 times if it fails, with a 20-second delay between retries.
-
-10. **Parse XML Response for Species Name**:  
-    - Convert the XML response from the NCBI API into a Python dictionary using `xmltodict`.
-
-11. **Extract Taxon ID from Search Results**:  
     - Extract the taxon ID from the search results returned by the NCBI API.
 
-12. **Construct URL to Fetch Taxon Data by ID**:  
+12. **Construct URL to Fetch Taxon Data by ID**:
+
     - Build another URL to fetch the detailed taxon data using the extracted ID.
 
-13. **Send GET Request to Fetch Taxon Data**:  
+13. **Send GET Request to Fetch Taxon Data**:
+
     - Use `httpx.AsyncClient` to send a GET request to the NCBI API using the new URL.
 
-14. **Retry Mechanism for Fetching Taxon Data**:  
+14. **Retry Mechanism for Fetching Taxon Data**:
+
     - Implement a retry mechanism that attempts the request up to 5 times if it fails, with a 20-second delay between retries.
 
-15. **Parse Final XML Response**:  
+15. **Parse Final XML Response**:
+
     - Convert the final XML response into a Python dictionary using `xmltodict`.
 
-16. **Check for Final Data Validity**:  
+16. **Check for Final Data Validity**:
+
     - Ensure the response contains valid 'Taxon' data before proceeding.
 
-17. **Return Data**:  
+17. **Return Data**:
     - If valid data is found, return it. Otherwise, return an empty dictionary.
-
 
 ### Codes
 
@@ -541,7 +582,6 @@ async def data_processing(retrieve_data) -> str:
 7. **Return Retrieved Data**:  
    If the BacDive search is successful, return the retrieved data. Otherwise, return an empty dictionary.
 
-
 ### Codes
 
 ```python
@@ -661,7 +701,6 @@ async def data_processing(retrieve_data: dict) -> str:
 9. **Return Retrieved Data**:  
    If the response contains results, return the first result. Otherwise, return an empty dictionary.
 
-
 ### Codes
 
 ```python
@@ -760,6 +799,7 @@ The `taxa` collection stores data about taxon_id, ncbi_taxon_id, and species.
 - **species**: The scientific name of the species.
 
 **Example Document:**
+
 ```json
 {
   "_id": "xxxxxxxxxxxxxxxxxxxxxxx",
@@ -767,7 +807,6 @@ The `taxa` collection stores data about taxon_id, ncbi_taxon_id, and species.
   "ncbi_taxon_id": "Achromobacter mucicolens",
   "species": "wikidata"
 }
-
 ```
 
 ### Portals
@@ -820,17 +859,17 @@ The `terms` collection stores structured and detailed information about species.
 
 #### Sections and Sources
 
-| **Section**                                           | **Source**            |
-| ----------------------------------------------------- | --------------------- |
-| **Name and Taxonomic Classification**                 | NCBI                  |
-| **Morphology**                                        | BacDive               |
-| **Culture and Growth Conditions**                     | BacDive               |
-| **Physiology and Metabolism**                         | BacDive               |
-| **Isolation, Sampling and Environmental Information** | BacDive               |
-| **Safety Information**                                | BacDive               |
-| **Sequence Information**                              | BacDive               |
-| **Genome-based Prediction**                           | BacDive               |
-| **Occurrences (georeference records)**                | GBIF                  |
+| **Section**                                           | **Source** |
+| ----------------------------------------------------- | ---------- |
+| **Name and Taxonomic Classification**                 | NCBI       |
+| **Morphology**                                        | BacDive    |
+| **Culture and Growth Conditions**                     | BacDive    |
+| **Physiology and Metabolism**                         | BacDive    |
+| **Isolation, Sampling and Environmental Information** | BacDive    |
+| **Safety Information**                                | BacDive    |
+| **Sequence Information**                              | BacDive    |
+| **Genome-based Prediction**                           | BacDive    |
+| **Occurrences (georeference records)**                | GBIF       |
 
 **Fields:**
 
@@ -844,7 +883,6 @@ The `terms` collection stores structured and detailed information about species.
 {
   "_id": "66e1dae562896968e8c5af10",
   "taxon_id": "1389922",
-  "species": "Achromobacter mucicolens",
   "data": {
     "Name and taxonomic classification": {},
     "Morphology": {},
@@ -854,8 +892,8 @@ The `terms` collection stores structured and detailed information about species.
     "Safety information": {},
     "Sequence information": {},
     "Genome-based predictions": {},
-    "Occurrence (georeference records)": {},
-  },
+    "Occurrence (georeference records)": {}
+  }
 }
 ```
 
@@ -924,6 +962,7 @@ await term_collection.create_index(
 - **`__pycache__`**: Contains compiled Python files to speed up execution.
 
 - **`app`**: Main application directory, including:
+
   - **`config.py`**: Configuration settings for the application.
   - **`database`**: MongoDB connection setup.
     - **`mongo.py`**: MongoDB setup and connection logic.
@@ -967,6 +1006,7 @@ await term_collection.create_index(
       - **`request_log_middleware.py`**: Middleware for logging requests.
 
 - **`docs`**: Documentation files.
+
   - **`A.md`**: Documentation section A.
   - **`B.md`**: Documentation section B.
   - **`C.md`**: Documentation section C.
@@ -981,6 +1021,7 @@ await term_collection.create_index(
   - **`index.md`**: Index for documentation.
 
 - **`json`**: JSON files for various data.
+
   - **`ncbi_taxon_id.json`**: JSON file containing NCBI taxon IDs.
   - **`portal.json`**: JSON file for portal data.
   - **`portal_new.json`**: Updated JSON file for portal data.
