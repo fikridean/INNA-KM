@@ -7,11 +7,7 @@ const Home = () => {
     <div>
         <Header/>
         <div className='container'>
-            {/* home */}
-
-
-
-            <Outlet />
+          <Outlet />
         </div>
     </div>
   )

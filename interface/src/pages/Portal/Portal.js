@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Table, Button, Pagination } from "react-bootstrap";
 import { getPortals, deletePortal } from '../../services/api';
 
 const BacteryList = () => {
-  const navigate = useNavigate();
   const [dataBacteries, setDataBacteries] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
-  const [isSortedByTaxon, setIsSortedByTaxon] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,17 +28,6 @@ const BacteryList = () => {
     } catch (err) {
       console.error('Failed to delete portal:', err);
     }
-  };
-
-  // Sort and set dataBacteries based on toggle
-  const toggleSort = () => {
-    const sortedData = [...dataBacteries].sort((a, b) =>
-      isSortedByTaxon
-        ? a.species.localeCompare(b.species)
-        : a.taxon_id - b.taxon_id
-    );
-    setDataBacteries(sortedData);
-    setIsSortedByTaxon(!isSortedByTaxon);
   };
 
   // Pagination logic to get current items based on the sorted data
