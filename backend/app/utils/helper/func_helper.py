@@ -43,19 +43,17 @@ async def run_function_from_module(
         return function(*args)
 
 
-def get_directories(directory: str) -> int:
+def get_directories(directory: str) -> List[str]:
     try:
-        # List all files in the directory
         files: List[str] = os.listdir(directory)
 
-        # Filter out directories, only count files
         files: List[str] = [
             f for f in files if os.path.isfile(os.path.join(directory, f))
         ]
         return files
     except FileNotFoundError:
         print(f"The directory {directory} does not exist.")
-        return 0
+        return []
 
 
 def find_matching_parts(data_array: List[dict], term: str) -> List[dict]:

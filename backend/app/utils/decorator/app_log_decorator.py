@@ -10,7 +10,7 @@ appLogger = Logger(name="app_logger")
 appLogger.level = logging.INFO  # Set the log level for the logger
 
 # Create an async file handler
-file_handler = AsyncFileHandler("app/log/app.log")  # Specify your log file
+file_handler = AsyncFileHandler("log/app.log")  # Specify your log file
 
 # Create a console handler
 # console_handler = AsyncStreamHandler()

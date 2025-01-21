@@ -13,7 +13,7 @@ requestLogger = Logger(name="request_logger")
 requestLogger.level = logging.INFO
 
 # Create an async file handler
-file_handler = AsyncFileHandler("app/log/request.log")
+file_handler = AsyncFileHandler("log/request.log")
 
 # Add the file handler to the logger
 requestLogger.add_handler(file_handler)
