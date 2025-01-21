@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Table, Button, Pagination } from "react-bootstrap";
+import { useParams } from 'react-router-dom';
+import { Table, Button, Spinner } from "react-bootstrap";
 import { getTaxonDetail, getPortalDetail, getRaws, deleteRaws, storeRaws, getTerms, deleteTerms, storeTerms, deletePortal, createPortal } from '../../services/api';
 
 const DetailTaxa = () => {
@@ -9,6 +9,9 @@ const DetailTaxa = () => {
     const [dataPortal, setDataPortal] = useState([]);
     const [dataRaw, setDataRaw] = useState([]);
     const [dataTerm, setDataTerm] = useState([]);
+    const [isLoadingPortal, setIsLoadingPortal] = useState(false); // State untuk loading
+    const [isLoadingRaw, setIsLoadingRaw] = useState(false);
+    const [isLoadingTerm, setIsLoadingTerm] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,7 +30,7 @@ const DetailTaxa = () => {
             }
         };
         fetchData();
-    }, []);
+    });
 
     const handleDelete = async (ncbi_taxon_id) => {
         try {
@@ -57,29 +60,38 @@ const DetailTaxa = () => {
     };
 
     const handleCreate = async (ncbi_taxon_id) => {
+        setIsLoadingRaw(true); // Mulai loading
         try {
             await storeRaws(ncbi_taxon_id);
             window.location.reload(); // Refresh the page after successful deletion
         } catch (err) {
             console.error('Failed to delete taxa:', err);
+        } finally {
+            setIsLoadingRaw(false); // Selesai loading
         }
     };
 
     const handleCreateTerm = async (ncbi_taxon_id) => {
+        setIsLoadingTerm(true); // Mulai loading
         try {
             await storeTerms(ncbi_taxon_id);
             window.location.reload(); // Refresh the page after successful deletion
         } catch (err) {
             console.error('Failed to delete taxa:', err);
+        } finally {
+            setIsLoadingTerm(false); // Selesai loading
         }
     };
 
     const handleCreatePortal = async (taxon_id) => {
+        setIsLoadingPortal(true); // Mulai loading
         try {
             await createPortal(taxon_id);
             window.location.reload(); // Refresh the page after successful deletion
         } catch (err) {
             console.error('Failed to delete taxa:', err);
+        } finally {
+            setIsLoadingPortal(false); // Selesai loading
         }
     };
 
@@ -115,14 +127,32 @@ const DetailTaxa = () => {
             </div>
 
             <h4>Detail Portal</h4>
-            <div id="taxonomy-content">
+            <div>
                 {dataPortal.taxon_id !== null ? (
                     <>
                         <Button variant="danger" onClick={() => handleDeletePortal(dataTaxa.taxon_id)}>Delete Portal</Button>
                     </>
                 ) : (
                     <>
-                        <Button variant="primary" onClick={() => handleCreatePortal(dataTaxa.taxon_id)}>Create Portal</Button>
+                        <Button
+                            variant="primary"
+                            onClick={() => handleCreatePortal(dataTaxa.taxon_id)}
+                            disabled={isLoadingPortal} // Nonaktifkan tombol saat loading
+                        >
+                            {isLoadingPortal ? (
+                                <>
+                                    <Spinner
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    /> Creating...
+                                </>
+                            ) : (
+                                "Create Portal"
+                            )}
+                        </Button>
                     </>
                 )}
                 <Table striped bordered hover className="mt-3">
@@ -162,18 +192,36 @@ const DetailTaxa = () => {
             </div>
 
             <h4>Detail Raws</h4>
-            <div id="taxonomy-content">
+            <div >
                 {Array.isArray(dataRaw.data) ? (
                     <>
                         {dataRaw.data[0].web !== null ? (
                             <>
                                 {dataRaw.data[0].data !== null ? (
                                     <>
-                                        <Button variant="danger" onClick={() => handleDelete(dataTaxa.ncbi_taxon_id)}>Delete</Button>
+                                        <Button variant="danger" onClick={() => handleDelete(dataTaxa.ncbi_taxon_id)}>Delete Raw</Button>
                                     </>
                                 ) : (
                                     <>
-                                        <Button variant="primary" onClick={() => handleCreate(dataTaxa.ncbi_taxon_id)}>Create Raw</Button>
+                                        <Button
+                                            variant="primary"
+                                            onClick={() => handleCreate(dataTaxa.ncbi_taxon_id)}
+                                            disabled={isLoadingRaw} // Nonaktifkan tombol saat loading
+                                        >
+                                            {isLoadingRaw ? (
+                                                <>
+                                                    <Spinner
+                                                        as="span"
+                                                        animation="border"
+                                                        size="sm"
+                                                        role="status"
+                                                        aria-hidden="true"
+                                                    /> Creating...
+                                                </>
+                                            ) : (
+                                                "Create Raw"
+                                            )}
+                                        </Button>
                                     </>
                                 )}
                             </>
@@ -246,7 +294,7 @@ const DetailTaxa = () => {
             </div>
 
             <h4>Detail Terms</h4>
-            <div id="taxonomy-content">
+            <div>
                 {Array.isArray(dataTerm.data) ? (
                     <>
                     </>
@@ -258,7 +306,25 @@ const DetailTaxa = () => {
                             </>
                         ) : (
                             <>
-                                <Button variant="primary" onClick={() => handleCreateTerm(dataTaxa.ncbi_taxon_id)}>Create Terms</Button>
+                                <Button
+                                    variant="primary"
+                                    onClick={() => handleCreateTerm(dataTaxa.ncbi_taxon_id)}
+                                    disabled={isLoadingTerm} // Nonaktifkan tombol saat loading
+                                >
+                                    {isLoadingTerm ? (
+                                        <>
+                                            <Spinner
+                                                as="span"
+                                                animation="border"
+                                                size="sm"
+                                                role="status"
+                                                aria-hidden="true"
+                                            /> Creating...
+                                        </>
+                                    ) : (
+                                        "Create Terms"
+                                    )}
+                                </Button>
                             </>
                         )}
                     </>
