@@ -52,8 +52,11 @@ def log_function(action: str):
 
                 return result
             except Exception as e:
-                # Log exceptions
-                appLogger.error(f"Error in {action}: {str(e)}\n")
+                # Log exceptions with timestamp
+                timestamp = time.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+                appLogger.error(
+                    f"{timestamp} - Error in {action}: {str(e)}\n"
+                )
                 raise e
 
         return wrapper
