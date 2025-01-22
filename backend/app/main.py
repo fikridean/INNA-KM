@@ -34,7 +34,7 @@ Instrumentator().instrument(app).expose(app)
 # Run the app
 if __name__ == "__main__":
     try:
-        uvicorn.run(app, host=HOST, port=int(PORT))
+        uvicorn.run(app, host=HOST, port=int(PORT), log_level="warning")
 
     except Exception as e:
         raise Exception(f"An error occurred while running the app: {str(e)}")
