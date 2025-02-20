@@ -103,6 +103,33 @@ Make sure to fill in the necessary environment variables in the `.env` file befo
 
 For more information, please visit <a target=_blank href='https://github.com/fikridean/INNAKM'>INNAKM Github Repository</a>.
 
+Follow these steps to set up the interface project:
+
+1. **Navigate to the interface directory**:
+
+   ```sh
+   cd interface
+   ```
+
+2. **Build and run dockerized React app**:
+
+   ```sh
+   sudo docker build -t interface .
+   ```
+
+3. **Running the Docker container**:
+
+   ```sh
+   sudo docker run -p 3000:3000 interface
+   ```
+
+4. **Checkout the `dev` branch**:
+
+   ```sh
+   http://localhost:3000
+   ```
+
+
 # Portals & Species
 
 ## Types of portals
