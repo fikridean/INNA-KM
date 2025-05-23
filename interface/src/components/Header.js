@@ -26,9 +26,9 @@ function Header() {
             <Nav.Link as={NavLink} to="/list" className="nav-link" activeClassName="active">
               Bactery List
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/taxa" className="nav-link" activeClassName="active">
+            {/* <Nav.Link as={NavLink} to="/taxa" className="nav-link" activeClassName="active">
               Taxa
-            </Nav.Link>
+            </Nav.Link> */}
           </Nav>
         </Navbar.Collapse>
       </Container>
