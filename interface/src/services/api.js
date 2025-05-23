@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api/v1',
-  origin: 'http://localhost:8000/api/v1'
+  baseURL: 'http://192.168.100.17:8081/api/v1',
+  origin: 'http://192.168.100.17:8081/api/v1'
 });
 
 
